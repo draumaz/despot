@@ -1,5 +1,5 @@
 # bildo
-an extremely tiny package manager
+an extremely tiny git package updater
 
 ## why did you make this?
 - installing and managing source-based packages on debian is a major pain
