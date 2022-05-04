@@ -32,8 +32,9 @@ case "${OPTION:2}" in
 		echo " done"
 		echo -n "updating projects  ..."
 		for l in $PKG_LIST; do
+			echo "checking: $l"
 			cd pkg/src/"$l"
-			git pull > /dev/null 2>&1
+			git pull
 			cd ../../..
 		done
 		echo " done"
