@@ -2,8 +2,8 @@
 an extremely tiny package manager
 
 ## commands
-- ```./bildo update``` git pulls your packages in pkg/src
-- ```./bildo upgrade``` upgrades your packages if i've written a build script for it
+- ```./bildo --update``` git pulls your packages in pkg/src
+- ```./bildo --upgrade``` upgrades your packages if i've written a build script for it
 
 ## pkg/repo
 - a disappointingly small collection of build scripts
@@ -15,5 +15,5 @@ an extremely tiny package manager
 - ```mv ./bildo ~/Builds```
 
 ## loading projects
-- ```mkdir ~/Builds/pkg/src && cd ~/Builds/pkg/src```
-- ```git clone https://github.com/blarg/coolrepo```
+- ```cd ~/Builds/pkg/src```
+- ```git clone https://github.com/blahblah/coolrepo```

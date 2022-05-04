@@ -2,7 +2,18 @@
 
 PKG_LIST=$(ls pkg/src | tr " " "\n")
 
-case "$1" in
+case "${1:2}" in
+	"version")
+		echo "bildo 0.01.1"
+		;;
+	"help")
+		echo "./bildo [arg]"
+		echo ""
+		echo "arguments:"
+		echo "--update:  git pull all dirs in pkg/src"
+		echo "--upgrade: compile all packages from pkg/repo build scripts"
+		echo ""
+		;;
 	"list")
 		echo "$PKG_LIST"
 		;;
