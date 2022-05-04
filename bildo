@@ -5,7 +5,7 @@ PKG_LIST=$(ls pkg/src | tr " " "\n")
 
 case "${1:2}" in
 	"version")
-		echo "bildo 0.01.1"
+		echo "bildo 0.01.0"
 		;;
 	"help")
 		echo "./bildo [arg]"
