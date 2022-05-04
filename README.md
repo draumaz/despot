@@ -21,3 +21,6 @@ an extremely tiny package manager
 - ```mkdir -p ~/Builds/pkg/src```
 - ```cd ~/Builds/pkg/src```
 - ```git clone https://github.com/blahblah/coolrepo```
+
+## CURRENT ISSUES
+- ```./bildo --upgrade``` will upgrade all packages, even when it's not necessary
