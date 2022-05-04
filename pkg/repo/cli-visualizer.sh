@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 PKG_NAME="cli-visualizer"
 PKG_REPO="https://github.com/dpayne/$PKG_NAME"

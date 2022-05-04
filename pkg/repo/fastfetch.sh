@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 PKG_NAME="fastfetch"
 PKG_REPO="https://github.com/LinusDierheimer/$PKG_NAME"

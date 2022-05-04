@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 PKG_NAME="st"
 PKG_REPO="https://git.suckless.org/$PKG_NAME"

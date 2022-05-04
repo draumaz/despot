@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 PKG_NAME="i3-gaps"
 PKG_REPO="https://github.com/Airblader/i3"

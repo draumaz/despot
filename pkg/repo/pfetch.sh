@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 PKG_NAME="pfetch"
 PKG_REPO="https://github.com/dylanaraps/$PKG_NAME"

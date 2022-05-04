@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 PKG_NAME="ly"
 PKG_REPO="https://github.com/fairyglade/$PKG_NAME"
