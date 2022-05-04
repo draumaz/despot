@@ -1,6 +1,10 @@
 # bildo
 an extremely tiny package manager
 
+## why did you make this?
+- installing <a href="https://github.com/Airblader/i3">i3-gaps</a> on debian is a major pain
+- automation makes life a little less agonizing
+
 ## commands
 - ```./bildo --update``` git pulls your packages in pkg/src
 - ```./bildo --upgrade``` upgrades your packages if i've written a build script for it
