@@ -17,7 +17,7 @@ case "$1" in
 		;;
 	"upgrade")
 		for l in $PKG_LIST; do
-			bash pkg/repo/$l
+			bash pkg/repo/${l}.sh
 		done
 		;;
 	*)
