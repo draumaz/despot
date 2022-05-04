@@ -19,7 +19,7 @@ case "${OPTION:2}" in
 		echo "--help:    show this screen"
 		echo "--list:    list all directories in pkg/src"
 		echo "--update:  update bildo repo, git pull all pkg/src directories"
-		echo "--upgrade: compile all pkg/src directories, or supplied package name"
+		echo "--upgrade: compile a package. defaults to all if no package name is given"
 		echo "--version: display current version of bildo"
 		echo ""
 		;;
