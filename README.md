@@ -24,3 +24,4 @@ an extremely tiny package manager
 
 ## CURRENT ISSUES
 - ```./bildo --upgrade``` will upgrade all packages, even when it's not necessary
+- Scripts have to constantly request superuser permissions during install
