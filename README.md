@@ -14,5 +14,6 @@ an extremely tiny package manager
 - ```mv ./bildo ~/Builds```
 
 ## loading projects
+- ```mkdir -p ~/Builds/pkg/src```
 - ```cd ~/Builds/pkg/src```
 - ```git clone https://github.com/blahblah/coolrepo```
