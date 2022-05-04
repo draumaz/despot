@@ -12,6 +12,8 @@ case "${1:2}" in
 		echo "arguments:"
 		echo "--update:  git pull all dirs in pkg/src"
 		echo "--upgrade: compile all packages from pkg/repo build scripts"
+		echo "--version: display current version"
+		echo "--help:    show this screen"
 		echo ""
 		;;
 	"list")
