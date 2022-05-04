@@ -44,7 +44,7 @@ case "${OPTION:2}" in
 				echo "no build script for $2 available"
 				exit
 			fi
-			bash pkg/repo/"$2".sh
+			bash pkg/repo/"$2".sh build
 			exit
 		fi
 		for l in $PKG_LIST; do
@@ -52,7 +52,7 @@ case "${OPTION:2}" in
                                 echo "no build script for $l available"
                                 continue
                         fi
-			bash pkg/repo/"${l}".sh
+			bash pkg/repo/"${l}".sh build
 		done
 		;;
 	*)
