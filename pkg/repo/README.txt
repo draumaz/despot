@@ -5,5 +5,3 @@ to automate git-based package update procedures.
 
 As such, the build scripts here are rather compact, and are 
 intended solely for compilation and package install procedures.
-
-Contributions welcome!
