@@ -11,5 +11,5 @@ an extremely tiny package manager
 
 ## install
 - ```git clone https://github.com/draumaz/bildo```
-- ```mv bildo ~/Builds```
-- ```cd ~/Builds; chmod +x bildo```
+- ```chmod +x bildo/bildo```
+- ```mv ./bildo ~/Builds```
