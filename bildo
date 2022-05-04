@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+mkdir -p pkg/src
 PKG_LIST=$(ls pkg/src | tr " " "\n")
 
 case "${1:2}" in
