@@ -20,7 +20,7 @@ case "${1:2}" in
 	"update")
 		echo -n "updating projects..."
 		for l in $PKG_LIST; do
-			cd pkg/src/$l
+			cd pkg/src/"$l"
 			git pull > /dev/null 2>&1
 			cd ../../..
 		done
@@ -28,7 +28,7 @@ case "${1:2}" in
 		;;
 	"upgrade")
 		for l in $PKG_LIST; do
-			bash pkg/repo/${l}.sh
+			bash pkg/repo/"${l}.sh
 		done
 		;;
 	*)
