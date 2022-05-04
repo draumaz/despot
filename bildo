@@ -34,6 +34,10 @@ case "${1:2}" in
 		;;
 	"upgrade")
 		for l in $PKG_LIST; do
+			if [ ! -d pkg/repo/"$l".sh ]; then
+                                echo "no build script for $l available"
+                                continue
+                        fi
 			bash pkg/repo/"${l}".sh
 		done
 		;;
