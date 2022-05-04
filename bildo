@@ -34,6 +34,14 @@ case "${1:2}" in
 		echo " done"
 		;;
 	"upgrade")
+		if [ ! -z "$2" ]; then
+			if [ ! -f pkg/repo/"$2".sh ]; then
+				echo "no build script for $2 available"
+				exit
+			fi
+			bash pkg/repo/"$2".sh
+			exit
+		fi
 		for l in $PKG_LIST; do
 			if [ ! -f pkg/repo/"$l".sh ]; then
                                 echo "no build script for $l available"
