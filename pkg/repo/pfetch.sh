@@ -1,10 +1,13 @@
 #!/bin/bash
 
-BUILD_DIR="$HOME/Builds/pkg/src/pfetch"
+PKG_NAME="pfetch"
+PKG_REPO="https://github.com/dylanaraps/$PKG_NAME"
+
+BUILD_DIR="$HOME/Builds/pkg/src/$PKG_NAME"
 
 INSTALL_CMD="sudo make install"
 
 cd $BUILD_DIR
 
-echo "working on: pfetch"
+echo "working on: $PKG_NAME"
 $INSTALL_CMD > /dev/null 2>&1
