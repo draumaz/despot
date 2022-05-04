@@ -10,7 +10,7 @@ fi
 
 case "${OPTION:2}" in
 	"version")
-		echo "bildo 0.01.0"
+		echo "bildo 0.01.1"
 		;;
 	"help")
 		echo "./bildo [arg]"
