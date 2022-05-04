@@ -4,7 +4,7 @@ PKG_NAME="fastfetch"
 PKG_REPO="https://github.com/LinusDierheimer/$PKG_NAME"
 
 function build() {
-    BUILD_DIR="$HOME/Builds/pkg/src/$PKG_NAME"
+    BUILD_DIR="pkg/src/$PKG_NAME"
     INSTALL_CMD="cp fastfetch flashfetch $HOME/.local/bin/"
     CLEAN_CMD="rm -rf build/*"
     cd $BUILD_DIR

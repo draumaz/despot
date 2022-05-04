@@ -4,7 +4,7 @@ PKG_NAME="i3-gaps"
 PKG_REPO="https://github.com/Airblader/i3"
 
 function build() {
-    BUILD_DIR="$HOME/Builds/pkg/src/$PKG_NAME"
+    BUILD_DIR="pkg/src/$PKG_NAME"
     INSTALL_CMD="sudo ninja install" # find an alternate way to gain superuser.
     CLEAN_CMD="sudo rm -rf build/*"
     cd $BUILD_DIR
