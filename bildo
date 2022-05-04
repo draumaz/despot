@@ -30,7 +30,7 @@ case "${OPTION:2}" in
 		echo -n "updating bildo repo..."
 		git pull > /dev/null 2>&1
 		echo " done"
-		echo -n "updating projects  ..."
+		echo
 		for l in $PKG_LIST; do
 			echo "checking: $l"
 			cd pkg/src/"$l"
