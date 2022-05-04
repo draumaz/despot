@@ -1,4 +1,4 @@
-Welcome to the bildo repo, a collection of build scripts.
+Welcome to the bildo repo, a collection of bash scripts for building packages.
 
 The goal here is not to become the next AUR, but rather
 to automate git-based package update procedures. 
