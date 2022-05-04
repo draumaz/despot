@@ -9,11 +9,10 @@ an extremely tiny package manager
 
 ## install
 - ```git clone https://github.com/draumaz/bildo```
-- ```chmod +x bildo/bildo```
-- ```mv ./bildo ~/Builds```
+- ```cd bildo; chmod +x bildo```
 
 ## tracking projects
-- ```cd ~/Builds/pkg/src```
+- ```cd pkg/src```
 - ```git clone https://github.com/blahblah/coolrepo```
 
 ## CURRENT ISSUES
