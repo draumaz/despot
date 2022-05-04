@@ -11,8 +11,9 @@ case "${1:2}" in
 		echo ""
 		echo "arguments:"
 		echo "--update:  git pull all dirs in pkg/src"
-		echo "--upgrade: compile all packages from pkg/repo build scripts"
-		echo "--version: display current version"
+		echo "--upgrade: compile all pkg/src dirs using bildo repo build scripts"
+		echo "--list:    list dirs in pkg/src; 'installed packages'"
+		echo "--version: display current version of bildo"
 		echo "--help:    show this screen"
 		echo ""
 		;;
