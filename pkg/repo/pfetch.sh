@@ -6,5 +6,5 @@ INSTALL_CMD="sudo make install"
 
 cd $BUILD_DIR
 
-echo "compiling:  pfetch"
+echo "working on: pfetch"
 $INSTALL_CMD > /dev/null 2>&1

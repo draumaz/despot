@@ -8,7 +8,7 @@ mkdir -p build
 
 $CLEAN_CMD
 
-echo "compiling:  cli-visualizer"
+echo "working on: cli-visualizer"
 sh configure
 bash install.sh > /dev/null 2>&1
 

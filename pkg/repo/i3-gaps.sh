@@ -10,7 +10,7 @@ mkdir -p build
 $CLEAN_CMD
 cd build
 
-echo "compiling:  i3-gaps"
+echo "working on: i3-gaps"
 meson .. > /dev/null 2>&1
 $INSTALL_CMD > /dev/null 2>&1
 

@@ -18,13 +18,13 @@ case "${1:2}" in
 		echo "$PKG_LIST"
 		;;
 	"update")
+		echo -n "updating projects..."
 		for l in $PKG_LIST; do
 			cd pkg/src/$l
-			echo "$l:"
-			git pull
-			echo ""
+			git pull > /dev/null 2>&1
 			cd ../../..
 		done
+		echo " done"
 		;;
 	"upgrade")
 		for l in $PKG_LIST; do

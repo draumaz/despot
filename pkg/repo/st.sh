@@ -9,7 +9,7 @@ cd $BUILD_DIR
 
 $CLEAN_CMD
 
-echo "compiling:  st"
+echo "working on: st"
 make > /dev/null 2>&1
 $INSTALL_CMD > /dev/null 2>&1
 

@@ -10,7 +10,7 @@ mkdir -p build
 $CLEAN_CMD
 cd build
 
-echo "compiling:  fastfetch"
+echo "working on: fastfetch"
 cmake .. > /dev/null 2>&1
 make > /dev/null 2>&1
 $INSTALL_CMD
