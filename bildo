@@ -18,8 +18,8 @@ case "${OPTION:2}" in
 		echo "arguments:"
 		echo "--help:    show this screen"
 		echo "--list:    list all directories in pkg/src"
-		echo "--update:  update bildo repo, git pull all pkg/src directories"
 		echo "--rebuild: compile a package. defaults to all if no package name is given"
+		echo "--update:  update bildo repo, git pull all pkg/src directories"
 		echo "--version: display current version of bildo"
 		echo ""
 		;;
