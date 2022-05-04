@@ -13,3 +13,7 @@ an extremely tiny package manager
 - ```git clone https://github.com/draumaz/bildo```
 - ```chmod +x bildo/bildo```
 - ```mv ./bildo ~/Builds```
+
+## loading projects
+- ```cd ~/Builds/pkg/src```
+- ```git clone https://github.com/blahblah/coolrepo```
