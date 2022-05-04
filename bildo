@@ -35,9 +35,9 @@ case "${OPTION:2}" in
 			echo "checking: $l"
 			cd pkg/src/"$l"
 			git pull
+			echo
 			cd ../../..
 		done
-		echo " done"
 		;;
 	"upgrade")
 		if [ ! -z "$2" ]; then
