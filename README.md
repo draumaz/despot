@@ -6,8 +6,7 @@ an extremely tiny package manager
 - ```./bildo --upgrade``` upgrades your packages if i've written a build script for it
 
 ## pkg/repo
-- a disappointingly small collection of build scripts
-- feast your eyes upon them <a href="https://github.com/draumaz/bildo/tree/main/pkg/repo">here</a>
+- <a href="https://github.com/draumaz/bildo/tree/main/pkg/repo">a disappointingly small collection of build scripts</a>
 
 ## install
 - ```git clone https://github.com/draumaz/bildo```
