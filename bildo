@@ -19,7 +19,7 @@ case "${OPTION:2}" in
 		echo "--help:    show this screen"
 		echo "--list:    list all directories in pkg/src"
 		echo "--update:  update bildo repo, git pull all pkg/src directories"
-		echo "--upgrade: compile a package. defaults to all if no package name is given"
+		echo "--rebuild: compile a package. defaults to all if no package name is given"
 		echo "--version: display current version of bildo"
 		echo ""
 		;;
@@ -39,24 +39,29 @@ case "${OPTION:2}" in
 			cd ../../..
 		done
 		;;
-	"upgrade")
+	"rebuild")
 		if [ ! -z "$2" ]; then
-			if [ ! -f pkg/repo/"$2".sh ]; then
-				echo "no build script for $2 available"
+			if [ ! -z "$3" ]; then
+				echo "ERROR: only one package updatable at a time"
 				exit
 			fi
-			bash pkg/repo/"$2".sh build
+			if [ ! -f pkg/repo/"$2".sh ]; then
+				echo "ERROR: no build script for $2 available"
+				exit
+			else
+				bash pkg/repo/"$2".sh build
+			fi
 			exit
 		fi
 		for l in $PKG_LIST; do
 			if [ ! -f pkg/repo/"$l".sh ]; then
-                                echo "no build script for $l available"
+                                echo "ERROR: no build script for $l available"
                                 continue
                         fi
 			bash pkg/repo/"${l}".sh build
 		done
 		;;
 	*)
-		echo "unrecognized command"
+		echo "ERROR: unrecognized command"
 		;;
 esac
