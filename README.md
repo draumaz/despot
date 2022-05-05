@@ -16,7 +16,7 @@ the **d**ebian **e**lastic **s**ightless **p**ackage-**o**fficiation **t**ool, b
 - ```git clone https://github.com/blahblah/coolrepo```
 
 ## contributors
-- <a href="https://github.com/draumaz/DeltaDove">DeltaDove</a> - project name
+- <a href="https://github.com/DeltaDove">DeltaDove</a> - project name
 
 ## CURRENT ISSUES
 - Scripts have to constantly request superuser permissions during install.
