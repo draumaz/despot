@@ -39,8 +39,8 @@ function arg_assess() {
 			done
 			;;
 		"rebuild")
-			if [ ! -z "$TWO" ]; then
-				if [ ! -z "$THREE" ]; then
+			if [ "$TWO" == "" ]; then
+				if [ "$THREE" == "" ]; then
 					echo "ERROR: only one package updatable at a time"
 					exit
 				fi
