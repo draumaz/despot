@@ -1,67 +1,79 @@
 #!/usr/bin/env bash
 
-mkdir -p pkg/src
-PKG_LIST=$(ls pkg/src | tr " " "\n")
+function disp_help() { # consider re-writing
+	echo "bildo, by draumaz (2022) [GPLv3]"
+	echo
+	echo "Usage: ./bildo [OPTION...]"
+	echo
+	echo "arguments:"
+	echo "--help:    show this screen"
+	echo "--list:    list all directories in pkg/src"
+	echo "--rebuild: compile a package. defaults to all if no package name is given"
+	echo "--update:  update bildo repo, git pull all pkg/src directories"
+	echo "--version: display current version of bildo"
+	echo
+}
 
-OPTION="$1"
+function arg_assess() {
+	case "${OPTION:2}" in
+		"version")
+			echo "bildo $VERSION"
+			;;
+		"help")
+			disp_help
+			;;
+		"list")
+			echo "$PKG_LIST"
+			;;
+		"update")
+			echo -n "updating bildo repo..."
+			git pull > /dev/null 2>&1 # update pwd, assuming user still has .git folder
+			echo " done"
+			echo
+			for l in $PKG_LIST; do # loop through installed folders, pulling git for each
+				echo "checking: $l"
+				cd pkg/src/"$l"
+				git pull
+				echo
+				cd ../../..
+			done
+			;;
+		"rebuild")
+			if [ ! -z "$2" ]; then
+				if [ ! -z "$3" ]; then
+					echo "ERROR: only one package updatable at a time"
+					exit
+				fi
+				if [ ! -f pkg/repo/"$2".sh ]; then
+					echo "ERROR: no build script for $2 available"
+					exit
+				else
+					bash pkg/repo/"$2".bash build # pkg/repo scripts!
+				fi
+				exit
+			fi
+			for l in $PKG_LIST; do
+				if [ ! -f pkg/repo/"$l".sh ]; then
+    	            echo "ERROR: no build script for $l available"
+                    continue
+    	        fi
+				bash pkg/repo/"${l}".sh build # run my delicious scripts
+			done
+			;;
+		*)
+			echo "ERROR: unrecognized command"
+			;;
+	esac
+}
+
+mkdir -p pkg/src # ensure that src directory exists
+
+export VERSION="0.01.1"
+export PKG_LIST=$(ls pkg/src | tr " " "\n") # create list of packages
+
+export OPTION="$1" # assign $1 to OPTION variable
 if [ -z "$OPTION" ]; then
-	OPTION="--help"
+	export OPTION="--help" # show help screen if user doesn't specify an argument
 fi
 
-case "${OPTION:2}" in
-	"version")
-		echo "bildo 0.01.1"
-		;;
-	"help")
-		echo "./bildo [arg]"
-		echo ""
-		echo "arguments:"
-		echo "--help:    show this screen"
-		echo "--list:    list all directories in pkg/src"
-		echo "--rebuild: compile a package. defaults to all if no package name is given"
-		echo "--update:  update bildo repo, git pull all pkg/src directories"
-		echo "--version: display current version of bildo"
-		echo ""
-		;;
-	"list")
-		echo "$PKG_LIST"
-		;;
-	"update")
-		echo -n "updating bildo repo..."
-		git pull > /dev/null 2>&1
-		echo " done"
-		echo
-		for l in $PKG_LIST; do
-			echo "checking: $l"
-			cd pkg/src/"$l"
-			git pull
-			echo
-			cd ../../..
-		done
-		;;
-	"rebuild")
-		if [ ! -z "$2" ]; then
-			if [ ! -z "$3" ]; then
-				echo "ERROR: only one package updatable at a time"
-				exit
-			fi
-			if [ ! -f pkg/repo/"$2".sh ]; then
-				echo "ERROR: no build script for $2 available"
-				exit
-			else
-				bash pkg/repo/"$2".bash build # pkg/repo scripts!
-			fi
-			exit
-		fi
-		for l in $PKG_LIST; do
-			if [ ! -f pkg/repo/"$l".sh ]; then
-                                echo "ERROR: no build script for $l available"
-                                continue
-                        fi
-			bash pkg/repo/"${l}".sh build
-		done
-		;;
-	*)
-		echo "ERROR: unrecognized command"
-		;;
-esac
+arg_assess "$OPTION" "$PKG_LIST" "$VERSION"
