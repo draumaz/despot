@@ -8,25 +8,25 @@ if [ -z "$OPTION" ]; then
 	OPTION="--help"
 fi
 
-case "${OPTION:2}" in
-	"version")
+case "$OPTION" in
+	"--version" | "-v")
 		echo "despot 0.01.1"
 		;;
-	"help")
+	"--help" | "-h")
 		echo "./despot [arg]"
 		echo ""
 		echo "arguments:"
-		echo "--help:    show this screen"
-		echo "--list:    list all directories in pkg/src"
-		echo "--rebuild: compile a package. defaults to all if no package name is given"
-		echo "--update:  update bildo repo, git pull all pkg/src directories"
-		echo "--version: display current version of bildo"
+		echo "--help          | -h:       show this screen"
+		echo "--list          | -l:       list all directories in pkg/src"
+		echo "--rebuild [PKG] | -r [PKG]: compile a package. defaults to all if no package name is given"
+		echo "--update        | -u:       update bildo repo, git pull all pkg/src directories"
+		echo "--version       | -v:       display current version of bildo"
 		echo ""
 		;;
-	"list")
+	"--list" | "-l")
 		echo "$PKG_LIST"
 		;;
-	"update")
+	"--update" | "-u")
 		echo -n "updating despot repo..."
 		git pull > /dev/null 2>&1
 		echo " done"
@@ -39,7 +39,7 @@ case "${OPTION:2}" in
 			cd ../../..
 		done
 		;;
-	"rebuild")
+	"--rebuild" | "-r")
 		if [ ! -z "$2" ]; then
 			#if [ ! -z "$3" ]; then
 			#	echo "ERROR: only one package updatable at a time"
