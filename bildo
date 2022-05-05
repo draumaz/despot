@@ -39,13 +39,13 @@ function arg_assess() {
 			done
 			;;
 		"rebuild")
-			if [ ! -z "$2" ]; then
-				if [ ! -z "$3" ]; then
+			if [ ! -z "$TWO" ]; then
+				if [ ! -z "$THREE" ]; then
 					echo "ERROR: only one package updatable at a time"
 					exit
 				fi
-				if [ ! -f pkg/repo/"$2".sh ]; then
-					echo "ERROR: no build script for $2 available"
+				if [ ! -f pkg/repo/"$TWO".sh ]; then
+					echo "ERROR: no build script for $TWO available"
 					exit
 				else
 					bash pkg/repo/"$2".bash build # pkg/repo scripts!
@@ -76,4 +76,7 @@ if [ -z "$OPTION" ]; then
 	export OPTION="--help" # show help screen if user doesn't specify an argument
 fi
 
-arg_assess "$OPTION" "$PKG_LIST" "$VERSION"
+export TWO="$2" # temporary
+export THREE="$3"
+
+arg_assess "$OPTION" "$PKG_LIST" "$VERSION" "$TWO"
