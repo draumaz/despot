@@ -9,7 +9,7 @@ the **d**ebian **e**lastic **s**ightless **p**ackage-**o**fficiation **t**ool, b
 
 ## install
 - ```git clone https://github.com/draumaz/despot```
-- ```cd bildo; chmod +x bildo```
+- ```cd despot; chmod +x despot```
 
 ## tracking projects
 - ```cd pkg/src```
