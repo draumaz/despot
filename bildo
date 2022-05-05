@@ -41,10 +41,10 @@ case "${OPTION:2}" in
 		;;
 	"rebuild")
 		if [ ! -z "$2" ]; then
-			if [ ! -z "$3" ]; then
-				echo "ERROR: only one package updatable at a time"
-				exit
-			fi
+			#if [ ! -z "$3" ]; then
+			#	echo "ERROR: only one package updatable at a time"
+			#	exit
+			#fi
 			if [ ! -f pkg/repo/"$2".sh ]; then
 				echo "ERROR: no build script for $2 available"
 				exit
