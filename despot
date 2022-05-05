@@ -10,10 +10,10 @@ fi
 
 case "${OPTION:2}" in
 	"version")
-		echo "bildo 0.01.1"
+		echo "despot 0.01.1"
 		;;
 	"help")
-		echo "./bildo [arg]"
+		echo "./despot [arg]"
 		echo ""
 		echo "arguments:"
 		echo "--help:    show this screen"
@@ -27,7 +27,7 @@ case "${OPTION:2}" in
 		echo "$PKG_LIST"
 		;;
 	"update")
-		echo -n "updating bildo repo..."
+		echo -n "updating despot repo..."
 		git pull > /dev/null 2>&1
 		echo " done"
 		echo
