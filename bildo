@@ -49,7 +49,7 @@ case "${OPTION:2}" in
 				echo "ERROR: no build script for $2 available"
 				exit
 			else
-				bash pkg/repo/"$2".bash build # pkg/repo scripts!
+				bash pkg/repo/"$2".sh build
 			fi
 			exit
 		fi
