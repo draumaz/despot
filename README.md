@@ -1,5 +1,5 @@
 # despot
-the **d**ebian **e**lastic **s**ightless **p**ackage-**o**fficiation **t**ool, by draumaz.
+**d**raumaz's **e**lastic **s**ightless **p**ackage-**o**fficiation **t**ool, by draumaz.
 
 ## why did you make this?
 - installing and managing source-based packages on debian sucks.
