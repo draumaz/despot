@@ -45,7 +45,7 @@ case "$OPTION" in
 			#	echo "ERROR: only one package updatable at a time"
 			#	exit
 			#fi
-			if [ ! -f pkg/repo/"$2".sh ]; then
+			if [ ! -f pkg/repo/"$2".bash ]; then
 				echo "ERROR: no build script for $2 available"
 				exit
 			else
@@ -54,7 +54,7 @@ case "$OPTION" in
 			exit
 		fi
 		for l in $PKG_LIST; do
-			if [ ! -f pkg/repo/"$l".sh ]; then
+			if [ ! -f pkg/repo/"$l".bash ]; then
                                 echo "ERROR: no build script for $l available"
                                 continue
                         fi
