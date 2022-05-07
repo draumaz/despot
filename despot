@@ -20,8 +20,8 @@ case "$OPTION" in
 		echo "--help         | -h:       show this screen"
 		echo "--list         | -l:       list all directories in pkg/src"
 		echo "--remove [PKG] | -r [PKG]: remove given package"       
-		echo "--update       | -u:       update bildo repo, git pull all pkg/src directories"
-		echo "--version      | -v:       display current version of bildo"
+		echo "--update       | -u:       update pkg/repo, git pull all pkg/src directories"
+		echo "--version      | -v:       display current version of despot"
 		echo ""
 		;;
 	"--list" | "-l")
@@ -29,10 +29,10 @@ case "$OPTION" in
 		;;
 	"--remove" | "-r")
 		if [ ! -z "$2" ]; then
-                        #if [ ! -z "$3" ]; then
-                        #       echo "ERROR: only one package updatable at a time"
-                        #       exit
-                        #fi
+                        if [ ! -z "$3" ]; then
+                               echo "ERROR: only one package updatable at a time"
+                               exit
+                        fi
                         if [ ! -f pkg/repo/"$2".bash ]; then
                                 echo "ERROR: no build script for $2 available"
                                 exit
@@ -58,10 +58,10 @@ case "$OPTION" in
 		;;
 	"--build" | "-b")
 		if [ ! -z "$2" ]; then
-			#if [ ! -z "$3" ]; then
-			#	echo "ERROR: only one package updatable at a time"
-			#	exit
-			#fi
+			if [ ! -z "$3" ]; then
+				echo "ERROR: only one package updatable at a time"
+				exit
+			fi
 			if [ ! -f pkg/repo/"$2".bash ]; then
 				echo "ERROR: no build script for $2 available"
 				exit
