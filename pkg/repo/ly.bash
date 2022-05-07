@@ -6,6 +6,7 @@ PKG_REPO="https://github.com/fairyglade/$PKG_NAME"
 BUILD_DIR="pkg/src/$PKG_NAME"
 
 function uninstall() {
+    cd $BUILD_DIR
     sudo make uninstall
 }
 
