@@ -16,18 +16,18 @@ case "$OPTION" in
 		echo "./despot [arg]"
 		echo ""
 		echo "arguments:"
-		echo "--help        | -h:       show this screen"
-		echo "--list        | -l:       list all directories in pkg/src"
-		echo "--build [PKG] | -r [PKG]: compile a package. defaults to all if no package name is given"
-		echo "--update      | -u:       update bildo repo, git pull all pkg/src directories"
-		echo "--version     | -v:       display current version of bildo"
+		echo "--build [PKG]  | -r [PKG]: compile a package. defaults to all if no package name is given"
+		echo "--help         | -h:       show this screen"
+		echo "--list         | -l:       list all directories in pkg/src"
+		echo "--remove [PKG] | -r [PKG]: remove given package"       
+		echo "--update       | -u:       update bildo repo, git pull all pkg/src directories"
+		echo "--version      | -v:       display current version of bildo"
 		echo ""
 		;;
 	"--list" | "-l")
 		echo "$PKG_LIST"
 		;;
 	"--remove" | "-r")
-		echo "landing"
 		if [ ! -z "$2" ]; then
                         #if [ ! -z "$3" ]; then
                         #       echo "ERROR: only one package updatable at a time"
@@ -38,6 +38,7 @@ case "$OPTION" in
                                 exit
                         else
                                 bash pkg/repo/"$2".bash uninstall
+				echo "uninstalled."
                         fi
                         exit
                 fi
@@ -66,6 +67,7 @@ case "$OPTION" in
 				exit
 			else
 				bash pkg/repo/"$2".bash build
+				echo "installed."
 			fi
 			exit
 		fi
