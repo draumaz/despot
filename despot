@@ -10,7 +10,7 @@ fi
 
 case "$OPTION" in
 	"--version" | "-v")
-		echo "despot 0.01.1"
+		echo "despot 0.01.2"
 		;;
 	"--help" | "-h")
 		echo "./despot [arg]"
