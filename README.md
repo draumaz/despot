@@ -1,6 +1,8 @@
 # despot
 **d**raumaz's **e**lastic **s**ightless **p**ackage-**o**fficiation **t**ool.
 
+track package repos with ease.
+
 ## why did you make this?
 - installing and managing source-based packages on debian sucks.
 
@@ -19,4 +21,4 @@
 - <a href="https://github.com/DeltaDove">DeltaDove</a> - project name
 
 ## CURRENT ISSUES
-- Scripts have to constantly request superuser permissions during install.
+- Some scripts have to constantly request superuser permissions during install.
