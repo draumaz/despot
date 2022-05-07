@@ -16,15 +16,31 @@ case "$OPTION" in
 		echo "./despot [arg]"
 		echo ""
 		echo "arguments:"
-		echo "--help          | -h:       show this screen"
-		echo "--list          | -l:       list all directories in pkg/src"
-		echo "--rebuild [PKG] | -r [PKG]: compile a package. defaults to all if no package name is given"
-		echo "--update        | -u:       update bildo repo, git pull all pkg/src directories"
-		echo "--version       | -v:       display current version of bildo"
+		echo "--help        | -h:       show this screen"
+		echo "--list        | -l:       list all directories in pkg/src"
+		echo "--build [PKG] | -r [PKG]: compile a package. defaults to all if no package name is given"
+		echo "--update      | -u:       update bildo repo, git pull all pkg/src directories"
+		echo "--version     | -v:       display current version of bildo"
 		echo ""
 		;;
 	"--list" | "-l")
 		echo "$PKG_LIST"
+		;;
+	"--remove" | "-r")
+		echo "landing"
+		if [ ! -z "$2" ]; then
+                        #if [ ! -z "$3" ]; then
+                        #       echo "ERROR: only one package updatable at a time"
+                        #       exit
+                        #fi
+                        if [ ! -f pkg/repo/"$2".bash ]; then
+                                echo "ERROR: no build script for $2 available"
+                                exit
+                        else
+                                bash pkg/repo/"$2".bash uninstall
+                        fi
+                        exit
+                fi
 		;;
 	"--update" | "-u")
 		echo -n "updating despot repo..."
@@ -39,7 +55,7 @@ case "$OPTION" in
 			cd ../../..
 		done
 		;;
-	"--rebuild" | "-r")
+	"--build" | "-b")
 		if [ ! -z "$2" ]; then
 			#if [ ! -z "$3" ]; then
 			#	echo "ERROR: only one package updatable at a time"
