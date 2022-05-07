@@ -3,12 +3,13 @@
 PKG_NAME="ly"
 PKG_REPO="https://github.com/fairyglade/$PKG_NAME"
 
+BUILD_DIR="pkg/src/$PKG_NAME"
+
 function uninstall() {
     sudo make uninstall
 }
 
 function build() {
-    BUILD_DIR="pkg/src/$PKG_NAME"
     INSTALL_CMD="sudo make install"
     CLEAN_CMD="rm -rf bin obj"
     cd $BUILD_DIR
