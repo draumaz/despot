@@ -10,14 +10,14 @@ fi
 
 case "$OPTION" in
 	"--version" | "-v")
-		echo "despot 0.01.2"
+		echo "despot 0.01.3"
 		;;
 	"--help" | "-h")
 		echo "./despot [arg]"
 		echo ""
 		echo "arguments:"
 		echo "--help          | -h:       show this screen"
-		echo "--install [PKG] | -i [PKG]: compile a package. defaults to all if no package name is given"
+		echo "--install [PKG] | -i [PKG]: compile a package. '--install --all' compiles everything in pkg/src."
 		echo "--list          | -l:       list all directories in pkg/src"
 		echo "--remove [PKG]  | -r [PKG]: remove given package"       
 		echo "--update        | -u:       update pkg/repo, git pull all pkg/src directories"
@@ -41,6 +41,9 @@ case "$OPTION" in
 				echo "uninstalled."
             fi
             exit
+		else
+			echo "ERROR: no package name provided for removal."
+			exit
         fi
 		;;
 	"--update" | "-u")
@@ -58,27 +61,30 @@ case "$OPTION" in
 		;;
 	"--install" | "-i")
 		if [ ! -z "$2" ]; then
-			if [ ! -z "$3" ]; then
-				echo "ERROR: only one package updatable at a time"
-				exit
+			if [ "$2" == "-a" ] || [ "$2" == "--all" ]; then
+				echo -e "updating all packages\n"
+				for l in $PKG_LIST; do
+					if [ ! -f pkg/repo/"$l".bash ]; then
+						echo "ERROR: no build script for $l available"
+						continue
+					fi
+					bash pkg/repo/"${l}".bash build
+				done
 			fi
-			if [ ! -f pkg/repo/"$2".bash ]; then
-				echo "ERROR: draumaz has yet to write a build script for $2"
-				exit
-            else if [ ! -e pkg/repo/"$2" ]; then
-                bash pkg/repo/"$2".bash sources
-            fi fi
-			bash pkg/repo/"$2".bash build
-			echo "installed."
+		fi
+		if [ -z "$2" ]; then
+			echo "ERROR: no package name provided for install"
 			exit
 		fi
-		for l in $PKG_LIST; do
-			if [ ! -f pkg/repo/"$l".bash ]; then
-                echo "ERROR: no build script for $l available"
-                continue
-            fi
-			bash pkg/repo/"${l}".bash build
-		done
+		if [ ! -f pkg/repo/"$2".bash ]; then
+			echo "ERROR: draumaz has yet to write a build script for $2"
+			exit
+        else if [ ! -e pkg/repo/"$2" ]; then
+            bash pkg/repo/"$2".bash sources
+        fi fi
+		bash pkg/repo/"$2".bash build
+		echo "installed."
+		exit
 		;;
 	*)
 		echo "ERROR: unrecognized command"
