@@ -25,6 +25,7 @@ function build() {
         echo "installed."
     else
         echo "failed to install."
+    fi
     $CLEAN_CMD
 }
 

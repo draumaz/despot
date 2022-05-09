@@ -14,7 +14,7 @@ function sources() {
 
 function uninstall() {
     cd $BUILD_DIR
-    
+
     echo "uninstalling: $PKG_NAME"
     if sudo $UNINSTALL_CMD; then
         echo "uninstalled."
@@ -41,6 +41,7 @@ function build() {
     else
         echo "failed to install."
         exit
+    fi
 
     $CLEAN_CMD
 }
