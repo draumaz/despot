@@ -21,7 +21,7 @@ function build() {
     
     echo "working on: $PKG_NAME"
     sh configure > /dev/null 2>&1
-    if sudo $INSTALL_CMD; then
+    if sudo $INSTALL_CMD > /dev/null 2>&1; then
         echo "installed."
     else
         echo "failed to install."
