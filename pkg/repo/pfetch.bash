@@ -13,16 +13,24 @@ function sources() {
 
 function uninstall() {
     cd $BUILD_DIR
+    
     echo "uninstalling: $PKG_NAME"
-    sudo $UNINSTALL_CMD
-    echo "uninstalled."
+    if sudo $UNINSTALL_CMD; then
+        echo "uninstalled."
+    else
+        echo "failed to uninstall."
+        exit
+    fi
 }
 
 function build() {
     cd $BUILD_DIR
+
     echo "working on: $PKG_NAME"
-    $INSTALL_CMD > /dev/null 2>&1
-    echo "installed."
+    if $INSTALL_CMD > /dev/null 2>&1; then 
+        echo "installed."
+    else
+        echo "failed to install."
 }
 
 $1

@@ -18,10 +18,13 @@ function build() {
     cd $BUILD_DIR
     mkdir -p build
     $CLEAN_CMD
+    
     echo "working on: $PKG_NAME"
     sh configure > /dev/null 2>&1
-    sudo $INSTALL_CMD
-    echo "installed."
+    if sudo $INSTALL_CMD; then
+        echo "installed."
+    else
+        echo "failed to install."
     $CLEAN_CMD
 }
 

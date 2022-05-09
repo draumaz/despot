@@ -16,11 +16,28 @@ function build() {
     cd $BUILD_DIR
     mkdir -p build
     cd build
+    
     echo "working on: $PKG_NAME"
-    cmake .. > /dev/null 2>&1
-    make > /dev/null 2>&1
-    sudo $INSTALL_CMD
-    echo "installed."
+    if cmake .. > /dev/null 2>&1; then
+        true
+    else
+        echo "failed to initialize."
+        exit
+    fi
+    
+    if make > /dev/null 2>&1; then
+        true
+    else
+        echo "failed to compile."
+    fi
+
+    if sudo $INSTALL_CMD; then
+        echo "installed."
+    else
+        echo "failed to install."
+        exit
+    fi
+    
     $CLEAN_CMD
 }
 

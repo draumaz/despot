@@ -9,23 +9,39 @@ UNINSTALL_CMD="make uninstall"
 CLEAN_CMD="rm -rf bin obj"
 
 function sources() {
-    git clone $PKG_REPO $BUILD_DIR
+    git clone --recursive $PKG_REPO $BUILD_DIR
 }
 
 function uninstall() {
     cd $BUILD_DIR
+
     echo "uninstalling: $PKG_NAME"
-    sudo $UNINSTALL_CMD
-    echo "uninstalled."
+    if sudo $UNINSTALL_CMD; then
+        echo "uninstalled."
+    else
+        echo "failed to uninstall."
+        exit
+    fi
 }
 
 function build() {
     cd $BUILD_DIR
     $CLEAN_CMD
+
     echo "working on: $PKG_NAME"
-    make > /dev/null 2>&1
-    sudo $INSTALL_CMD > /dev/null 2>&1
-    echo "installed."
+    if make > /dev/null 2>&1; then
+        true
+    else
+        echo "failed to compile."
+        exit
+    fi
+
+    if sudo $INSTALL_CMD > /dev/null 2>&1; then
+        echo "installed."
+    else
+        echo "failed to install."
+    fi
+
     $CLEAN_CMD
 }
 

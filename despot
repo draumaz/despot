@@ -65,6 +65,7 @@ installer() {
 		echo "ERROR: draumaz has yet to write a build script for $2"
 		exit
 	else if [ ! -e pkg/repo/"$PACKAGE" ]; then
+		echo "fetching sources for $PACKAGE"
 		bash pkg/repo/"$PACKAGE".bash sources > /dev/null 2>&1
 	fi fi
 	bash pkg/repo/"$PACKAGE".bash build
