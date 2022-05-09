@@ -26,7 +26,7 @@ function uninstall() {
 
 function build() {
     cd $BUILD_DIR
-    $CLEAN_CMD
+    sudo $CLEAN_CMD
 
     echo "working on: $PKG_NAME"
     if make > /dev/null 2>&1; then
@@ -43,7 +43,7 @@ function build() {
         exit
     fi
 
-    $CLEAN_CMD
+    sudo $CLEAN_CMD
 }
 
 $1

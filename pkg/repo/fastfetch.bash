@@ -38,7 +38,7 @@ function build() {
         exit
     fi
     
-    $CLEAN_CMD
+    sudo $CLEAN_CMD
 }
 
 $1

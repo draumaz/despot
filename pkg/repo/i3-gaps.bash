@@ -33,7 +33,7 @@ function build() {
     fi
     
     cd ..
-    $CLEAN_CMD
+    sudo $CLEAN_CMD
 }
 
 $1

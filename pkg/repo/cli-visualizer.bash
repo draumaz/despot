@@ -17,7 +17,7 @@ function build() {
     CLEAN_CMD="rm -rf build/*"
     cd $BUILD_DIR
     mkdir -p build
-    $CLEAN_CMD
+    sudo $CLEAN_CMD
     
     echo "working on: $PKG_NAME"
     sh configure > /dev/null 2>&1
@@ -26,7 +26,7 @@ function build() {
     else
         echo "failed to install."
     fi
-    $CLEAN_CMD
+    sudo $CLEAN_CMD
 }
 
 $1

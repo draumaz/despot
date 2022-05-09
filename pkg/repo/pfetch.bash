@@ -27,7 +27,7 @@ function build() {
     cd $BUILD_DIR
 
     echo "working on: $PKG_NAME"
-    if $INSTALL_CMD > /dev/null 2>&1; then 
+    if sudo $INSTALL_CMD > /dev/null 2>&1; then 
         echo "installed."
     else
         echo "failed to install."
