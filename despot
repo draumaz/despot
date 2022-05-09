@@ -54,7 +54,6 @@ installer() {
 					echo "ERROR: no build script for $l available"
 					continue
 				fi
-				echo
 				bash pkg/repo/"${l}".bash build
 				echo
 			done
