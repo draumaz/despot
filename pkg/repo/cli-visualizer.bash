@@ -4,9 +4,13 @@ PKG_NAME="cli-visualizer"
 PKG_REPO="https://github.com/dpayne/$PKG_NAME"
 
 BUILD_DIR="pkg/src/$PKG_NAME"
-INSTALL_CMD="sh configure && bash install.sh"
+INSTALL_CMD="bash install.sh"
 UNINSTALL_CMD=""
 CLEAN_CMD="rm -rf build/*"
+
+function sources() {
+    git clone $PKG_REPO $BUILD_DIR
+}
 
 function build() {
     BUILD_DIR="pkg/src/$PKG_NAME"
@@ -15,7 +19,8 @@ function build() {
     mkdir -p build
     $CLEAN_CMD
     echo "working on: $PKG_NAME"
-    $INSTALL_CMD > /dev/null 2>&1
+    sh configure > /dev/null 2>&1
+    sudo $INSTALL_CMD
     echo "installed."
     $CLEAN_CMD
 }

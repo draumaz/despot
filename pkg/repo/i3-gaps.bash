@@ -8,6 +8,10 @@ INSTALL_CMD="ninja install"
 UNINSTALL_CMD=""
 CLEAN_CMD="rm -rf build"
 
+function sources() {
+    git clone $PKG_REPO $BUILD_DIR
+}
+
 function build() {
     cd $BUILD_DIR
     mkdir -p build

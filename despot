@@ -16,12 +16,12 @@ case "$OPTION" in
 		echo "./despot [arg]"
 		echo ""
 		echo "arguments:"
-		echo "--build [PKG]  | -r [PKG]: compile a package. defaults to all if no package name is given"
-		echo "--help         | -h:       show this screen"
-		echo "--list         | -l:       list all directories in pkg/src"
-		echo "--remove [PKG] | -r [PKG]: remove given package"       
-		echo "--update       | -u:       update pkg/repo, git pull all pkg/src directories"
-		echo "--version      | -v:       display current version of despot"
+		echo "--help          | -h:       show this screen"
+		echo "--install [PKG] | -i [PKG]: compile a package. defaults to all if no package name is given"
+		echo "--list          | -l:       list all directories in pkg/src"
+		echo "--remove [PKG]  | -r [PKG]: remove given package"       
+		echo "--update        | -u:       update pkg/repo, git pull all pkg/src directories"
+		echo "--version       | -v:       display current version of despot"
 		echo ""
 		;;
 	"--list" | "-l")
@@ -29,19 +29,19 @@ case "$OPTION" in
 		;;
 	"--remove" | "-r")
 		if [ ! -z "$2" ]; then
-                        if [ ! -z "$3" ]; then
-                               echo "ERROR: only one package updatable at a time"
-                               exit
-                        fi
-                        if [ ! -f pkg/repo/"$2".bash ]; then
-                                echo "ERROR: draumaz has yet to write a build script for $2"
-                                exit
-                        else
-                                bash pkg/repo/"$2".bash uninstall
+            if [ ! -z "$3" ]; then
+                echo "ERROR: only one package updatable at a time"
+                exit
+            fi
+            if [ ! -f pkg/repo/"$2".bash ]; then
+                echo "ERROR: draumaz has yet to write a build script for $2"
+                exit
+            else
+                bash pkg/repo/"$2".bash uninstall
 				echo "uninstalled."
-                        fi
-                        exit
-                fi
+            fi
+            exit
+        fi
 		;;
 	"--update" | "-u")
 		echo -n "updating despot repo..."
@@ -56,7 +56,7 @@ case "$OPTION" in
 			cd ../../..
 		done
 		;;
-	"--build" | "-b")
+	"--install" | "-i")
 		if [ ! -z "$2" ]; then
 			if [ ! -z "$3" ]; then
 				echo "ERROR: only one package updatable at a time"
@@ -65,20 +65,18 @@ case "$OPTION" in
 			if [ ! -f pkg/repo/"$2".bash ]; then
 				echo "ERROR: draumaz has yet to write a build script for $2"
 				exit
-			else if [ ! -f pkg/src/"$2" ]; then
-                		echo "ERROR: no sources for $2 in pkg/src/"
-                		exit
-            		else
-				bash pkg/repo/"$2".bash build
-				echo "installed."
-			fi fi
+            else if [ ! -e pkg/repo/"$2" ]; then
+                bash pkg/repo/"$2".bash sources
+            fi fi
+			bash pkg/repo/"$2".bash build
+			echo "installed."
 			exit
 		fi
 		for l in $PKG_LIST; do
 			if [ ! -f pkg/repo/"$l".bash ]; then
-                                echo "ERROR: no build script for $l available"
-                                continue
-                        fi
+                echo "ERROR: no build script for $l available"
+                continue
+            fi
 			bash pkg/repo/"${l}".bash build
 		done
 		;;
