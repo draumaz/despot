@@ -65,10 +65,13 @@ case "$OPTION" in
 			if [ ! -f pkg/repo/"$2".bash ]; then
 				echo "ERROR: no build script for $2 available"
 				exit
-			else
+            else if [ ! -f pkg/src/"$2" ]; then
+                echo "ERROR: no scripts for $2 in pkg/src/"
+                exit
+            else
 				bash pkg/repo/"$2".bash build
 				echo "installed."
-			fi
+			fi fi
 			exit
 		fi
 		for l in $PKG_LIST; do
