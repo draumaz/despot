@@ -32,6 +32,7 @@ function build() {
         echo "installed."
     else
         echo "failed to install."
+        exit
     fi
 }
 

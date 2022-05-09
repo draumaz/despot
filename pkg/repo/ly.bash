@@ -30,9 +30,7 @@ function build() {
     cd $BUILD_DIR
     sudo $CLEAN_CMD
 
-    if make > /dev/null 2>&1; then
-        true
-    else
+    if make > /dev/null 2>&1; then true; else
         echo "failed to compile."
         exit
     fi
@@ -41,6 +39,7 @@ function build() {
         echo "installed."
     else
         echo "failed to install."
+        exit
     fi
 
     sudo $CLEAN_CMD

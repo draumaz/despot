@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-PKG_NAME="fastfetch"
-PKG_REPO="https://github.com/LinusDierheimer/$PKG_NAME"
+PKG_NAME="gummy"
+PKG_REPO="https://github.com/Fushko/$PKG_NAME"
 
 BUILD_DIR="pkg/src/$PKG_NAME"
-INSTALL_CMD="cp fastfetch flashfetch /usr/local/bin/"
+INSTALL_CMD="make install"
 UNINSTALL_CMD=""
 CLEAN_CMD="rm -rf build"
 
@@ -14,18 +14,21 @@ function sources() {
 
 function build() {
     echo "working on: $PKG_NAME"
-    
+
     cd $BUILD_DIR
     mkdir -p build
     cd build
-    
-    if cmake .. > /dev/null 2>&1; then true; else
-        echo "failed to initialize."
-        exit
+
+    if cmake .. \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_BUILD_TYPE="Release" \
+        > /dev/null 2>&1; then true; else
+            echo "failed to initialize."
+            exit
     fi
-    
-    if make > /dev/null 2>&1; then true; else
-        echo "failed to compile."
+
+    if cmake --build .; then true; else
+        echo "failed to compile"
         exit
     fi
 
@@ -35,7 +38,7 @@ function build() {
         echo "failed to install."
         exit
     fi
-    
+
     sudo $CLEAN_CMD
 }
 

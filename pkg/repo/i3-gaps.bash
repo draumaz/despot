@@ -19,9 +19,7 @@ function build() {
     mkdir -p build
     cd build
     
-    if meson .. > /dev/null 2>&1; then
-        true
-    else
+    if meson .. > /dev/null 2>&1; then true; else
         echo "failed to compile."
         exit
     fi
