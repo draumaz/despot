@@ -2,6 +2,7 @@
 
 mkdir -p pkg/src
 PKG_LIST=$(ls pkg/src | tr " " "\n")
+REPO_LIST=$(ls pkg/repo/*.bash | sed 's|pkg/repo/||g' | sed 's/.bash//g' | tr " " "\n")
 
 OPTION="$1"
 PACKAGE="$2"
@@ -80,16 +81,16 @@ meta_text() {
 			echo "despot 0.01.3"
 			;;
 		"h")
-			echo "./despot [arg]"
+			echo "./despot [cmd]"
 			echo ""
-			echo "arguments:"
+			echo "commands:"
+			echo "--catalog       | display packages available for build"
 			echo "--help          | show this screen"
 			echo "--install [PKG] | compile a package"
 			echo "--list          | list all directories in pkg/src"
 			echo "--remove [PKG]  | remove given package"       
 			echo "--update        | git pull pkg/src & pkg/repo"
 			echo "--version       | display current version of despot"
-			echo ""
 			;;
 	esac
 }
@@ -102,11 +103,13 @@ case "$OPTION" in
 		meta_text "h"
 		;;
 	"--list" | "-l")
-		echo "$PKG_LIST"
+		echo -e "installed packages:\n\n$PKG_LIST"
 		;;
 	"--remove" | "-r")
 		remover "$OPTION" "$PACKAGE" "$OVERFLOW"
-		exit
+		;;
+	"--catalog" | "-c")
+		echo -e "available packages:\n\n$REPO_LIST"
 		;;
 	"--update" | "-u")
 		updater
@@ -115,6 +118,7 @@ case "$OPTION" in
 		installer "$PACKAGE"
 		;;
 	*)
-		echo "ERROR: unrecognized command"
+		echo -e "ERROR: unrecognized command\n"
+		meta_text "h"
 		;;
 esac
