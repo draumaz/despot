@@ -27,7 +27,7 @@ function build() {
             exit
     fi
 
-    if cmake --build .; then true; else
+    if cmake --build . > /dev/null 2>&1; then true; else
         echo "failed to compile"
         exit
     fi
