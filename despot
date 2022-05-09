@@ -34,7 +34,7 @@ case "$OPTION" in
                                exit
                         fi
                         if [ ! -f pkg/repo/"$2".bash ]; then
-                                echo "ERROR: no build script for $2 available"
+                                echo "ERROR: draumaz has yet to write a build script for $2"
                                 exit
                         else
                                 bash pkg/repo/"$2".bash uninstall
