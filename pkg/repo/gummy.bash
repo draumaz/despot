@@ -32,7 +32,7 @@ function build() {
         exit
     fi
 
-    if sudo $INSTALL_CMD; then
+    if sudo $INSTALL_CMD > /dev/null 2>&1; then
         echo "installed."
     else
         echo "failed to install."
