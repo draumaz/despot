@@ -68,7 +68,6 @@ installer() {
 		bash pkg/repo/"$PACKAGE".bash sources > /dev/null 2>&1
 	fi fi
 	bash pkg/repo/"$PACKAGE".bash build
-	echo "installed."
 	exit
 }
 
