@@ -36,6 +36,7 @@ function build() {
         exit
     fi
     
+    cd ..
     sudo $CLEAN_CMD
 }
 

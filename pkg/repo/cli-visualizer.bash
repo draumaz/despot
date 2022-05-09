@@ -26,6 +26,7 @@ function build() {
         echo "failed to install."
         exit
     fi
+    
     sudo $CLEAN_CMD
 }
 
