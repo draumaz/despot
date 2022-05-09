@@ -24,9 +24,10 @@ function uninstall() {
 }
 
 function build() {
-    cd $BUILD_DIR
-
     echo "working on: $PKG_NAME"
+
+    cd $BUILD_DIR
+    
     if sudo $INSTALL_CMD > /dev/null 2>&1; then 
         echo "installed."
     else

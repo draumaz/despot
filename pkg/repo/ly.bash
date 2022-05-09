@@ -25,10 +25,11 @@ function uninstall() {
 }
 
 function build() {
+    echo "working on: $PKG_NAME"
+
     cd $BUILD_DIR
     sudo $CLEAN_CMD
 
-    echo "working on: $PKG_NAME"
     if make > /dev/null 2>&1; then
         true
     else

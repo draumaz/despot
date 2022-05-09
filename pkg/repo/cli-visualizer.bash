@@ -13,13 +13,12 @@ function sources() {
 }
 
 function build() {
-    BUILD_DIR="pkg/src/$PKG_NAME"
-    CLEAN_CMD="rm -rf build/*"
+    echo "working on: $PKG_NAME"
+
     cd $BUILD_DIR
     mkdir -p build
     sudo $CLEAN_CMD
     
-    echo "working on: $PKG_NAME"
     sh configure > /dev/null 2>&1
     if sudo $INSTALL_CMD > /dev/null 2>&1; then
         echo "installed."

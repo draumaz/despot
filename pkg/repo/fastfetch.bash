@@ -13,11 +13,12 @@ function sources() {
 }
 
 function build() {
+    echo "working on: $PKG_NAME"
+    
     cd $BUILD_DIR
     mkdir -p build
     cd build
     
-    echo "working on: $PKG_NAME"
     if cmake .. > /dev/null 2>&1; then
         true
     else
