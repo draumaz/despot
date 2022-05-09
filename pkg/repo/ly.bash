@@ -4,20 +4,24 @@ PKG_NAME="ly"
 PKG_REPO="https://github.com/fairyglade/$PKG_NAME"
 
 BUILD_DIR="pkg/src/$PKG_NAME"
+INSTALL_CMD="make install"
+UNINSTALL_CMD="make uninstall"
+CLEAN_CMD="rm -rf bin obj"
 
 function uninstall() {
     cd $BUILD_DIR
-    sudo make uninstall
+    echo "uninstalling: $PKG_NAME"
+    sudo $UNINSTALL_CMD
+    echo "uninstalled."
 }
 
 function build() {
-    INSTALL_CMD="sudo make install"
-    CLEAN_CMD="rm -rf bin obj"
     cd $BUILD_DIR
     $CLEAN_CMD
     echo "working on: $PKG_NAME"
     make > /dev/null 2>&1
-    $INSTALL_CMD > /dev/null 2>&1
+    sudo $INSTALL_CMD > /dev/null 2>&1
+    echo "installed."
     $CLEAN_CMD
 }
 
