@@ -3,6 +3,8 @@
 PKG_NAME="cli-visualizer"
 PKG_REPO="https://github.com/dpayne/$PKG_NAME"
 
+DEB_DEPS="libfftw3-dev libncursesw5-dev libpulse-dev cmake"
+
 BUILD_DIR="pkg/src/$PKG_NAME"
 INSTALL_CMD="bash install.sh"
 UNINSTALL_CMD=""
@@ -13,6 +15,9 @@ function sources() {
 }
 
 function build() {
+    if [ ! "$(cat /etc/os-release | grep -i debian)" == ""]; then
+	    sudo apt-get install "$DEB_DEPS"
+    fi
     echo "working on: $PKG_NAME"
 
     cd $BUILD_DIR

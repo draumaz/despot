@@ -3,6 +3,8 @@
 PKG_NAME="ly"
 PKG_REPO="https://github.com/fairyglade/$PKG_NAME"
 
+DEB_DEPS="build-essential libpam0g-dev libxcb-xkb-dev"
+
 BUILD_DIR="pkg/src/$PKG_NAME"
 INSTALL_CMD="make install"
 UNINSTALL_CMD="make uninstall"
@@ -25,6 +27,10 @@ function uninstall() {
 }
 
 function build() {
+    if [ ! "$(cat /etc/os-release | grep -i debian)" == "" ]; then
+	    sudo apt-get install "$DEB_DEPS"
+    fi
+
     echo "working on: $PKG_NAME"
 
     cd $BUILD_DIR
