@@ -72,7 +72,6 @@ installer() {
 		bash pkg/repo/"$PACKAGE".bash sources > /dev/null 2>&1
 	fi fi
 	bash pkg/repo/"$PACKAGE".bash build
-	exit
 }
 
 meta_text() {
@@ -115,7 +114,11 @@ case "$OPTION" in
 		updater
 		;;
 	"--install" | "-i")
-		installer "$PACKAGE"
+		arr=("$@")
+		for ((i=1; i<${#arr[@]}; i++)); do
+        	    PACKAGE="${arr[${i}]}"
+		    installer "$PACKAGE"
+		done
 		;;
 	*)
 		echo -e "ERROR: unrecognized command\n"
