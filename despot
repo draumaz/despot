@@ -27,14 +27,10 @@ updater() {
 
 remover() {
 	if [ ! -z "$PACKAGE" ]; then
-		if [ ! -z "$OVERFLOW" ]; then
-			echo "ERROR: only one package updatable at a time"
-			exit
-		fi
 		if [ ! -f pkg/repo/"$PACKAGE".bash ]; then
 			echo "ERROR: draumaz has yet to write a build script for $PACKAGE"
 			exit
-		else if [ ! -e pkg/repo/"$PACKAGE" ]; then
+		else if [ ! -e pkg/src/"$PACKAGE" ]; then
 			echo "ERROR: no sources for $PACKAGE in pkg/src"
 			exit
 		else
@@ -94,6 +90,8 @@ meta_text() {
 	esac
 }
 
+arr=("$@")
+
 case "$OPTION" in
 	"--version" | "-v")
 		meta_text "v"
@@ -105,7 +103,10 @@ case "$OPTION" in
 		echo -e "installed packages:\n\n$PKG_LIST"
 		;;
 	"--remove" | "-r")
-		remover "$OPTION" "$PACKAGE" "$OVERFLOW"
+		for ((i=1; i<${#arr[@]}; i++)); do
+			PACKAGE="${arr[${i}]}"
+			remover "$PACKAGE"
+		done
 		;;
 	"--catalog" | "-c")
 		echo -e "available packages:\n\n$REPO_LIST"
@@ -114,9 +115,8 @@ case "$OPTION" in
 		updater
 		;;
 	"--install" | "-i")
-		arr=("$@")
 		for ((i=1; i<${#arr[@]}; i++)); do
-				PACKAGE="${arr[${i}]}"
+			PACKAGE="${arr[${i}]}"
 			installer "$PACKAGE"
 		done
 		;;
