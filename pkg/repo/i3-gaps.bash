@@ -3,7 +3,7 @@
 PKG_NAME="i3-gaps"
 PKG_REPO="https://github.com/Airblader/i3"
 
-#DEB_DEPS="meson dh-autoreconf libxcb-keysyms1-dev libpango1.0-dev libxcb-util0-dev xcb libxcb1-dev libxcb-icccm4-dev libyajl-dev libev-dev libxcb-xkb-dev libxcb-cursor-dev libxkbcommon-dev libxcb-xinerama0-dev libxkbcommon-x11-dev libstartup-notification0-dev libxcb-randr0-dev libxcb-xrm0 libxcb-xrm-dev libxcb-shape0 libxcb-shape0-dev"
+DEB_DEPS="meson dh-autoreconf libxcb-keysyms1-dev libpango1.0-dev libxcb-util0-dev xcb libxcb1-dev libxcb-icccm4-dev libyajl-dev libev-dev libxcb-xkb-dev libxcb-cursor-dev libxkbcommon-dev libxcb-xinerama0-dev libxkbcommon-x11-dev libstartup-notification0-dev libxcb-randr0-dev libxcb-xrm0 libxcb-xrm-dev libxcb-shape0 libxcb-shape0-dev"
 
 BUILD_DIR="pkg/src/$PKG_NAME"
 INSTALL_CMD="ninja install"
@@ -15,9 +15,9 @@ function sources() {
 }
 
 function build() {
-#    if [ ! "$(cat /etc/os-release | grep -i debian)" == "" ]; then
-#	    sudo apt-get install "$DEB_DEPS"
-#    fi
+    if [ ! "$(grep ID /etc/os-release | grep debian)" == "" ]; then
+        echo $DEB_DEPS | xargs sudo apt-get install -y
+    fi
 
     echo "working on: $PKG_NAME"
 
