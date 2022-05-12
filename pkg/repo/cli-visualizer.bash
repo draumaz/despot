@@ -15,7 +15,7 @@ function sources() {
 }
 
 function build() {
-    if [ ! "$(cat /etc/os-release | grep -i debian)" == ""]; then
+    if [ ! "$(cat /etc/os-release | grep -i debian)" == "" ]; then
 	    sudo apt-get install "$DEB_DEPS"
     fi
     echo "working on: $PKG_NAME"
