@@ -11,34 +11,34 @@ UNINSTALL_CMD=""
 CLEAN_CMD="rm -rf build"
 
 function sources() {
-    git clone $PKG_REPO $BUILD_DIR
+	git clone $PKG_REPO $BUILD_DIR
 }
 
 function build() {
-    if [ ! "$(grep ID /etc/os-release | grep debian)" == "" ]; then
-        echo $DEB_DEPS | xargs sudo apt-get install -y
-    fi
+	if [ ! "$(grep ID /etc/os-release | grep debian)" == "" ]; then
+		echo $DEB_DEPS | xargs sudo apt-get install -y
+	fi
 
-    echo "working on: $PKG_NAME"
+	echo "working on: $PKG_NAME"
 
-    cd $BUILD_DIR
-    mkdir -p build
-    cd build
-    
-    if meson .. > /dev/null 2>&1; then true; else
-        echo "failed to compile."
-        exit
-    fi
-    
-    if sudo $INSTALL_CMD > /dev/null 2>&1; then
-        echo "installed."
-    else
-        echo "failed to install."
-        exit
-    fi
-    
-    cd ..
-    sudo $CLEAN_CMD
+	cd $BUILD_DIR
+	mkdir -p build
+	cd build
+	
+	if meson .. > /dev/null 2>&1; then true; else
+		echo "failed to compile."
+		exit
+	fi
+	
+	if sudo $INSTALL_CMD > /dev/null 2>&1; then
+		echo "installed."
+	else
+		echo "failed to install."
+		exit
+	fi
+	
+	cd ..
+	sudo $CLEAN_CMD
 }
 
 $1
