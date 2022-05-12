@@ -25,10 +25,17 @@ function uninstall() {
 }
 
 function build() {
-    echo "working on: $PKG_NAME"
-
     cd $BUILD_DIR
     sudo $CLEAN_CMD
+
+    echo -n "do you need to use a patchfile? [y/n]: "; read OPT0
+    if [ "$OPT0" == "y" ]; then
+	    echo -n "file to patch: "; read PATCH_TARGET
+	    echo -n "patchfile path: "; read PATCH_PATH
+	    patch "$PATCH_TARGET" < "$PATCH_PATH"
+    fi
+
+    echo "working on: $PKG_NAME"
 
     if make > /dev/null 2>&1; then true; else
         echo "failed to compile."
@@ -42,7 +49,6 @@ function build() {
         exit
     fi
 
-    cd ..
     sudo $CLEAN_CMD
 }
 
