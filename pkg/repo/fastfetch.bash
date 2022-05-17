@@ -20,16 +20,16 @@ function build() {
   fi
 
   echo "working on: $PKG_NAME"
-	
+  
   cd $BUILD_DIR
   mkdir -p build
   cd build
-	
+  
   if cmake .. > /dev/null 2>&1; then true; else
     echo "failed to generate makefile."
     exit
   fi
-	
+  
   if make > /dev/null 2>&1; then true; else
     echo "failed to compile."
     exit
@@ -41,7 +41,7 @@ function build() {
     echo "failed to install."
     exit
   fi
-	
+  
   cd ..
   sudo $CLEAN_CMD
 }

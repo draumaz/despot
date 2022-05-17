@@ -8,120 +8,121 @@ OPTION="$1"
 PACKAGE="$2"
 OVERFLOW="$3"
 
-if [ -z "$OPTION" ]; then
-	OPTION="--help"
-fi
+if [ -z "$OPTION" ]; then OPTION="--help"; fi
 
 updater() {
-	echo -n "updating despot repo..."
-	git pull > /dev/null 2>&1
-	echo -e " done\n"
-	for l in $PKG_LIST; do
-		echo "checking: $l"
-		cd pkg/src/"$l"
-		git pull
-		echo
-		cd ../../..
-	done
+  echo -n "updating despot repo..."
+  git pull > /dev/null 2>&1
+  echo -e " done\n"
+  for l in $PKG_LIST; do
+    echo "checking: $l"
+    cd pkg/src/"$l"
+    git pull
+    echo
+    cd ../../..
+  done
 }
 
 remover() {
-	if [ ! -z "$PACKAGE" ]; then
-		if [ ! -f pkg/repo/"$PACKAGE".bash ]; then
-			echo "ERROR: draumaz has yet to write a build script for $PACKAGE"
-			exit
-		else if [ ! -e pkg/src/"$PACKAGE" ]; then
-			echo "ERROR: no sources for $PACKAGE in pkg/src"
-			exit
-		else
-			bash pkg/repo/"$PACKAGE".bash uninstall
-			echo "uninstalled."
-		fi fi
-	else
-		echo "ERROR: no package name provided for removal."
-	fi
+  if [ ! -z "$PACKAGE" ]; then
+    if [ ! -f pkg/repo/"$PACKAGE".bash ]; then
+      echo "ERROR: draumaz has yet to write a build script for $PACKAGE"
+      exit
+    else if [ ! -e pkg/src/"$PACKAGE" ]; then
+      echo "ERROR: no sources for $PACKAGE in pkg/src"
+      exit
+    else
+      bash pkg/repo/"$PACKAGE".bash uninstall
+      echo "uninstalled."
+    fi fi
+  else
+    echo "ERROR: no package name provided for removal."
+  fi
 }
 
 installer() {
-	if [ ! -z "$PACKAGE" ]; then
-		if [ "$PACKAGE" == "-a" ] || [ "$PACKAGE" == "--all" ]; then
-			echo -e "updating all packages\n"
-			for l in $PKG_LIST; do
-				if [ ! -f pkg/repo/"$l".bash ]; then
-					echo "ERROR: no build script for $l available"
-					continue
-				fi
-				bash pkg/repo/"${l}".bash build
-				echo
-			done
-			exit
-		fi
-	else
-		echo "ERROR: no package name provided for install"
-		exit
-	fi
-	if [ ! -f pkg/repo/"$PACKAGE".bash ]; then
-		echo "ERROR: draumaz has yet to write a build script for $2"
-		exit
-	else if [ ! -e pkg/repo/"$PACKAGE" ]; then
-		echo "fetching sources for $PACKAGE"
-		bash pkg/repo/"$PACKAGE".bash sources > /dev/null 2>&1
-	fi fi
-	bash pkg/repo/"$PACKAGE".bash build
+  # Install every package
+  if [ ! -z "$PACKAGE" ]; then
+    if [ "$PACKAGE" == "-a" ] || [ "$PACKAGE" == "--all" ]; then
+      echo -e "updating all packages\n"
+      for l in $PKG_LIST; do
+        if [ ! -f pkg/repo/"$l".bash ]; then
+    echo "ERROR: no build script for $l available"
+    continue
+  fi
+  bash pkg/repo/"${l}".bash build
+  echo
+      done
+      exit
+    fi
+  else
+    echo "ERROR: no package name provided for install"
+    exit
+  fi
+  
+  # Install package $PACKAGE
+  if [ ! -f pkg/repo/"$PACKAGE".bash ]; then
+    echo "ERROR: draumaz has yet to write a build script for $PACKAGE"
+    exit
+  else if [ ! -e pkg/repo/"$PACKAGE" ]; then
+    echo "fetching sources for $PACKAGE"
+    bash pkg/repo/"$PACKAGE".bash sources > /dev/null 2>&1
+  fi fi
+  bash pkg/repo/"$PACKAGE".bash build
 }
 
 meta_text() {
-	case $1 in
-		"v")
-			echo "despot 0.01.3"
-			;;
-		"h")
-			echo "./despot [cmd]"
-			echo ""
-			echo "commands:"
-			echo "--catalog       | display packages available for build"
-			echo "--help          | show this screen"
-			echo "--install [PKG] | compile a package"
-			echo "--list          | list all directories in pkg/src"
-			echo "--remove [PKG]  | remove given package"       
-			echo "--update        | git pull pkg/src & pkg/repo"
-			echo "--version       | display current version of despot"
-			;;
-	esac
+  case $1 in
+    "v")
+      echo "despot 0.01.3"
+      ;;
+    "h")
+      echo "./despot [cmd]"
+      echo ""
+      echo "commands:"
+      echo "--catalog       | display packages available for build"
+      echo "--help          | show this screen"
+      echo "--install [PKG] | compile a package"
+      echo "--list          | list all directories in pkg/src"
+      echo "--remove [PKG]  | remove given package"       
+      echo "--update        | git pull pkg/src & pkg/repo"
+      echo "--version       | display current version of despot"
+      ;;
+  esac
 }
 
 arr=("$@")
 
 case "$OPTION" in
-	"--version" | "-v")
-		meta_text "v"
-		;;
-	"--help" | "-h")
-		meta_text "h"
-		;;
-	"--list" | "-l")
-		echo -e "installed packages:\n\n$PKG_LIST"
-		;;
-	"--remove" | "-r")
-		for ((i=1; i<${#arr[@]}; i++)); do
-			PACKAGE="${arr[${i}]}"
-			remover "$PACKAGE"
-		done
-		;;
-	"--catalog" | "-c")
-		echo -e "available packages:\n\n$REPO_LIST"
-		;;
-	"--update" | "-u")
-		updater
-		;;
-	"--install" | "-i")
-		for ((i=1; i<${#arr[@]}; i++)); do
-			PACKAGE="${arr[${i}]}"
-			installer "$PACKAGE"
-		done
-		;;
-	*)
-		echo -e "ERROR: unrecognized command\n"
-		meta_text "h"
-		;;
+  "--version" | "-v")
+    meta_text "v"
+    ;;
+  "--help" | "-h")
+    meta_text "h"
+    ;;
+  "--list" | "-l")
+    echo -e "installed packages:\n\n$PKG_LIST"
+    ;;
+  "--remove" | "-r")
+    for ((i=1; i<${#arr[@]}; i++)); do
+      PACKAGE="${arr[${i}]}"
+      remover "$PACKAGE"
+    done
+    ;;
+  "--catalog" | "-c")
+    echo -e "available packages:\n\n$REPO_LIST"
+    ;;
+  "--update" | "-u")
+    updater
+    ;;
+  "--install" | "-i")
+    for ((i=1; i<${#arr[@]}; i++)); do
+      PACKAGE="${arr[${i}]}"
+      installer "$PACKAGE"
+    done
+    ;;
+  *)
+    echo -e "ERROR: unrecognized command\n"
+    meta_text "h"
+    ;;
 esac

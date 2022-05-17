@@ -24,7 +24,7 @@ function build() {
   cd $BUILD_DIR
   mkdir -p build
   sudo $CLEAN_CMD
-	
+  
   sh configure > /dev/null 2>&1
   if sudo $INSTALL_CMD > /dev/null 2>&1; then
     echo "installed."
@@ -32,7 +32,7 @@ function build() {
     echo "failed to install."
     exit
   fi
-	
+  
   sudo $CLEAN_CMD
 }
 
