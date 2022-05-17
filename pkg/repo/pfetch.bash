@@ -8,32 +8,32 @@ INSTALL_CMD="make install"
 UNINSTALL_CMD="make uninstall"
 
 function sources() {
-	git clone $PKG_REPO $BUILD_DIR
+  git clone $PKG_REPO $BUILD_DIR
 }
 
 function uninstall() {
-	cd $BUILD_DIR
+  cd $BUILD_DIR
 
-	echo "uninstalling: $PKG_NAME"
-	if sudo $UNINSTALL_CMD > /dev/null 2>&1; then
-		echo "uninstalled."
-	else
-		echo "failed to uninstall."
-		exit
-	fi
+  echo "uninstalling: $PKG_NAME"
+  if sudo $UNINSTALL_CMD > /dev/null 2>&1; then
+    echo "uninstalled."
+  else
+    echo "failed to uninstall."
+    exit
+  fi
 }
 
 function build() {
-	echo "working on: $PKG_NAME"
+  echo "working on: $PKG_NAME"
 
-	cd $BUILD_DIR
+  cd $BUILD_DIR
 	
-	if sudo $INSTALL_CMD > /dev/null 2>&1; then 
-		echo "installed."
-	else
-		echo "failed to install."
-		exit
-	fi
+  if sudo $INSTALL_CMD > /dev/null 2>&1; then 
+    echo "installed."
+  else
+    echo "failed to install."
+    exit
+  fi
 }
 
 $1
