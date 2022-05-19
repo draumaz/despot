@@ -27,8 +27,6 @@ function uninstall() {
 }
 
 function build() {
-  if [ ! "$(grep -i debian /etc/os-release)" == "" ]; then echo $DEB_DEPS | xargs sudo apt-get install -y; fi
-  
   echo "working on: $PKG_NAME"
 
   cd $BUILD_DIR

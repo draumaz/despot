@@ -40,34 +40,24 @@ remover() {
   fi
 }
 
+dependency_processor() {
+  if [ ! "$(grep -i debian /etc/os-release)" == "" ]; then
+    echo "$(grep -i DEB_DEPS pkg/repo/$PACKAGE.bash | sed 's/DEB_DEPS//g' | sed 's/=//g' | sed 's/"//g')" | xargs sudo apt-get install -y
+  else if [ ! "$(grep -i fedora /etc/os-release)" == "" ]; then
+    echo "$(grep -i RPM_DEPS pkg/repo/$PACKAGE.bash | sed 's/RPM_DEPS//g' | sed 's/=//g' | sed 's/"//g')" | xargs sudo dnf install -y
+  fi fi
+}
+
 installer() {
-  # Install every package
-  if [ ! -z "$PACKAGE" ]; then
-    if [ "$PACKAGE" == "-a" ] || [ "$PACKAGE" == "--all" ]; then
-      echo -e "updating all packages\n"
-      for l in $PKG_LIST; do
-        if [ ! -f pkg/repo/"$l".bash ]; then
-    echo "ERROR: no build script for $l available"
-    continue
-  fi
-  bash pkg/repo/"${l}".bash build
-  echo
-      done
-      exit
-    fi
-  else
-    echo "ERROR: no package name provided for install"
-    exit
-  fi
-  
   # Install package $PACKAGE
   if [ ! -f pkg/repo/"$PACKAGE".bash ]; then
     echo "ERROR: draumaz has yet to write a build script for $PACKAGE"
     exit
   else if [ ! -e pkg/repo/"$PACKAGE" ]; then
     echo "fetching sources for $PACKAGE"
-    bash pkg/repo/"$PACKAGE".bash sources > /dev/null 2>&1
+    bash pkg/repo/"$PACKAGE".bash sources #> /dev/null 2>&1
   fi fi
+  dependency_processor
   bash pkg/repo/"$PACKAGE".bash build
 }
 
