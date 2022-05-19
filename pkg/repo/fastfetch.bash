@@ -4,6 +4,7 @@ PKG_NAME="fastfetch"
 PKG_REPO="https://github.com/LinusDierheimer/$PKG_NAME"
 
 DEB_DEPS="cmake pkg-config"
+RPM_DEPS="cmake pkgconf-pkg-config"
 
 BUILD_DIR="pkg/src/$PKG_NAME"
 INSTALL_CMD="cp fastfetch flashfetch /usr/local/bin/"
@@ -15,9 +16,8 @@ function sources() {
 }
 
 function build() {
-  if [ ! "$(grep ID /etc/os-release | grep debian)" == "" ]; then
-    echo $DEB_DEPS | xargs sudo apt-get install -y
-  fi
+  if [ ! "$(grep -i debian /etc/os-release)" == "" ]; then echo $DEB_DEPS | xargs sudo apt-get install -y; fi
+  if [ ! "$(grep -i fedora /etc/os-release)" == "" ]; then echo $RPM_DEPS | xargs sudo dnf install -y; fi
 
   echo "working on: $PKG_NAME"
   
