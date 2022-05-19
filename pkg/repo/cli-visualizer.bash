@@ -17,7 +17,7 @@ function sources() {
 
 function build() {
   if [ ! "$(grep -i debian /etc/os-release)" == "" ]; then echo $DEB_DEPS | xargs sudo apt-get install -y; fi
-  if [ ! "$(grep -i fedora /etc/os/release)" == "" ]; then echo $RPM_DEPS | xargs sudo dnf install -y; fi
+  if [ ! "$(grep -i fedora /etc/os-release)" == "" ]; then echo $RPM_DEPS | xargs sudo dnf install -y; fi
    
   echo "working on: $PKG_NAME"
 
