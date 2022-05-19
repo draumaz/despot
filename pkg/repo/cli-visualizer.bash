@@ -4,6 +4,7 @@ PKG_NAME="cli-visualizer"
 PKG_REPO="https://github.com/dpayne/$PKG_NAME"
 
 DEB_DEPS="libfftw3-dev libncursesw5-dev libpulse-dev cmake"
+RPM_DEPS="fftw-devel ncurses-devel pulseaudio-libs-devel cmake"
 
 BUILD_DIR="pkg/src/$PKG_NAME"
 INSTALL_CMD="bash install.sh"
@@ -15,9 +16,8 @@ function sources() {
 }
 
 function build() {
-  if [ ! "$(grep ID /etc/os-release | grep debian)" == "" ]; then
-    echo $DEB_DEPS | xargs sudo apt-get install -y
-  fi
+  if [ ! "$(grep -i debian /etc/os-release)" == "" ]; then echo $DEB_DEPS | xargs sudo apt-get install -y; fi
+  if [ ! "$(grep -i fedora /etc/os/release)" == "" ]; then echo $RPM_DEPS | xargs sudo dnf install -y; fi
    
   echo "working on: $PKG_NAME"
 
