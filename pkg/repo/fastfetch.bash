@@ -3,8 +3,8 @@
 PKG_NAME="fastfetch"
 PKG_REPO="https://github.com/LinusDierheimer/$PKG_NAME"
 
-DEB_DEPS="cmake pkg-config"
-RPM_DEPS="cmake pkgconf-pkg-config"
+DEB_DEPS="gcc cmake pkg-config"
+RPM_DEPS="gcc cmake pkgconf-pkg-config"
 
 BUILD_DIR="pkg/src/$PKG_NAME"
 INSTALL_CMD="cp fastfetch flashfetch /usr/local/bin/"
