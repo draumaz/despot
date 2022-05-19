@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 PKG_REPO="https://git.suckless.org/st"
-PKG_NAME="${PKG_REPO##*/}
+PKG_NAME="${PKG_REPO##*/}"
 
 BUILD_DIR="pkg/src/$PKG_NAME"
 INSTALL_CMD="make install"

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 PKG_REPO="https://github.com/fairyglade/ly"
-PKG_NAME="${PKG_REPO##*/}
+PKG_NAME="${PKG_REPO##*/}"
 
 DEB_DEPS="build-essential libpam0g-dev libxcb-xkb-dev"
 

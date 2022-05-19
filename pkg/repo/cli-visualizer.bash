@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 PKG_REPO="https://github.com/dpayne/cli-visualizer"
-PKG_NAME="${PKG_REPO##*/}
+PKG_NAME="${PKG_REPO##*/}"
 
 DEB_DEPS="libfftw3-dev libncursesw5-dev libpulse-dev cmake"
 RPM_DEPS="fftw-devel ncurses-devel pulseaudio-libs-devel cmake"
