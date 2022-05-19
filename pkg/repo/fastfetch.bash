@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-PKG_NAME="fastfetch"
-PKG_REPO="https://github.com/LinusDierheimer/$PKG_NAME"
+PKG_REPO="https://github.com/LinusDierheimer/fastfetch"
+PKG_NAME="${PKG_REPO##*/}
 
 DEB_DEPS="gcc cmake pkg-config"
 RPM_DEPS="gcc cmake pkgconf-pkg-config"

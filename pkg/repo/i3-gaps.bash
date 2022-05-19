@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-PKG_NAME="i3-gaps"
 PKG_REPO="https://github.com/Airblader/i3"
+PKG_NAME="i3-gaps"
 
 DEB_DEPS="meson dh-autoreconf libxcb-keysyms1-dev \
   libpango1.0-dev libxcb-util0-dev xcb libxcb1-dev \
