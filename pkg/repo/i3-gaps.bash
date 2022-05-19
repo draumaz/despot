@@ -3,7 +3,7 @@
 PKG_REPO="https://github.com/Airblader/i3"
 PKG_NAME="i3-gaps"
 
-DEB_DEPS="meson dh-autoreconf libxcb-keysyms1-dev \
+DEB_DEPS="gcc g++ meson dh-autoreconf libxcb-keysyms1-dev \
   libpango1.0-dev libxcb-util0-dev xcb libxcb1-dev \
   libxcb-icccm4-dev libyajl-dev libev-dev libxcb-xkb-dev \
   libxcb-cursor-dev libxkbcommon-dev libxcb-xinerama0-dev \

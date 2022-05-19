@@ -3,6 +3,9 @@
 PKG_REPO="https://git.codemadness.org/stagit"
 PKG_NAME="${PKG_REPO##*/}"
 
+DEB_DEPS="libgit2-dev"
+RPM_DEPS="${DEB_DEPS}el" # lol
+
 BUILD_DIR="pkg/src/$PKG_NAME"
 INSTALL_CMD="make install"
 UNINSTALL_CMD="make uninstall"
@@ -25,6 +28,10 @@ function uninstall() {
 }
 
 function build() {
+  if [ ! "$(grep ID /etc/os-release | grep debian)" == "" ]; then
+    echo $DEB_DEPS | xargs sudo apt-get install -y
+  fi
+
   echo "working on: $PKG_NAME"
   
   cd $BUILD_DIR
