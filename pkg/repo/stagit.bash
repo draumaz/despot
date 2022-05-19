@@ -4,7 +4,7 @@ PKG_REPO="git://git.codemadness.org/stagit"
 PKG_NAME="${PKG_REPO##*/}"
 
 DEB_DEPS="libgit2-dev"
-RPM_DEPS="${DEB_DEPS}el" # lol
+RPM_DEPS="libgit2-devel"
 
 BUILD_DIR="pkg/src/$PKG_NAME"
 INSTALL_CMD="make install"
