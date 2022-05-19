@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PKG_REPO="https://git.codemadness.org/stagit"
+PKG_REPO="git://git.codemadness.org/stagit"
 PKG_NAME="${PKG_REPO##*/}"
 
 DEB_DEPS="libgit2-dev"
