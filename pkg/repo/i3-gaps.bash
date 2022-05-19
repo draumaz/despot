@@ -15,7 +15,7 @@ RPM_DEPS="alsa-lib cairo dbus-libs flac-libs fontconfig \
   google-noto-sans-vf-fonts graphite2 gsm harfbuzz i3status-config langpacks-core-font-en \
   libX11 libX11-common libX11-xcb libXau libXext libXft libXinerama libXrender libasyncns \
   libconfuse libdatrie libev libfontenc libjpeg-turbo libnl3 libogg libpng libptytty libsndfile \
-  libthai libvorbis libxkb libxkbcommon libxkbcommon-x11 mkfontscale opus pango perl-AnyEvent \
+  libthai libvorbis libxcb libxkbcommon libxkbcommon-x11 mkfontscale opus pango perl-AnyEvent \
   perl-AnyEvent-I3 perl-Filter perl-JSON-XS perl-Time-HiRes perl-Types-Serialiser perl-common-sense \
   perl-open pixman pulseaudio-libs shared-mime-info startup-notification xcb-util xcb-util-cursor \
   xcb-util-image xcb-util-keysyms xcb-util-renderutil xcb-util-wm xcb-util-xrm xml-common xorg-x11-fonts-misc yajl"
