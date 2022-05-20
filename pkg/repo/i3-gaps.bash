@@ -21,12 +21,12 @@ function build() {
   mkdir -p build
   cd build
   
-  if meson .. > /dev/null 2>&1; then true; else
+  if meson ..; then true; else
     echo "failed to compile."
     exit
   fi
   
-  if sudo $INSTALL_CMD > /dev/null 2>&1; then
+  if sudo $INSTALL_CMD; then
     echo "installed."
   else
     echo "failed to install."

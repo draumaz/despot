@@ -15,7 +15,7 @@ function uninstall() {
   cd $BUILD_DIR
 
   echo "uninstalling: $PKG_NAME"
-  if sudo $UNINSTALL_CMD > /dev/null 2>&1; then
+  if sudo $UNINSTALL_CMD; then
     echo "uninstalled."
   else
     echo "failed to uninstall."
@@ -28,7 +28,7 @@ function build() {
 
   cd $BUILD_DIR
   
-  if sudo $INSTALL_CMD > /dev/null 2>&1; then 
+  if sudo $INSTALL_CMD; then 
     echo "installed."
   else
     echo "failed to install."

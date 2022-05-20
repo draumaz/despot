@@ -22,12 +22,12 @@ function build() {
   mkdir -p build
   cd build
   
-  if cmake .. > /dev/null 2>&1; then true; else
+  if cmake ..; then true; else
     echo "failed to generate makefile."
     exit
   fi
   
-  if make > /dev/null 2>&1; then true; else
+  if make; then true; else
     echo "failed to compile."
     exit
   fi

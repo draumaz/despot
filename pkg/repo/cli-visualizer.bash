@@ -24,7 +24,7 @@ function build() {
     exit
   fi
   
-  if make > /dev/null 2>&1; then true; else
+  if make; then true; else
     echo "failed to compile."
     exit
   fi
