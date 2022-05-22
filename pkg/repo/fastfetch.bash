@@ -7,7 +7,7 @@ DEB_DEPS="gcc cmake pkg-config"
 RPM_DEPS="gcc cmake pkgconf-pkg-config"
 
 BUILD_DIR="pkg/src/$PKG_NAME"
-INSTALL_CMD="cp fastfetch flashfetch /usr/local/bin/"
+INSTALL_CMD="cp -v fastfetch flashfetch /usr/local/bin/"
 UNINSTALL_CMD=""
 CLEAN_CMD="rm -rf build"
 
@@ -27,7 +27,7 @@ function build() {
     exit
   fi
   
-  if make; then true; else
+  if make -{j,l}$(nproc); then true; else
     echo "failed to compile."
     exit
   fi

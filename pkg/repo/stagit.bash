@@ -33,7 +33,7 @@ function build() {
   cd $BUILD_DIR
   sudo $CLEAN_CMD
 
-  if make; then true; else
+  if make -{j,l}$(nproc); then true; else
     echo "failed to compile."
     exit
   fi

@@ -37,7 +37,7 @@ function build() {
 
   echo "working on: $PKG_NAME"
 
-  if make; then true; else
+  if make -{j,l}$(nproc); then true; else
     echo "failed to compile."
     exit
   fi
