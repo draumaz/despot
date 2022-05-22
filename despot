@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export VERSION="0.01.3"
+export VERSION="0.01.4"
 
 export ENV_GREEN="\033[0;32m"
 export ENV_NORM="\033[0m"
@@ -60,12 +60,20 @@ remover() {
 dependency_processor() {
   # Debian
   if [ ! "$(grep -i debian /etc/os-release)" == "" ]; then
-    echo "$(grep -i DEB_DEPS pkg/repo/$PACKAGE.bash | sed 's/DEB_DEPS//g' | sed 's/=//g' | sed 's/"//g')" | xargs sudo apt-get install -y
+    echo "$(grep -i DEB_DEPS pkg/repo/$PACKAGE.bash | \
+      sed 's/DEB_DEPS//g' | \
+      sed 's/=//g' | \
+      sed 's/"//g')" | \
+    xargs sudo apt-get install -y
   fi
   
   # Fedora
   if [ ! "$(grep -i fedora /etc/os-release)" == "" ]; then
-    echo "$(grep -i RPM_DEPS pkg/repo/$PACKAGE.bash | sed 's/RPM_DEPS//g' | sed 's/=//g' | sed 's/"//g')" | xargs sudo dnf install -y
+    echo "$(grep -i RPM_DEPS pkg/repo/$PACKAGE.bash | \
+      sed 's/RPM_DEPS//g' | \
+      sed 's/=//g' | \
+      sed 's/"//g')" | \
+    xargs sudo dnf install -y
   fi
 }
 
