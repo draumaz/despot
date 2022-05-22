@@ -15,21 +15,21 @@ function sources() {
 }
 
 function build() {
-  echo "working on: $PKG_NAME"
+  printf "${CLR_GREEN}working on: $PKG_NAME${CLR_NORM}\n"
 
   cd $BUILD_DIR
   mkdir -p build
   cd build
   
   if meson ..; then true; else
-    echo "failed to compile."
+    printf "${CLR_RED}failed to compile.${CLR_NORM}\n"
     exit
   fi
   
   if sudo $INSTALL_CMD; then
-    echo "installed."
+    printf "${CLR_GREEN}installed.${CLR_NORM}\n"
   else
-    echo "failed to install."
+    printf "${CLR_RED}failed to install.${CLR_NORM}\n"
     exit
   fi
   
