@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 
-export CLR_GREEN="\033[0;32m"
-export CLR_RED="\033[0;31m"
-export CLR_NORM="\033[0m"
+export VERSION="0.01.3"
 
-mkdir -p pkg/src
+export ENV_GREEN="\033[0;32m"
+export ENV_NORM="\033[0m"
+export ENV_RED="\033[0;31m"
+
+if [ ! -e pkg/src ]; then mkdir -p pkg/src; fi
 
 PKG_LIST=(pkg/src/*)
 for ((i=0; i<${#PKG_LIST[@]}; i++)); do
@@ -56,11 +58,15 @@ remover() {
 }
 
 dependency_processor() {
+  # Debian
   if [ ! "$(grep -i debian /etc/os-release)" == "" ]; then
     echo "$(grep -i DEB_DEPS pkg/repo/$PACKAGE.bash | sed 's/DEB_DEPS//g' | sed 's/=//g' | sed 's/"//g')" | xargs sudo apt-get install -y
-  else if [ ! "$(grep -i fedora /etc/os-release)" == "" ]; then
+  fi
+  
+  # Fedora
+  if [ ! "$(grep -i fedora /etc/os-release)" == "" ]; then
     echo "$(grep -i RPM_DEPS pkg/repo/$PACKAGE.bash | sed 's/RPM_DEPS//g' | sed 's/=//g' | sed 's/"//g')" | xargs sudo dnf install -y
-  fi fi
+  fi
 }
 
 installer() {
@@ -68,7 +74,7 @@ installer() {
   if [ ! -f pkg/repo/"$PACKAGE".bash ]; then
     echo "ERROR: draumaz has yet to write a build script for $PACKAGE"
     exit
-  else if [ ! -e pkg/repo/"$PACKAGE" ]; then
+  else if [ ! -e pkg/src/"$PACKAGE" ]; then
     echo "fetching sources for $PACKAGE"
     bash pkg/repo/"$PACKAGE".bash sources #> /dev/null 2>&1
   fi fi
@@ -79,7 +85,7 @@ installer() {
 meta_text() {
   case $1 in
     "v")
-      echo "despot 0.01.3"
+      echo "despot ${VERSION}"
       ;;
     "h")
       echo "./despot [cmd]"

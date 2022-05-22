@@ -14,24 +14,24 @@ function sources() {
 function uninstall() {
   cd $BUILD_DIR
 
-  printf "${CLR_GREEN}uninstalling: $PKG_NAME${CLR_NORM}\n"
+  printf "${ENV_GREEN}uninstalling: $PKG_NAME${ENV_NORM}\n"
   if sudo $UNINSTALL_CMD; then
-    printf "${CLR_GREEN}uninstalled.${CLR_NORM}\n"
+    printf "${ENV_GREEN}uninstalled.${ENV_NORM}\n"
   else
-    printf "${CLR_RED}failed to uninstall.${CLR_NORM}\n"
+    printf "${ENV_RED}failed to uninstall.${ENV_NORM}\n"
     exit
   fi
 }
 
 function build() {
-  printf "${CLR_GREEN}working on: $PKG_NAME${CLR_NORM}\n"
+  printf "${ENV_GREEN}working on: $PKG_NAME${ENV_NORM}\n"
 
   cd $BUILD_DIR
   
   if sudo $INSTALL_CMD; then 
-    printf "${CLR_GREEN}installed.${CLR_NORM}\n"
+    printf "${ENV_GREEN}installed.${ENV_NORM}\n"
   else
-    printf "${CLR_RED}failed to install.${CLR_NORM}\n"
+    printf "${ENV_RED}failed to install.${ENV_NORM}\n"
     exit
   fi
 }
