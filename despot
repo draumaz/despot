@@ -1,8 +1,23 @@
 #!/usr/bin/env bash
 
+export CLR_GREEN="\033[0;32m"
+export CLR_RED="\033[0;31m"
+export CLR_NORM="\033[0m"
+
 mkdir -p pkg/src
-PKG_LIST=$(ls pkg/src | tr " " "\n")
-REPO_LIST=$(ls pkg/repo/*.bash | sed 's|pkg/repo/||g' | sed 's/.bash//g' | tr " " "\n")
+
+PKG_LIST=(pkg/src/*)
+for ((i=0; i<${#PKG_LIST[@]}; i++)); do
+  PKG_LIST[i]=$(echo ${PKG_LIST[i]} | \
+    sed 's|pkg/src/||g')
+done
+
+REPO_LIST=(pkg/repo/*.bash)
+for ((i=0; i<${#REPO_LIST[@]}; i++)); do
+  REPO_LIST[i]=$(echo ${REPO_LIST[i]} | \
+    sed 's|pkg/repo/||g' | \
+    sed 's/.bash//g')
+done
 
 OPTION="$1"
 PACKAGE="$2"
@@ -91,7 +106,10 @@ case "$OPTION" in
     meta_text "h"
     ;;
   "--list" | "-l")
-    echo -e "installed packages:\n\n$PKG_LIST"
+    echo -e "installed packages:\n"
+    for ((i=0; i<${#PKG_LIST[@]}; i++)); do
+      echo "- ${PKG_LIST[${i}]}"
+    done
     ;;
   "--remove" | "-r")
     for ((i=1; i<${#arr[@]}; i++)); do
@@ -100,7 +118,10 @@ case "$OPTION" in
     done
     ;;
   "--catalog" | "-c")
-    echo -e "available packages:\n\n$REPO_LIST"
+    echo -e "available packages:\n"
+    for ((i=0; i<${#REPO_LIST[@]}; i++)); do
+      echo "- ${REPO_LIST[${i}]}"
+    done
     ;;
   "--update" | "-u")
     updater
