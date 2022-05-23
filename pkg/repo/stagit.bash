@@ -3,9 +3,9 @@
 PKG_REPO="git://git.codemadness.org/stagit"
 PKG_NAME="${PKG_REPO##*/}"
 
-DEB_DEPS="libgit2-dev"
-RPM_DEPS="libgit2-devel"
-ARCH_DEPS="libgit2"
+DEB_DEPS="libgit2-dev gcc make"
+RPM_DEPS="libgit2-devel gcc make"
+ARCH_DEPS="libgit2 gcc make"
 
 BUILD_DIR="pkg/src/$PKG_NAME"
 INSTALL_CMD="make install"
