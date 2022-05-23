@@ -60,32 +60,32 @@ function remover() {
 }
 
 function dependency_processor() {
-  # Arch
-  if [ ! "$(grep -i arch /etc/os-release)" == "" ]; then
-    echo "$(grep -i ARCH_DEPS pkg/repo/$PACKAGE.bash | \
-      sed 's/ARCH_DEPS//g' | \
-      sed 's/=//g' | \
-      sed 's/"//g')" | \
-    xargs sudo pacman -S --noconfirm
-  fi
+  case "$(cat /etc/os-release)" in
+    *debian*)
+      HOTSWAP="DEB_DEPS"
+      PACK="apt-get"
+      PACK_ARG="install"
+      PARG_ARG_ADTL="-y"
+      ;;
+    *arch*)
+      HOTSWAP="ARCH_DEPS"
+      PACK="pacman -S --noconfirm"
+      PACK_ARG="-S"
+      PACK_ARG_ADTL="--noconfirm"
+      ;;
+    *fedora*)
+      HOTSWAP="RPM_DEPS"
+      PACK="dnf"
+      PACK_ARG="install"
+      PACK_ARG_ADTL="-y"
+      ;;
+  esac
 
-  # Debian
-  if [ ! "$(grep -i debian /etc/os-release)" == "" ]; then
-    echo "$(grep -i DEB_DEPS pkg/repo/$PACKAGE.bash | \
-      sed 's/DEB_DEPS//g' | \
-      sed 's/=//g' | \
-      sed 's/"//g')" | \
-    xargs sudo apt-get install -y
-  fi
-  
-  # Fedora
-  if [ ! "$(grep -i fedora /etc/os-release)" == "" ]; then
-    echo "$(grep -i RPM_DEPS pkg/repo/$PACKAGE.bash | \
-      sed 's/RPM_DEPS//g' | \
-      sed 's/=//g' | \
-      sed 's/"//g')" | \
-    xargs sudo dnf install -y
-  fi
+  echo "$(grep -i $HOTSWAP pkg/repo/$PACKAGE.bash | \
+  sed "s|$HOTSWAP||g" | \
+  sed 's/=//g' | \
+  sed 's/"//g')" | \
+  xargs sudo "$PACK" "$PACK_ARG" "$PACK_ARG_ADTL"
 }
 
 function installer() {
