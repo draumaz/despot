@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+if [[ ! "$SHELL" == *"bash"* ]]; then
+cat << EOF
+ERROR: bash is not the current shell.
+Please install bash to use despot.
+EOF
+exit
+fi
+
 export VERSION="0.01.5"
 
 function meta_text() {
@@ -97,6 +105,10 @@ function installer() {
 
 if [ ! -e pkg/src ]; then mkdir -pv pkg/src; fi
 
+OPTION="$1"
+PACKAGE="$2"
+OVERFLOW="$3"
+
 PKG_LIST=(pkg/src/*)
 for ((i=0; i<${#PKG_LIST[@]}; i++)); do
   PKG_LIST[i]=$(echo ${PKG_LIST[i]} | \
@@ -109,10 +121,6 @@ for ((i=0; i<${#REPO_LIST[@]}; i++)); do
     sed 's|pkg/repo/||g' | \
     sed 's/.bash//g')
 done
-
-OPTION="$1"
-PACKAGE="$2"
-OVERFLOW="$3"
 
 if [ -z "$OPTION" ]; then OPTION="--help"; fi
 
