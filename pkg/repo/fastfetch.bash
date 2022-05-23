@@ -5,6 +5,7 @@ PKG_NAME="${PKG_REPO##*/}"
 
 DEB_DEPS="gcc cmake pkg-config"
 RPM_DEPS="gcc cmake pkgconf-pkg-config"
+ARCH_DEPS="gcc cmake pkgconf"
 
 BUILD_DIR="pkg/src/$PKG_NAME"
 INSTALL_CMD="cp -v fastfetch flashfetch /usr/local/bin/"

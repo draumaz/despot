@@ -58,6 +58,15 @@ remover() {
 }
 
 dependency_processor() {
+  # Arch
+  if [ ! "$(grep -i arch /etc/os-release)" == "" ]; then
+    echo "$(grep -i ARCH_DEPS pkg/repo/$PACKAGE.bash | \
+      sed 's/ARCH_DEPS//g' | \
+      sed 's/=//g' | \
+      sed 's/"//g')" | \
+    xargs sudo pacman -S --noconfirm
+  fi
+
   # Debian
   if [ ! "$(grep -i debian /etc/os-release)" == "" ]; then
     echo "$(grep -i DEB_DEPS pkg/repo/$PACKAGE.bash | \
