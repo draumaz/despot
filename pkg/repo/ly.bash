@@ -4,6 +4,7 @@ PKG_REPO="https://github.com/fairyglade/ly"
 PKG_NAME="${PKG_REPO##*/}"
 
 DEB_DEPS="build-essential libpam0g-dev libxcb-xkb-dev"
+ARCH_DEPS="pam libxcb"
 
 BUILD_DIR="pkg/src/$PKG_NAME"
 INSTALL_CMD="make install"
@@ -17,30 +18,30 @@ function sources() {
 function uninstall() {
   cd $BUILD_DIR
 
-  printf "${ENV_GREEN}uninstalling: $PKG_NAME${ENV_NORM}\n"
+  printf "uninstalling: $PKG_NAME\n"
   if sudo $UNINSTALL_CMD; then
-    printf "${ENV_GREEN}uninstalled.${ENV_NORM}\n"
+    printf "uninstalled.\n"
   else
-    printf "${ENV_RED}failed to uninstall.${ENV_NORM}\n"
+    printf "failed to uninstall.\n"
     exit
   fi
 }
 
 function build() {
-  printf "${ENV_GREEN}working on: $PKG_NAME${ENV_NORM}\n"
+  printf "working on: $PKG_NAME\n"
 
   cd $BUILD_DIR
   sudo $CLEAN_CMD
 
   if make -{j,l}$(nproc); then true; else
-    printf "${ENV_RED}failed to compile.${ENV_NORM}\n"
+    printf "failed to compile.\n"
     exit
   fi
 
   if sudo $INSTALL_CMD; then
-    printf "${ENV_GREEN}installed.${ENV_NORM}\n"
+    printf "installed.\n"
   else
-    printf "${ENV_RED}failed to install.${ENV_NORM}\n"
+    printf "failed to install.\n"
     exit
   fi
 

@@ -14,15 +14,15 @@ function sources() {
 }
 
 function build() {
-  printf "${ENV_GREEN}working on: $PKG_NAME${ENV_NORM}\n"
+  printf "working on: $PKG_NAME\n"
 
   cd $BUILD_DIR
   bash make.sh
   
   if sudo $INSTALL_CMD; then 
-    printf "${ENV_GREEN}installed.${ENV_NORM}\n"
+    printf "installed.\n"
   else
-    printf "${ENV_RED}failed to install.${ENV_NORM}\n"
+    printf "failed to install.\n"
     exit
   fi
 

@@ -17,26 +17,26 @@ function sources() {
 }
 
 function build() {
-  printf "${ENV_GREEN}working on: $PKG_NAME${ENV_NORM}\n"
+  printf "working on: $PKG_NAME\n"
   
   cd $BUILD_DIR
   mkdir -p build
   cd build
   
   if cmake ..; then true; else
-    printf "${ENV_RED}failed to generate makefile.${ENV_NORM}\n"
+    printf "failed to generate makefile.\n"
     exit
   fi
   
   if make -{j,l}$(nproc); then true; else
-    printf "${ENV_RED}failed to compile.${ENV_NORM}\n"
+    printf "failed to compile.\n"
     exit
   fi
 
   if sudo $INSTALL_CMD; then
-    printf "${ENV_GREEN}installed.${ENV_NORM}\n"
+    printf "installed.\n"
   else
-    printf "${ENV_RED}failed to install.${ENV_NORM}\n"
+    printf "failed to install.\n"
     exit
   fi
   

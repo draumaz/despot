@@ -25,6 +25,8 @@ function uninstall() {
 }
 
 function build() {
+  printf "working on: $PKG_NAME\n"
+  
   cd $BUILD_DIR
   sudo $CLEAN_CMD
 
@@ -35,17 +37,15 @@ function build() {
     patch "$PATCH_TARGET" < "$PATCH_PATH"
   fi
 
-  printf "${ENV_GREEN}working on: $PKG_NAME${ENV_NORM}\n"
-
   if make -{j,l}$(nproc); then true; else
-    printf "${ENV_RED}failed to compile.${ENV_NORM}\n"
+    printf "failed to compile.\n"
     exit
   fi
 
   if sudo $INSTALL_CMD; then
-    printf "${ENV_GREEN}installed.${ENV_NORM}\n"
+    printf "installed.\n"
   else
-    printf "${ENV_RED}failed to install.${ENV_NORM}\n"
+    printf "failed to install.\n"
     exit
   fi
 
