@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export VERSION="0.01.4"
+export VERSION="0.01.5"
 
 export ENV_GREEN="\033[0;32m"
 export ENV_NORM="\033[0m"
@@ -28,15 +28,12 @@ OVERFLOW="$3"
 if [ -z "$OPTION" ]; then OPTION="--help"; fi
 
 updater() {
-  echo -n "updating despot repo..."
-  git pull > /dev/null 2>&1
-  echo -e " done\n"
-  for l in $PKG_LIST; do
-    echo "checking: $l"
-    cd pkg/src/"$l"
-    git pull
-    echo
-    cd ../../..
+  echo "updating: despot repo"
+  git pull; echo
+  for ((i=0; i<${#PKG_LIST[@]}; i++)); do
+    echo "updating: ${PKG_LIST[i]}"
+    cd pkg/src/"${PKG_LIST[i]}"
+    git pull; cd ../../..; echo
   done
 }
 
