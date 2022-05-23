@@ -3,9 +3,11 @@
 PKG_REPO="https://github.com/dpayne/cli-visualizer"
 PKG_NAME="${PKG_REPO##*/}"
 
-DEB_DEPS="libfftw3-dev libncursesw5-dev cmake gcc g++ libpulse-dev"
-RPM_DEPS="fftw-devel ncurses-devel cmake gcc g++ pulseaudio-libs-devel"
-ARCH_DEPS="fftw ncurses cmake"
+true << EOF
+DEB_DEPS libfftw3-dev libncursesw5-dev cmake gcc g++ libpulse-dev
+RPM_DEPS fftw-devel ncurses-devel cmake gcc g++ pulseaudio-libs-devel
+ARCH_DEPS ftw ncurses cmake
+EOF
 
 BUILD_DIR="pkg/src/$PKG_NAME"
 INSTALL_CMD="make install"

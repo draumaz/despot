@@ -81,11 +81,9 @@ function dependency_processor() {
       ;;
   esac
 
-  echo "$(grep -i $HOTSWAP pkg/repo/$PACKAGE.bash | \
-  sed "s|$HOTSWAP||g" | \
-  sed 's/=//g' | \
-  sed 's/"//g')" | \
-  xargs sudo "$PACK" "$PACK_ARG" "$PACK_ARG_ADTL"
+  echo "$(grep -i $HOTSWAP pkg/repo/$PACKAGE.bash)" | \
+    sed "s|$HOTSWAP ||g" | \
+    xargs sudo "$PACK" "$PACK_ARG" "$PACK_ARG_ADTL"
 }
 
 function installer() {
