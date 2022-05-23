@@ -3,6 +3,8 @@
 PKG_REPO="https://git.suckless.org/st"
 PKG_NAME="${PKG_REPO##*/}"
 
+# this package has no dependencies.
+
 BUILD_DIR="pkg/src/$PKG_NAME"
 INSTALL_CMD="make install"
 UNINSTALL_CMD="make uninstall"

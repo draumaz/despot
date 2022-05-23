@@ -3,8 +3,9 @@
 PKG_REPO="https://github.com/fairyglade/ly"
 PKG_NAME="${PKG_REPO##*/}"
 
-DEB_DEPS="build-essential libpam0g-dev libxcb-xkb-dev"
-ARCH_DEPS="pam libxcb"
+DEB_DEPS="gcc make libpam0g-dev libxcb-xkb-dev build-essential"
+DEB_DEPS="gcc make pam-devel libxcb-devel"
+ARCH_DEPS="gcc make pam libxcb"
 
 BUILD_DIR="pkg/src/$PKG_NAME"
 INSTALL_CMD="make install"

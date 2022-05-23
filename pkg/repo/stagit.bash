@@ -5,6 +5,7 @@ PKG_NAME="${PKG_REPO##*/}"
 
 DEB_DEPS="libgit2-dev"
 RPM_DEPS="libgit2-devel"
+ARCH_DEPS="libgit2"
 
 BUILD_DIR="pkg/src/$PKG_NAME"
 INSTALL_CMD="make install"
