@@ -2,32 +2,29 @@
 
 export VERSION="0.01.5"
 
-export ENV_GREEN="\033[0;32m"
-export ENV_NORM="\033[0m"
-export ENV_RED="\033[0;31m"
+function meta_text() {
+  case $1 in
+    "v")
+      echo "despot ${VERSION}"
+      ;;
+    "h")
+      cat << EOF
+./despot [cmd]
+      
+commands:
+--catalog       | display packages available for build
+--help          | show this screen
+--install [PKG] | compile a package
+--list          | list all directories in pkg/src
+--remove [PKG]  | remove given package 
+--update        | git pull pkg/src & pkg/repo
+--version       | display current version of despot
+EOF
+      ;;
+  esac
+}
 
-if [ ! -e pkg/src ]; then mkdir -p pkg/src; fi
-
-PKG_LIST=(pkg/src/*)
-for ((i=0; i<${#PKG_LIST[@]}; i++)); do
-  PKG_LIST[i]=$(echo ${PKG_LIST[i]} | \
-    sed 's|pkg/src/||g')
-done
-
-REPO_LIST=(pkg/repo/*.bash)
-for ((i=0; i<${#REPO_LIST[@]}; i++)); do
-  REPO_LIST[i]=$(echo ${REPO_LIST[i]} | \
-    sed 's|pkg/repo/||g' | \
-    sed 's/.bash//g')
-done
-
-OPTION="$1"
-PACKAGE="$2"
-OVERFLOW="$3"
-
-if [ -z "$OPTION" ]; then OPTION="--help"; fi
-
-updater() {
+function updater() {
   echo "updating: despot repo"
   git pull; echo
   for ((i=0; i<${#PKG_LIST[@]}; i++)); do
@@ -37,7 +34,7 @@ updater() {
   done
 }
 
-remover() {
+function remover() {
   if [ ! -z "$PACKAGE" ]; then
     if [ ! -f pkg/repo/"$PACKAGE".bash ]; then
       echo "ERROR: draumaz has yet to write a build script for $PACKAGE"
@@ -54,7 +51,7 @@ remover() {
   fi
 }
 
-dependency_processor() {
+function dependency_processor() {
   # Arch
   if [ ! "$(grep -i arch /etc/os-release)" == "" ]; then
     echo "$(grep -i ARCH_DEPS pkg/repo/$PACKAGE.bash | \
@@ -83,38 +80,41 @@ dependency_processor() {
   fi
 }
 
-installer() {
-  # Install package $PACKAGE
+function installer() {
   if [ ! -f pkg/repo/"$PACKAGE".bash ]; then
-    echo "ERROR: draumaz has yet to write a build script for $PACKAGE"
+    echo "ERROR: no build script available for $PACKAGE"
     exit
-  else if [ ! -e pkg/src/"$PACKAGE" ]; then
+  fi
+  if [ ! -e pkg/src/"$PACKAGE" ]; then
     echo "fetching sources for $PACKAGE"
-    bash pkg/repo/"$PACKAGE".bash sources #> /dev/null 2>&1
-  fi fi
+    bash pkg/repo/"$PACKAGE".bash sources
+  fi
   dependency_processor
   bash pkg/repo/"$PACKAGE".bash build
 }
 
-meta_text() {
-  case $1 in
-    "v")
-      echo "despot ${VERSION}"
-      ;;
-    "h")
-      echo "./despot [cmd]"
-      echo ""
-      echo "commands:"
-      echo "--catalog       | display packages available for build"
-      echo "--help          | show this screen"
-      echo "--install [PKG] | compile a package"
-      echo "--list          | list all directories in pkg/src"
-      echo "--remove [PKG]  | remove given package"       
-      echo "--update        | git pull pkg/src & pkg/repo"
-      echo "--version       | display current version of despot"
-      ;;
-  esac
-}
+# Entry
+
+if [ ! -e pkg/src ]; then mkdir -pv pkg/src; fi
+
+PKG_LIST=(pkg/src/*)
+for ((i=0; i<${#PKG_LIST[@]}; i++)); do
+  PKG_LIST[i]=$(echo ${PKG_LIST[i]} | \
+    sed 's|pkg/src/||g')
+done
+
+REPO_LIST=(pkg/repo/*.bash)
+for ((i=0; i<${#REPO_LIST[@]}; i++)); do
+  REPO_LIST[i]=$(echo ${REPO_LIST[i]} | \
+    sed 's|pkg/repo/||g' | \
+    sed 's/.bash//g')
+done
+
+OPTION="$1"
+PACKAGE="$2"
+OVERFLOW="$3"
+
+if [ -z "$OPTION" ]; then OPTION="--help"; fi
 
 arr=("$@")
 
