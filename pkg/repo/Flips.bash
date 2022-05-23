@@ -3,7 +3,9 @@
 PKG_REPO="https://github.com/Alcaro/Flips"
 PKG_NAME="${PKG_REPO##*/}"
 
-DEB_DEPS="g++ build-essential pkg-config libgtk-3-dev"
+DEB_DEPS="g++ pkg-config build-essential"
+RPM_DEPS="g++ pkgconf-pkg-config"
+ARCH_DEPS="g++ pkgconf make"
 
 BUILD_DIR="pkg/src/$PKG_NAME"
 INSTALL_CMD="cp -v flips /usr/local/bin/"

@@ -5,6 +5,7 @@ PKG_NAME="${PKG_REPO##*/}"
 
 DEB_DEPS="libfftw3-dev libncursesw5-dev libpulse-dev cmake gcc g++"
 RPM_DEPS="fftw-devel ncurses-devel pulseaudio-libs-devel cmake gcc g++"
+ARCH_DEPS="ncurses fftw cmake"
 
 BUILD_DIR="pkg/src/$PKG_NAME"
 INSTALL_CMD="make install"
