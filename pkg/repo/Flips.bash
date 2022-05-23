@@ -14,15 +14,15 @@ function sources() {
 }
 
 function build() {
-  printf "working on: $PKG_NAME\n"
+  printf "$PKG_NAME: working\n"
 
   cd $BUILD_DIR
   bash make.sh
   
   if sudo $INSTALL_CMD; then 
-    printf "installed.\n"
+    printf "$PKG_NAME: installed.\n"
   else
-    printf "failed to install.\n"
+    printf "$PKG_NAME: failed to install.\n"
     exit
   fi
 

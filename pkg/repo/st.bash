@@ -15,37 +15,37 @@ function sources() {
 function uninstall() {
   cd $BUILD_DIR
 
-  echo "uninstalling: $PKG_NAME"
+  echo "$PKG_NAME: uninstalling"
   if sudo $UNINSTALL_CMD; then
-    echo "uninstalled."
+    echo "$PKG_NAME: uninstalled."
   else
-    echo "failed to uninstall."
+    echo "$PKG_NAME: failed to uninstall."
     exit
   fi
 }
 
 function build() {
-  printf "working on: $PKG_NAME\n"
-  
+  printf "$PKG_NAME: working\n"
+
   cd $BUILD_DIR
   sudo $CLEAN_CMD
 
-  echo -n "do you need to use a patchfile? [y/n]: "; read OPT0
+  echo -n "$PKG_NAME: do you need to use a patchfile? [y/n]: "; read OPT0
   if [ "$OPT0" == "y" ]; then
-    echo -n "file to patch: "; read PATCH_TARGET
-    echo -n "patchfile path: "; read PATCH_PATH
+    echo -n "$PKG_NAME: file to patch: "; read PATCH_TARGET
+    echo -n "$PKG_NAME: patchfile path: "; read PATCH_PATH
     patch "$PATCH_TARGET" < "$PATCH_PATH"
   fi
 
   if make -{j,l}$(nproc); then true; else
-    printf "failed to compile.\n"
+    printf "$PKG_NAME: failed to compile.\n"
     exit
   fi
 
   if sudo $INSTALL_CMD; then
-    printf "installed.\n"
+    printf "$PKG_NAME: installed.\n"
   else
-    printf "failed to install.\n"
+    printf "$PKG_NAME: failed to install.\n"
     exit
   fi
 

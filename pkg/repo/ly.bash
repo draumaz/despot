@@ -18,30 +18,30 @@ function sources() {
 function uninstall() {
   cd $BUILD_DIR
 
-  printf "uninstalling: $PKG_NAME\n"
+  printf "$PKG_NAME: uninstalling\n"
   if sudo $UNINSTALL_CMD; then
-    printf "uninstalled.\n"
+    printf "$PKG_NAME: uninstalled.\n"
   else
-    printf "failed to uninstall.\n"
+    printf "$PKG_NAME: failed to uninstall.\n"
     exit
   fi
 }
 
 function build() {
-  printf "working on: $PKG_NAME\n"
+  printf "$PKG_NAME: working\n"
 
   cd $BUILD_DIR
   sudo $CLEAN_CMD
 
   if make -{j,l}$(nproc); then true; else
-    printf "failed to compile.\n"
+    printf "$PKG_NAME: failed to compile.\n"
     exit
   fi
 
   if sudo $INSTALL_CMD; then
-    printf "installed.\n"
+    printf "$PKG_NAME: installed.\n"
   else
-    printf "failed to install.\n"
+    printf "$PKG_NAME: failed to install.\n"
     exit
   fi
 
