@@ -65,7 +65,7 @@ function dependency_processor() {
       HOTSWAP="DEB_DEPS"
       PACK="apt-get"
       PACK_ARG="install"
-      PARG_ARG_ADTL="-y"
+      PACK_ARG_ADTL="-y"
       ;;
     *arch*)
       HOTSWAP="ARCH_DEPS"
