@@ -11,10 +11,6 @@ BUILD_DIR="pkg/src/$PKG_NAME"
 INSTALL_CMD="cp -v flips /usr/local/bin/"
 CLEAN_CMD="rm -rf flips"
 
-function sources() {
-  git clone $PKG_REPO $BUILD_DIR
-}
-
 function build() {
   printf "$PKG_NAME: working\n"
 

@@ -9,10 +9,6 @@ BUILD_DIR="pkg/src/$PKG_NAME"
 INSTALL_CMD="make install"
 UNINSTALL_CMD="make uninstall"
 
-function sources() {
-  git clone $PKG_REPO $BUILD_DIR
-}
-
 function uninstall() {
   cd $BUILD_DIR
 

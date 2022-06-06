@@ -12,10 +12,6 @@ INSTALL_CMD="cp -v fastfetch flashfetch /usr/local/bin/"
 UNINSTALL_CMD=""
 CLEAN_CMD="rm -rf build"
 
-function sources() {
-  git clone $PKG_REPO $BUILD_DIR
-}
-
 function build() {
   printf "$PKG_NAME: working\n"
   

@@ -12,10 +12,6 @@ INSTALL_CMD="ninja install"
 UNINSTALL_CMD=""
 CLEAN_CMD="rm -rf build"
 
-function sources() {
-  git clone $PKG_REPO $BUILD_DIR
-}
-
 function build() {
   printf "$PKG_NAME: working\n"
 

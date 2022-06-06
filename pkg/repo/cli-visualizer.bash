@@ -12,10 +12,6 @@ INSTALL_CMD="make install"
 UNINSTALL_CMD=""
 CLEAN_CMD="rm -rf CMakeFiles vis"
 
-function sources() {
-  git clone $PKG_REPO $BUILD_DIR
-}
-
 function build() {
   printf "$PKG_NAME: working\n"
 

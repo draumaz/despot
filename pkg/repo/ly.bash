@@ -12,10 +12,6 @@ INSTALL_CMD="make install"
 UNINSTALL_CMD="make uninstall"
 CLEAN_CMD="rm -rf bin obj"
 
-function sources() {
-  git clone --recursive $PKG_REPO $BUILD_DIR
-}
-
 function uninstall() {
   cd $BUILD_DIR
 

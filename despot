@@ -92,7 +92,11 @@ function installer() {
   fi
   if [ ! -e pkg/src/"$PACKAGE" ]; then
     echo "fetching sources for $PACKAGE"
-    bash pkg/repo/"$PACKAGE".bash sources
+    git clone \
+      "$(grep -i "PKG_REPO=" pkg/repo/"$PACKAGE".bash | \
+        sed 's|"||g' | \
+        sed 's|PKG_REPO=||g')" \
+    pkg/src/"$PACKAGE"
   fi
   dependency_processor
   bash pkg/repo/"$PACKAGE".bash build

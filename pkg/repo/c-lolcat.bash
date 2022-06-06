@@ -7,10 +7,6 @@ PKG_NAME="c-lolcat"
 
 BUILD_DIR="pkg/src/$PKG_NAME"
 
-function sources() {
-  git clone $PKG_REPO $BUILD_DIR
-}
-
 function uninstall() {
   cd $BUILD_DIR
 
