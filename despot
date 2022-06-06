@@ -37,8 +37,8 @@ function updater() {
   git pull --quiet
   for ((i=0; i<${#PKG_LIST[@]}; i++)); do
     cd pkg/src/"${PKG_LIST[i]}"
-    TOUCH_PULL=$(git pull --quiet)
-    if [ ! "$TOUCH_PULL" == "" ]; then 
+    TOUCH_PULL=$(git pull)
+    if [ ! "$TOUCH_PULL" == "Already up to date." ]; then 
       PKGS_TO_UPDATE+=("${PKG_LIST[i]}")
     fi
     cd ../../..
