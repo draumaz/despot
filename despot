@@ -3,12 +3,12 @@
 if [[ ! "$SHELL" == *"bash"* ]]; then
 cat << EOF
 ERROR: bash is not the current shell.
-Please install bash to use despot.
+please install bash to use despot.
 EOF
 exit
 fi
 
-export VERSION="0.01.5"
+export VERSION="0.01.6"
 
 function meta_text() {
   case $1 in
@@ -48,15 +48,13 @@ function updater() {
 function remover() {
   if [ ! -z "$PACKAGE" ]; then
     if [ ! -f pkg/repo/"$PACKAGE".bash ]; then
-      echo "ERROR: draumaz has yet to write a build script for $PACKAGE"
+      echo "ERROR: no build script available for $PACKAGE"
       exit
     else if [ ! -e pkg/src/"$PACKAGE" ]; then
-      echo -e "ERROR: no sources for $PACKAGE in pkg/src\nThis might not work."
+      echo -e "ERROR: no sources for $PACKAGE in pkg/src, this might not work"
     fi fi
     bash pkg/repo/"$PACKAGE".bash uninstall
     echo "uninstalled."
-  else
-    echo "ERROR: no package name provided for removal."
   fi
 }
 
