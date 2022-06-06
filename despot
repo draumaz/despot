@@ -23,9 +23,9 @@ commands:
 --catalog       | display packages available for build
 --help          | show this screen
 --install [PKG] | compile a package
---list          | list all directories in pkg/src
+--list          | list downloaded sources
 --remove [PKG]  | remove given package 
---update        | git pull pkg/src & pkg/repo
+--update        | pull sources for updates
 --version       | display current version of despot
 EOF
       ;;
@@ -51,12 +51,10 @@ function remover() {
       echo "ERROR: draumaz has yet to write a build script for $PACKAGE"
       exit
     else if [ ! -e pkg/src/"$PACKAGE" ]; then
-      echo "ERROR: no sources for $PACKAGE in pkg/src"
-      exit
-    else
-      bash pkg/repo/"$PACKAGE".bash uninstall
-      echo "uninstalled."
+      echo -e "ERROR: no sources for $PACKAGE in pkg/src\nThis might not work."
     fi fi
+    bash pkg/repo/"$PACKAGE".bash uninstall
+    echo "uninstalled."
   else
     echo "ERROR: no package name provided for removal."
   fi
@@ -140,7 +138,7 @@ case "$OPTION" in
     meta_text "h"
     ;;
   "--list" | "-l")
-    echo -e "installed packages:\n"
+    echo -e "downloaded sources:\n"
     for ((i=0; i<${#PKG_LIST[@]}; i++)); do
       echo "- ${PKG_LIST[${i}]}"
     done
@@ -154,7 +152,8 @@ case "$OPTION" in
   "--catalog" | "-c")
     echo -e "available packages:\n"
     for ((i=0; i<${#REPO_LIST[@]}; i++)); do
-      echo "- ${REPO_LIST[${i}]}"
+      echo -n "- ${REPO_LIST[${i}]}"
+      if [ -e "pkg/src/${REPO_LIST[${i}]}" ]; then echo " [DOWNLOADED]"; else echo; fi
     done
     ;;
   "--update" | "-u")
