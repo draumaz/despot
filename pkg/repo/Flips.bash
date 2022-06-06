@@ -5,8 +5,6 @@ PKG_NAME="${PKG_REPO##*/}"
 
 true << EOF
 DEB_DEPS g++ pkg-config build-essential
-RPM_DEPS g++ pkgconf-pkg-config
-ARCH_DEPS g++ pkgconf make
 EOF
 
 BUILD_DIR="pkg/src/$PKG_NAME"

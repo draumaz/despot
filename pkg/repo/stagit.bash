@@ -5,8 +5,6 @@ PKG_NAME="${PKG_REPO##*/}"
 
 true << EOF
 DEB_DEPS libgit2-dev gcc make
-RPM_DEPS libgit2-devel gcc make
-ARCH_DEPS libgit2 gcc make
 EOF
 
 BUILD_DIR="pkg/src/$PKG_NAME"

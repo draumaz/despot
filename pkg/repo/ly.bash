@@ -5,8 +5,6 @@ PKG_NAME="${PKG_REPO##*/}"
 
 true << EOF
 DEB_DEPS gcc make libpam0g-dev libxcb-xkb-dev build-essential
-RPM_DEPS gcc make pam-devel libxcb-devel
-ARCH_DEPS gcc make pam libxcb
 EOF
 
 BUILD_DIR="pkg/src/$PKG_NAME"

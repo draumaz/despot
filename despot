@@ -33,12 +33,10 @@ EOF
 }
 
 function updater() {
-  echo "updating: despot repo"
-  git pull; echo
+  git pull --quiet
   for ((i=0; i<${#PKG_LIST[@]}; i++)); do
-    echo "updating: ${PKG_LIST[i]}"
     cd pkg/src/"${PKG_LIST[i]}"
-    git pull; cd ../../..; echo
+    git pull --quiet; cd ../../..
   done
 }
 
@@ -67,23 +65,26 @@ function dependency_processor() {
       PACK_ARG="install"
       PACK_ARG_ADTL="-y"
       ;;
-    *arch*)
-      HOTSWAP="ARCH_DEPS"
-      PACK="pacman -S --noconfirm"
-      PACK_ARG="-S"
-      PACK_ARG_ADTL="--noconfirm"
-      ;;
-    *fedora*)
-      HOTSWAP="RPM_DEPS"
-      PACK="dnf"
-      PACK_ARG="install"
-      PACK_ARG_ADTL="-y"
-      ;;
+    # ===
+    # not currently used
+    # ===
+    #*arch*)
+    #  HOTSWAP="ARCH_DEPS"
+    #  PACK="pacman -S --noconfirm"
+    #  PACK_ARG="-S"
+    # PACK_ARG_ADTL="--noconfirm"
+    # ;;
+    #*fedora*)
+    #  HOTSWAP="RPM_DEPS"
+    #  PACK="dnf"
+    #  PACK_ARG="install"
+    #  PACK_ARG_ADTL="-y"
+    #  ;;
   esac
 
-  echo "$(grep -i $HOTSWAP pkg/repo/$PACKAGE.bash)" | \
-    sed "s|$HOTSWAP ||g" | \
-    xargs sudo "$PACK" "$PACK_ARG" "$PACK_ARG_ADTL"
+  DEPS_TOINSTALL="$(grep -i $HOTSWAP pkg/repo/$PACKAGE.bash | sed "s|$HOTSWAP ||g")"
+  if [ "$DEPS_TOINSTALL" == "" ]; then return; fi
+  echo "$DEPS_TOINSTALL" | xargs sudo "$PACK" "$PACK_ARG" "$PACK_ARG_ADTL"
 }
 
 function installer() {

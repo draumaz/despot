@@ -5,8 +5,6 @@ PKG_NAME="${PKG_REPO##*/}"
 
 true << EOF
 DEB_DEPS gcc cmake make pkg-config
-RPM_DEPS gcc cmake make pkgconf-pkg-config
-ARCH_DEPS gcc cmake make pkgconf
 EOF
 
 BUILD_DIR="pkg/src/$PKG_NAME"
