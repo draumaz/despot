@@ -4,7 +4,9 @@ if [[ ! "$SHELL" == *"bash"* ]]; then
 cat << EOF
 ERROR: bash is not the current shell.
 please install bash to use despot.
-EOF; exit; fi
+EOF
+exit
+fi
 
 if [[ ! "$(cat /etc/os-release)" == *"debian"* ]]; then
 cat << EOF
@@ -13,14 +15,15 @@ WARNING: despot is made for debian-based systems.
 dependency management will not work.
 ===
 
-EOF; fi
+EOF
+fi
 
-export DESPOT_VERSION="0.01.6"
+export VERSION="0.01.6"
 
 function meta_text() {
   case $1 in
     "v")
-      echo "despot ${DESPOT_VERSION}"
+      echo "despot ${VERSION}"
       ;;
     "h")
       cat << EOF
