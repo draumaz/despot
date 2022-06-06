@@ -33,10 +33,15 @@ EOF
 }
 
 function updater() {
+  echo "checking for src updates"
   git pull --quiet
   for ((i=0; i<${#PKG_LIST[@]}; i++)); do
     cd pkg/src/"${PKG_LIST[i]}"
-    git pull --quiet; cd ../../..
+    TOUCH_PULL=$(git pull --quiet)
+    if [ ! "$TOUCH_PULL" == "" ]; then 
+      PKGS_TO_UPDATE+=("${PKG_LIST[i]}")
+    fi
+    cd ../../..
   done
 }
 
@@ -108,6 +113,8 @@ OPTION="$1"
 PACKAGE="$2"
 OVERFLOW="$3"
 
+PKGS_TO_UPDATE=()
+
 PKG_LIST=(pkg/src/*)
 for ((i=0; i<${#PKG_LIST[@]}; i++)); do
   PKG_LIST[i]=$(echo ${PKG_LIST[i]} | \
@@ -152,6 +159,12 @@ case "$OPTION" in
     ;;
   "--update" | "-u")
     updater
+    if [ "$PKGS_TO_UPDATE" == "" ]; then exit; else
+      for ((i=0; i<${#PKGS_TO_UPDATE[@]}; i++)); do
+        PACKAGE="${PKGS_TO_UPDATE[${i}]}"
+        installer "$PACKAGE"
+      done
+    fi
     ;;
   "--install" | "-i")
     for ((i=1; i<${#arr[@]}; i++)); do
