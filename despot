@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+export DESPOT_VERSION="0.01.5"
+
 if [[ ! "$SHELL" == *"bash"* ]]; then
 cat << EOF
 ERROR: bash is not the current shell.
@@ -18,12 +20,10 @@ dependency management will not work.
 EOF
 fi
 
-export VERSION="0.01.5"
-
 function meta_text() {
   case $1 in
     "v")
-      echo "despot ${VERSION}"
+      echo "despot ${DESPOT_VERSION}"
       ;;
     "h")
       cat << EOF
@@ -104,7 +104,7 @@ function installer() {
 
 function updater() {
   echo "checking for src updates"
-  git pull --quiet
+  git pull --quiet # update build scripts
   for ((i=0; i<${#PKG_LIST[@]}; i++)); do
     cd pkg/src/"${PKG_LIST[i]}"
     TOUCH_PULL=$(git pull) & \
