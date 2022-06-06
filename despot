@@ -8,6 +8,13 @@ EOF
 exit
 fi
 
+if [[ ! "$(cat /etc/os-release)" == *"debian"* ]]; then
+cat << EOF
+WARNING: despot is made for debian-based systems.
+dependency management will not work.
+EOF
+fi
+
 export VERSION="0.01.6"
 
 function meta_text() {
