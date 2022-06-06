@@ -42,25 +42,6 @@ EOF
   esac
 }
 
-function updater() {
-  echo "checking for src updates"
-  git pull --quiet
-  for ((i=0; i<${#PKG_LIST[@]}; i++)); do
-    cd pkg/src/"${PKG_LIST[i]}"
-    TOUCH_PULL=$(git pull)
-    if [ ! "$TOUCH_PULL" == "Already up to date." ]; then 
-      PKGS_TO_UPDATE+=("${PKG_LIST[i]}")
-    fi
-    cd ../../..
-  done
-  if [ "$PKGS_TO_UPDATE" == "" ]; then return; else
-    for ((i=0; i<${#PKGS_TO_UPDATE[@]}; i++)); do
-      PACKAGE="${PKGS_TO_UPDATE[${i}]}"
-      installer "$PACKAGE"
-    done
-  fi
-}
-
 function remover() {
   if [ ! -z "$PACKAGE" ]; then
     if [ ! -f pkg/repo/"$PACKAGE".bash ]; then
@@ -115,6 +96,25 @@ function installer() {
   fi
   dependency_processor
   bash pkg/repo/"$PACKAGE".bash build
+}
+
+function updater() {
+  echo "checking for src updates"
+  git pull --quiet
+  for ((i=0; i<${#PKG_LIST[@]}; i++)); do
+    cd pkg/src/"${PKG_LIST[i]}"
+    TOUCH_PULL=$(git pull)
+    if [ ! "$TOUCH_PULL" == "Already up to date." ]; then 
+      PKGS_TO_UPDATE+=("${PKG_LIST[i]}")
+    fi
+    cd ../../..
+  done
+  if [ "$PKGS_TO_UPDATE" == "" ]; then return; else
+    for ((i=0; i<${#PKGS_TO_UPDATE[@]}; i++)); do
+      PACKAGE="${PKGS_TO_UPDATE[${i}]}"
+      installer "$PACKAGE"
+    done
+  fi
 }
 
 # Entry
