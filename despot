@@ -25,7 +25,7 @@ commands:
 --install [PKG] | compile a package
 --list          | list downloaded sources
 --remove [PKG]  | remove given package 
---update        | pull sources for updates
+--upgrade       | pull sources for updates and recompile
 --version       | display current version of despot
 EOF
       ;;
