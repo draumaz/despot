@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export DESPOT_VERSION="0.01.5"
+export DESPOT_VERSION="0.01.6"
 
 if [[ ! "$SHELL" == *"bash"* ]]; then
 cat << EOF
@@ -107,9 +107,11 @@ function updater() {
   git pull --quiet # update build scripts
   for ((i=0; i<${#PKG_LIST[@]}; i++)); do
     cd pkg/src/"${PKG_LIST[i]}"
-    TOUCH_PULL=$(git pull) & \
-      if [ ! "$TOUCH_PULL" == "Already up to date." ]; then
-        PKGS_TO_UPDATE+=("${PKG_LIST[i]}"); fi & \
+    TOUCH_PULL=$(git pull)
+    if [ ! "$TOUCH_PULL" == "Already up to date." ]; then
+      echo "- '${PKG_LIST[i]}'"
+      PKGS_TO_UPDATE+=("${PKG_LIST[i]}")
+    fi
     cd ../../..
   done
   if [ "$PKGS_TO_UPDATE" == "" ]; then return; else
