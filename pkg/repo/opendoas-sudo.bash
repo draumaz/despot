@@ -13,7 +13,7 @@ function uninstall() {
   cd $BUILD_DIR
 
   printf "$PKG_NAME: uninstalling"
-  if sudo rm -vf "$DOAS_PATH"sudo; then
+  if rm -fv "$DOAS_PATH"sudo; then
     printf "$PKG_NAME: uninstalled.\n"
   else
     printf "$PKG_NAME: failed to uninstall.\n"
@@ -24,7 +24,7 @@ function uninstall() {
 function build() {
   printf "$PKG_NAME: working\n"
   
-  if sudo ln -sv "$DOAS_PATH"doas "$DOAS_PATH"sudo; then 
+  if ln -sv "$DOAS_PATH"doas "$DOAS_PATH"sudo; then 
     printf "$PKG_NAME: installed.\n"
   else
     printf "$PKG_NAME: failed to install.\n"

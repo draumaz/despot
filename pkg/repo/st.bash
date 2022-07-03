@@ -14,7 +14,7 @@ function uninstall() {
   cd $BUILD_DIR
 
   echo "$PKG_NAME: uninstalling"
-  if sudo $UNINSTALL_CMD; then
+  if $UNINSTALL_CMD; then
     echo "$PKG_NAME: uninstalled."
   else
     echo "$PKG_NAME: failed to uninstall."
@@ -26,7 +26,7 @@ function build() {
   printf "$PKG_NAME: working\n"
 
   cd $BUILD_DIR
-  sudo $CLEAN_CMD
+  $CLEAN_CMD
 
   echo -n "$PKG_NAME: do you need to use a patchfile? [y/n]: "; read OPT0
   if [ "$OPT0" == "y" ]; then
@@ -40,14 +40,14 @@ function build() {
     exit
   fi
 
-  if sudo $INSTALL_CMD; then
+  if $INSTALL_CMD; then
     printf "$PKG_NAME: installed.\n"
   else
     printf "$PKG_NAME: failed to install.\n"
     exit
   fi
 
-  sudo $CLEAN_CMD
+  $CLEAN_CMD
 }
 
 $1

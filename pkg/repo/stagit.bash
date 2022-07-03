@@ -16,7 +16,7 @@ function uninstall() {
   cd $BUILD_DIR
 
   printf "$PKG_NAME: uninstalling\n"
-  if sudo $UNINSTALL_CMD; then
+  if $UNINSTALL_CMD; then
     printf "$PKG_NAME: uninstalled.\n"
   else
     printf "$PKG_NAME: failed to uninstall.\n"
@@ -28,21 +28,21 @@ function build() {
   printf "$PKG_NAME: working\n"
   
   cd $BUILD_DIR
-  sudo $CLEAN_CMD
+  $CLEAN_CMD
 
   if make -{j,l}$(nproc); then true; else
     printf "$PKG_NAME: failed to compile.\n"
     exit
   fi
 
-  if sudo $INSTALL_CMD; then
+  if $INSTALL_CMD; then
     printf "$PKG_NAME installed.\n"
   else
     printf "$PKG_NAME: failed to install.\n"
     exit
   fi
   
-  sudo $CLEAN_CMD
+  $CLEAN_CMD
 }
 
 $1
