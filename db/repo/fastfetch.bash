@@ -7,7 +7,7 @@ true << EOF
 DEB_DEPS gcc cmake make pkg-config
 EOF
 
-BUILD_DIR="pkg/src/$PKG_NAME"
+BUILD_DIR="db/src/$PKG_NAME"
 INSTALL_CMD="cp -v fastfetch flashfetch /usr/local/bin/"
 UNINSTALL_CMD=""
 CLEAN_CMD="rm -rf build"

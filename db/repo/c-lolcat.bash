@@ -5,7 +5,7 @@ PKG_NAME="c-lolcat"
 
 # this package has no dependencies.
 
-BUILD_DIR="pkg/src/$PKG_NAME"
+BUILD_DIR="db/src/$PKG_NAME"
 
 function uninstall() {
   cd $BUILD_DIR

@@ -7,7 +7,7 @@ true << EOF
 DEB_DEPS libfftw3-dev libncursesw5-dev cmake gcc g++ libpulse-dev
 EOF
 
-BUILD_DIR="pkg/src/$PKG_NAME"
+BUILD_DIR="db/src/$PKG_NAME"
 INSTALL_CMD="make install"
 UNINSTALL_CMD=""
 CLEAN_CMD="rm -rf CMakeFiles vis"

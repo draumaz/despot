@@ -7,7 +7,7 @@ true << EOF
 DEB_DEPS g++ pkg-config build-essential
 EOF
 
-BUILD_DIR="pkg/src/$PKG_NAME"
+BUILD_DIR="db/src/$PKG_NAME"
 INSTALL_CMD="cp -v flips /usr/local/bin/"
 CLEAN_CMD="rm -rf flips"
 
