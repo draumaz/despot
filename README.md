@@ -17,12 +17,5 @@
 ### learn more
 - ```./despot --help```
 
-## available build scripts
-- <a href="https://github.com/draumaz/despot/tree/main/pkg/repo">pkg/repo</a>
-- the repo will remain extremely small, as i will only be maintaining packages i personally need.
-
 ## contributors
 - <a href="https://github.com/DeltaDove">DeltaDove</a> - project name
-
-## CURRENT ISSUES
-- Some scripts have to constantly request superuser permissions during install.
