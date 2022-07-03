@@ -13,11 +13,11 @@ CLEAN_CMD="rm -f $PKG_NAME"
 function uninstall() {
   cd $BUILD_DIR
 
-  echo "$PKG_NAME: uninstalling"
+  printf "$PKG_NAME: uninstalling\n"
   if $UNINSTALL_CMD; then
-    echo "$PKG_NAME: uninstalled."
+    printf "$PKG_NAME: uninstalled.\n"
   else
-    echo "$PKG_NAME: failed to uninstall."
+    printf "$PKG_NAME: failed to uninstall.\n"
     exit
   fi
 }

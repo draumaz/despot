@@ -12,7 +12,7 @@ export DOAS_PATH="$(whereis doas | awk '{print $2}' | sed 's/doas//g')"
 function uninstall() {
   cd $BUILD_DIR
 
-  printf "$PKG_NAME: uninstalling"
+  printf "$PKG_NAME: uninstalling\n"
   if rm -fv "$DOAS_PATH"sudo; then
     printf "$PKG_NAME: uninstalled.\n"
   else

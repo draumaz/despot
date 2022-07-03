@@ -51,7 +51,6 @@ function remover() {
       echo -e "ERROR: no sources for $PACKAGE in db/src, this might not work"
     fi fi
     su -c 'bash db/repo/"$PACKAGE".bash uninstall'
-    echo "uninstalled."
   fi
 }
 

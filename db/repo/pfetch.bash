@@ -12,7 +12,7 @@ UNINSTALL_CMD="make uninstall"
 function uninstall() {
   cd $BUILD_DIR
 
-  printf "$PKG_NAME: uninstalling"
+  printf "$PKG_NAME: uninstalling\n"
   if $UNINSTALL_CMD; then
     printf "$PKG_NAME: uninstalled.\n"
   else
