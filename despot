@@ -103,7 +103,7 @@ export OPTION="$1"
 export PACKAGE="$2"
 export OVERFLOW="$3"
 
-source db/config.bash
+source db/despot.conf
 
 PKGS_TO_UPDATE=()
 

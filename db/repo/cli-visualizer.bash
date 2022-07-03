@@ -22,7 +22,7 @@ function build() {
     exit
   fi
   
-  if make -{j,l}$(nproc); then true; else
+  if make -{j,l}$DTHREADS; then true; else
     printf "$PKG_NAME: failed to compile.\n"
     exit
   fi

@@ -24,7 +24,7 @@ function build() {
 
   cd $BUILD_DIR
   
-  if make -{j,l}$(nproc) install; then 
+  if make -{j,l}$DTHREADS install; then 
     printf "$PKG_NAME: installed.\n"
   else
     printf "$PKG_NAME: failed to install.\n"
