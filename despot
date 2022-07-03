@@ -55,36 +55,6 @@ function remover() {
   fi
 }
 
-function dependency_processor() {
-  case "$(cat /etc/os-release)" in
-    *debian*)
-      HOTSWAP="DEB_DEPS"
-      PACK="apt-get"
-      PACK_ARG="install"
-      PACK_ARG_ADTL="-y"
-      ;;
-    # ===
-    # not currently used
-    # ===
-    #*arch*)
-    #  HOTSWAP="ARCH_DEPS"
-    #  PACK="pacman -S --noconfirm"
-    #  PACK_ARG="-S"
-    # PACK_ARG_ADTL="--noconfirm"
-    # ;;
-    #*fedora*)
-    #  HOTSWAP="RPM_DEPS"
-    #  PACK="dnf"
-    #  PACK_ARG="install"
-    #  PACK_ARG_ADTL="-y"
-    #  ;;
-  esac
-
-  DEPS_TOINSTALL="$(grep -i $HOTSWAP pkg/repo/$PACKAGE.bash | sed "s|$HOTSWAP ||g")"
-  if [ "$DEPS_TOINSTALL" == "" ]; then return; fi
-  echo "$DEPS_TOINSTALL" | xargs sudo "$PACK" "$PACK_ARG" "$PACK_ARG_ADTL"
-}
-
 function installer() {
   if [ ! -f pkg/repo/"$PACKAGE".bash ]; then
     echo "ERROR: no build script available for $PACKAGE"
@@ -98,7 +68,7 @@ function installer() {
     sed 's|PKG_REPO=||g')" \
     pkg/src/"$PACKAGE"
   fi
-  dependency_processor
+  echo "$(grep -i DEB_DEPS pkg/repo/$PACKAGE.bash | sed 's|DEB_DEPS ||g')" | xargs sudo apt-get install -y
   bash pkg/repo/"$PACKAGE".bash build
 }
 
