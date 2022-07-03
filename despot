@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export DESPOT_VERSION="0.01.7"
+export DESPOT_VERSION="0.01.8"
 
 if [[ ! "$SHELL" == *"bash"* ]]; then
 cat << EOF
@@ -51,7 +51,6 @@ function remover() {
       echo -e "ERROR: no sources for $PACKAGE in db/src, this might not work"
     fi fi
     su -c 'bash db/repo/"$PACKAGE".bash uninstall'
-    echo "uninstalled."
   fi
 }
 
@@ -69,15 +68,14 @@ function installer() {
     db/src/"$PACKAGE"
   fi
   if [ ! "$(cat db/repo/$PACKAGE.bash | grep -i DEB_DEPS)" == "" ]; then
-    echo "$(grep -i DEB_DEPS db/repo/$PACKAGE.bash | sed 's|DEB_DEPS ||g')" | \
-      xargs sudo apt-get install -y # find a way to make this su -c compatible
+    su -c 'grep -i DEB_DEPS db/repo/$PACKAGE.bash | sed "s|DEB_DEPS ||g" | xargs apt-get install -y'
   fi
   su -c 'bash db/repo/"$PACKAGE".bash build'
 }
 
 function updater() {
   echo "checking for src updates"
-  git pull --quiet # update build scripts
+  git pull # update build scripts
   for ((i=0; i<${#PKG_LIST[@]}; i++)); do
     cd db/src/"${PKG_LIST[i]}"
     TOUCH_PULL=$(git pull)

@@ -10,7 +10,7 @@ BUILD_DIR="db/src/$PKG_NAME"
 function uninstall() {
   cd $BUILD_DIR
 
-  printf "$PKG_NAME: uninstalling"
+  printf "$PKG_NAME: uninstalling\n"
   if make -{j,l}$(nproc) uninstall; then
     printf "$PKG_NAME: uninstalled.\n"
   else
