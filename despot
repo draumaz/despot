@@ -44,42 +44,42 @@ EOF
 
 function remover() {
   if [ ! -z "$PACKAGE" ]; then
-    if [ ! -f pkg/repo/"$PACKAGE".bash ]; then
+    if [ ! -f db/repo/"$PACKAGE".bash ]; then
       echo "ERROR: no build script available for $PACKAGE"
       exit
-    else if [ ! -e pkg/src/"$PACKAGE" ]; then
-      echo -e "ERROR: no sources for $PACKAGE in pkg/src, this might not work"
+    else if [ ! -e db/src/"$PACKAGE" ]; then
+      echo -e "ERROR: no sources for $PACKAGE in db/src, this might not work"
     fi fi
-    su -c 'bash pkg/repo/"$PACKAGE".bash uninstall'
+    su -c 'bash db/repo/"$PACKAGE".bash uninstall'
     echo "uninstalled."
   fi
 }
 
 function installer() {
-  if [ ! -f pkg/repo/"$PACKAGE".bash ]; then
+  if [ ! -f db/repo/"$PACKAGE".bash ]; then
     echo "ERROR: no build script available for $PACKAGE"
     exit
   fi
-  if [ ! -e pkg/src/"$PACKAGE" ]; then
+  if [ ! -e db/src/"$PACKAGE" ]; then
     echo "fetching sources for $PACKAGE"
     git clone --recursive \
-    "$(grep -i "PKG_REPO=" pkg/repo/"$PACKAGE".bash | \
+    "$(grep -i "PKG_REPO=" db/repo/"$PACKAGE".bash | \
     sed 's|"||g' | \
     sed 's|PKG_REPO=||g')" \
-    pkg/src/"$PACKAGE"
+    db/src/"$PACKAGE"
   fi
-  if [ ! "$(cat pkg/repo/$PACKAGE.bash | grep -i DEB_DEPS)" == "" ]; then
-    echo "$(grep -i DEB_DEPS pkg/repo/$PACKAGE.bash | sed 's|DEB_DEPS ||g')" | \
-      xargs sudo apt-get install -y
+  if [ ! "$(cat db/repo/$PACKAGE.bash | grep -i DEB_DEPS)" == "" ]; then
+    echo "$(grep -i DEB_DEPS db/repo/$PACKAGE.bash | sed 's|DEB_DEPS ||g')" | \
+      xargs sudo apt-get install -y # find a way to make this su -c compatible
   fi
-  su -c 'bash pkg/repo/"$PACKAGE".bash build'
+  su -c 'bash db/repo/"$PACKAGE".bash build'
 }
 
 function updater() {
   echo "checking for src updates"
   git pull --quiet # update build scripts
   for ((i=0; i<${#PKG_LIST[@]}; i++)); do
-    cd pkg/src/"${PKG_LIST[i]}"
+    cd db/src/"${PKG_LIST[i]}"
     TOUCH_PULL=$(git pull)
     if [ ! "$TOUCH_PULL" == "Already up to date." ]; then
       echo "- '${PKG_LIST[i]}'"
@@ -97,24 +97,26 @@ function updater() {
 
 # Entry
 
-if [ ! -e pkg/src ]; then mkdir -pv pkg/src; fi
+if [ ! -e db/src ]; then mkdir -pv db/src; fi
 
 export OPTION="$1"
 export PACKAGE="$2"
 export OVERFLOW="$3"
 
+source db/despot.conf
+
 PKGS_TO_UPDATE=()
 
-PKG_LIST=(pkg/src/*)
+PKG_LIST=(db/src/*)
 for ((i=0; i<${#PKG_LIST[@]}; i++)); do
   PKG_LIST[i]=$(echo ${PKG_LIST[i]} | \
-    sed 's|pkg/src/||g')
+    sed 's|db/src/||g')
 done
 
-REPO_LIST=(pkg/repo/*.bash)
+REPO_LIST=(db/repo/*.bash)
 for ((i=0; i<${#REPO_LIST[@]}; i++)); do
   REPO_LIST[i]=$(echo ${REPO_LIST[i]} | \
-    sed 's|pkg/repo/||g' | \
+    sed 's|db/repo/||g' | \
     sed 's/.bash//g')
 done
 
@@ -145,7 +147,7 @@ case "$OPTION" in
     echo -e "available packages:\n"
     for ((i=0; i<${#REPO_LIST[@]}; i++)); do
       echo -n "- ${REPO_LIST[${i}]}"
-      if [ -e "pkg/src/${REPO_LIST[${i}]}" ]; then echo " [DOWNLOADED]"; else echo; fi
+      if [ -e "db/src/${REPO_LIST[${i}]}" ]; then echo " [DOWNLOADED]"; else echo; fi
     done
     ;;
   "--update" | "-u")

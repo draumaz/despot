@@ -5,7 +5,7 @@ PKG_NAME="${PKG_REPO##*/}"
 
 # this package has no dependencies.
 
-BUILD_DIR="pkg/src/$PKG_NAME"
+BUILD_DIR="db/src/$PKG_NAME"
 INSTALL_CMD="make install"
 UNINSTALL_CMD="make uninstall"
 CLEAN_CMD="rm -f $PKG_NAME"
@@ -35,7 +35,7 @@ function build() {
     patch "$PATCH_TARGET" < "$PATCH_PATH"
   fi
 
-  if make -{j,l}$(nproc); then true; else
+  if make -{j,l}$DTHREADS; then true; else
     printf "$PKG_NAME: failed to compile.\n"
     exit
   fi

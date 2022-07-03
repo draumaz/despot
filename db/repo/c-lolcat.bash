@@ -1,19 +1,17 @@
 #!/usr/bin/env bash
 
-PKG_REPO="https://github.com/dylanaraps/pfetch"
-PKG_NAME="${PKG_REPO##*/}"
+PKG_REPO="https://github.com/draumaz/lolcat"
+PKG_NAME="c-lolcat"
 
 # this package has no dependencies.
 
-BUILD_DIR="pkg/src/$PKG_NAME"
-INSTALL_CMD="make install"
-UNINSTALL_CMD="make uninstall"
+BUILD_DIR="db/src/$PKG_NAME"
 
 function uninstall() {
   cd $BUILD_DIR
 
   printf "$PKG_NAME: uninstalling"
-  if $UNINSTALL_CMD; then
+  if make -{j,l}$(nproc) uninstall; then
     printf "$PKG_NAME: uninstalled.\n"
   else
     printf "$PKG_NAME: failed to uninstall.\n"
@@ -26,7 +24,7 @@ function build() {
 
   cd $BUILD_DIR
   
-  if $INSTALL_CMD; then 
+  if make -{j,l}$DTHREADS install; then 
     printf "$PKG_NAME: installed.\n"
   else
     printf "$PKG_NAME: failed to install.\n"

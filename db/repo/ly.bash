@@ -7,7 +7,7 @@ true << EOF
 DEB_DEPS gcc make libpam0g-dev libxcb-xkb-dev build-essential
 EOF
 
-BUILD_DIR="pkg/src/$PKG_NAME"
+BUILD_DIR="db/src/$PKG_NAME"
 INSTALL_CMD="make install"
 UNINSTALL_CMD="make uninstall"
 CLEAN_CMD="rm -rf bin obj"
@@ -30,7 +30,7 @@ function build() {
   cd $BUILD_DIR
   $CLEAN_CMD
 
-  if make -{j,l}$(nproc); then true; else
+  if make -{j,l}$DTHREADS; then true; else
     printf "$PKG_NAME: failed to compile.\n"
     exit
   fi
