@@ -68,7 +68,7 @@ function installer() {
     sed 's|PKG_REPO=||g')" \
     pkg/src/"$PACKAGE"
   fi
-  if [ ! $(cat pkg/repo/$PACKAGE.bash | grep -i DEB_DEPS) == "" ]; then
+  if [ ! "$(cat pkg/repo/$PACKAGE.bash | grep -i DEB_DEPS)" == "" ]; then
     echo "$(grep -i DEB_DEPS pkg/repo/$PACKAGE.bash | sed 's|DEB_DEPS ||g')" | \
       xargs sudo apt-get install -y
   fi
