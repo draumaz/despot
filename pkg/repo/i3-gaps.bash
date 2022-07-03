@@ -24,7 +24,7 @@ function build() {
     exit
   fi
   
-  if sudo $INSTALL_CMD; then
+  if $INSTALL_CMD; then
     printf "$PKG_NAME: installed.\n"
   else
     printf "$PKG_NAME: failed to install.\n"
@@ -32,7 +32,8 @@ function build() {
   fi
   
   cd ..
-  sudo $CLEAN_CMD
+  
+  $CLEAN_CMD
 }
 
 $1

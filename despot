@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export DESPOT_VERSION="0.01.6"
+export DESPOT_VERSION="0.01.7"
 
 if [[ ! "$SHELL" == *"bash"* ]]; then
 cat << EOF
@@ -50,7 +50,7 @@ function remover() {
     else if [ ! -e pkg/src/"$PACKAGE" ]; then
       echo -e "ERROR: no sources for $PACKAGE in pkg/src, this might not work"
     fi fi
-    bash pkg/repo/"$PACKAGE".bash uninstall
+    su -c 'bash pkg/repo/"$PACKAGE".bash uninstall'
     echo "uninstalled."
   fi
 }
@@ -68,8 +68,11 @@ function installer() {
     sed 's|PKG_REPO=||g')" \
     pkg/src/"$PACKAGE"
   fi
-  echo "$(grep -i DEB_DEPS pkg/repo/$PACKAGE.bash | sed 's|DEB_DEPS ||g')" | xargs sudo apt-get install -y
-  bash pkg/repo/"$PACKAGE".bash build
+  if [ ! "$(cat pkg/repo/$PACKAGE.bash | grep -i DEB_DEPS)" == "" ]; then
+    echo "$(grep -i DEB_DEPS pkg/repo/$PACKAGE.bash | sed 's|DEB_DEPS ||g')" | \
+      xargs sudo apt-get install -y
+  fi
+  su -c 'bash pkg/repo/"$PACKAGE".bash build'
 }
 
 function updater() {
@@ -96,9 +99,9 @@ function updater() {
 
 if [ ! -e pkg/src ]; then mkdir -pv pkg/src; fi
 
-OPTION="$1"
-PACKAGE="$2"
-OVERFLOW="$3"
+export OPTION="$1"
+export PACKAGE="$2"
+export OVERFLOW="$3"
 
 PKGS_TO_UPDATE=()
 
