@@ -1,0 +1,71 @@
+#!/bin/sh
+
+# Copyright 2022 draumaz
+# Distributed under the terms of the MIT license
+
+PKG_TITLE="fastfetch"
+PKG_AUTHOR="LinusDierheimer"
+PKG_VERSION=1.5.6 #$(\
+#  curl \
+#    --silent \
+#    --location \
+#    --output /dev/null \
+#    --write-out "%{url_effective}\n" \
+#    https://github.com/LinusDierheimer/fastfetch/releases/latest \
+#    | rev | cut -d / -f1 | rev
+#)
+
+package_remove() {
+  rm -rfv \
+    /usr/local/bin/fastfetch \
+    /usr/local/bin/flashfetch \
+    /usr/local/share/bash-completion/completions/fastfetch \
+    /usr/local/share/fastfetch/presets \
+    /usr/local/share/fastfetch/presets/all \
+    /usr/local/share/fastfetch/presets/btw \
+    /usr/local/share/fastfetch/presets/devinfo \
+    /usr/local/share/fastfetch/presets/devinfo-verbose \
+    /usr/local/share/fastfetch/presets/hardware \
+    /usr/local/share/fastfetch/presets/neofetch \
+    /usr/local/share/fastfetch/presets/paleofetch \
+    /usr/local/share/fastfetch/presets/software \
+    /usr/local/share/fastfetch/presets/verbose \
+    /usr/local/share/licenses/fastfetch/LICENSE
+}
+
+dependency_verify() {
+  cmake > /dev/null 2>&1 || die 2 "cmake"
+  pkg-config > /dev/null 2>&1; true || die 2 "pkgconf"
+  test -e $PKG_VERSION.tar.gz || \
+    curl -fLO https://github.com/$PKG_AUTHOR/$PKG_TITLE/archive/refs/tags/$PKG_VERSION.tar.gz;
+  test -e $PKG_TITLE-$PKG_VERSION || tar -xpvf $PKG_VERSION.tar.gz
+  cd $PKG_TITLE-$PKG_VERSION && mkdir -pv build
+}
+
+package_install() {
+  cd build &&
+    cmake .. &&
+    make &&
+    make install &&
+  cd ../..
+}
+
+package_postinstall() {
+  rm -rf $PKG_TITLE-$PKG_VERSION $PKG_VERSION.tar.gz
+}
+
+case "$PKG_LOCK" in
+  install)
+    test ! -e /usr/local/bin/fastfetch || die 0
+    dependency_verify
+    package_install
+    package_postinstall
+    ;;
+  uninstall)
+    test -e /usr/local/bin/fastfetch || die 1
+    package_remove
+    ;;
+  *)
+    exit
+    ;;
+esac

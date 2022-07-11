@@ -1,164 +1,60 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-export DESPOT_VERSION="0.01.8"
+DESPOT_VERSION="0.02"
 
-if [[ ! "$SHELL" == *"bash"* ]]; then
-cat << EOF
-ERROR: bash is not the current shell.
-please install bash to use despot.
-EOF
-exit
-fi
-
-if [[ ! "$(cat /etc/os-release)" == *"debian"* ]]; then
-cat << EOF
-===
-WARNING: despot is made for debian-based systems.
-dependency management will not work.
-===
-
-EOF
-fi
-
-function meta_text() {
-  case $1 in
-    "v")
-      echo "despot ${DESPOT_VERSION}"
+die() {
+  case "$1" in
+    0)
+      echo "package already installed"
+      exit
       ;;
-    "h")
-      cat << EOF
-./despot [cmd]
-      
-commands:
---catalog       | display packages available for build
---help          | show this screen
---install [PKG] | compile a package
---list          | list downloaded sources
---remove [PKG]  | remove given package 
---upgrade       | pull sources for updates and recompile
---version       | display current version of despot
-EOF
+    1)
+      echo "package not installed"
+      exit
+      ;;
+    2)
+      echo "missing dependency $2"
+      exit
+      ;;
+    3)
+      exit
       ;;
   esac
 }
 
-function remover() {
-  if [ ! -z "$PACKAGE" ]; then
-    if [ ! -f db/repo/"$PACKAGE".bash ]; then
-      echo "ERROR: no build script available for $PACKAGE"
-      exit
-    else if [ ! -e db/src/"$PACKAGE" ]; then
-      echo -e "ERROR: no sources for $PACKAGE in db/src, this might not work"
-    fi fi
-    su -c 'bash db/repo/"$PACKAGE".bash uninstall'
-  fi
-}
-
-function installer() {
-  if [ ! -f db/repo/"$PACKAGE".bash ]; then
-    echo "ERROR: no build script available for $PACKAGE"
-    exit
-  fi
-  if [ ! -e db/src/"$PACKAGE" ]; then
-    echo "fetching sources for $PACKAGE"
-    git clone --recursive \
-    "$(grep -i "PKG_REPO=" db/repo/"$PACKAGE".bash | \
-    sed 's|"||g' | \
-    sed 's|PKG_REPO=||g')" \
-    db/src/"$PACKAGE"
-  fi
-  if [ ! "$(cat db/repo/$PACKAGE.bash | grep -i DEB_DEPS)" == "" ]; then
-    su -c 'grep -i DEB_DEPS db/repo/$PACKAGE.bash | sed "s|DEB_DEPS ||g" | xargs apt-get install -y'
-  fi
-  su -c 'bash db/repo/"$PACKAGE".bash build'
-}
-
-function updater() {
-  echo "checking for src updates"
-  git pull # update build scripts
-  for ((i=0; i<${#PKG_LIST[@]}; i++)); do
-    cd db/src/"${PKG_LIST[i]}"
-    TOUCH_PULL=$(git pull)
-    if [ ! "$TOUCH_PULL" == "Already up to date." ]; then
-      echo "- '${PKG_LIST[i]}'"
-      PKGS_TO_UPDATE+=("${PKG_LIST[i]}")
-    fi
-    cd ../../..
-  done
-  if [ "$PKGS_TO_UPDATE" == "" ]; then return; else
-    for ((i=0; i<${#PKGS_TO_UPDATE[@]}; i++)); do
-      PACKAGE="${PKGS_TO_UPDATE[${i}]}"
-      installer "$PACKAGE"
-    done
-  fi
-}
-
-# Entry
-
-if [ ! -e db/src ]; then mkdir -pv db/src; fi
-
-export OPTION="$1"
-export PACKAGE="$2"
-export OVERFLOW="$3"
-
-source db/despot.conf
-
-PKGS_TO_UPDATE=()
-
-PKG_LIST=(db/src/*)
-for ((i=0; i<${#PKG_LIST[@]}; i++)); do
-  PKG_LIST[i]=$(echo ${PKG_LIST[i]} | \
-    sed 's|db/src/||g')
-done
-
-REPO_LIST=(db/repo/*.bash)
-for ((i=0; i<${#REPO_LIST[@]}; i++)); do
-  REPO_LIST[i]=$(echo ${REPO_LIST[i]} | \
-    sed 's|db/repo/||g' | \
-    sed 's/.bash//g')
-done
-
-if [ -z "$OPTION" ]; then OPTION="--help"; fi
-
-arr=("$@")
-
-case "$OPTION" in
-  "--version" | "-v")
-    meta_text "v"
+case "$1" in
+  "version" | "v")
+    echo "despot ${DESPOT_VERSION}"
+    die 3 
     ;;
-  "--help" | "-h")
-    meta_text "h"
-    ;;
-  "--list" | "-l")
-    echo -e "downloaded sources:\n"
-    for ((i=0; i<${#PKG_LIST[@]}; i++)); do
-      echo "- ${PKG_LIST[${i}]}"
-    done
-    ;;
-  "--remove" | "-r")
-    for ((i=1; i<${#arr[@]}; i++)); do
-      PACKAGE="${arr[${i}]}"
-      remover "$PACKAGE"
-    done
-    ;;
-  "--catalog" | "-c")
-    echo -e "available packages:\n"
-    for ((i=0; i<${#REPO_LIST[@]}; i++)); do
-      echo -n "- ${REPO_LIST[${i}]}"
-      if [ -e "db/src/${REPO_LIST[${i}]}" ]; then echo " [DOWNLOADED]"; else echo; fi
-    done
-    ;;
-  "--update" | "-u")
-    updater
-    ;;
-  "--install" | "-i")
-    for ((i=1; i<${#arr[@]}; i++)); do
-      PACKAGE="${arr[${i}]}"
-      installer "$PACKAGE"
-    done
-    ;;
-  *)
-    echo -e "ERROR: unrecognized command\n"
-    meta_text "h"
+  "help" | "h")
+    cat << EOF
+./despot [cmd]
+
+commands:
+help            | you're here now
+install [pkg]   | install a package
+uninstall [pkg] | uninstall a package
+version         | show current version
+EOF
+    die 3
     ;;
 esac
+
+PKG_LOCK="$1"
+PKG_NAME="$2"
+mkdir -pv db/work/"$PKG_NAME"
+cd db/work/"$PKG_NAME"
+. ../../repo/$PKG_NAME.dbuild
+
+unset \
+  PKG_TITLE \
+  PKG_AUTHOR \
+  PKG_VERSION \
+  package_remove \
+  dependency_verify \
+  package_install \
+  package_postinstall
+
+cd ../../..
+rm -rf db/work/"$PKG_NAME"
