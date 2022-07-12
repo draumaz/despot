@@ -10,7 +10,8 @@ PKG_AUTHOR="suckless"
 PKG_VERSION="9999"
 
 package_uninstall() {
-  basic_uninstall "/usr/local/bin/st" "/usr/local/bin/st /usr/share/man/man4/st.4.bz2"
+  basic_uninstall "/usr/local/bin/st" 
+  rm -rfv /usr/local/bin/st /usr/share/man/man4/st.4.bz2
 }
 
 sources_verify() {
