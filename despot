@@ -4,13 +4,15 @@ DESPOT_VERSION="radioactive::2022-07-11"
 
 die() {
   case "$1" in
-    0) echo "package already installed"; exit; ;;
-    1) echo "package not installed"; exit; ;;
-    2) echo "missing dependency $2"; exit ;;
+    0) echo "error: package already installed"; exit; ;;
+    1) echo "error: package not installed"; exit; ;;
+    2) echo "error: missing dependency $2"; exit ;;
     3) exit; ;;
+    4) echo "error: no argument given"; exit ;;
   esac
 }
 
+test $1 || die 4
 case "$1" in
   "version" | "v")
     echo "despot ${DESPOT_VERSION}"
