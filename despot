@@ -7,16 +7,16 @@ die() {
     0) echo "error: package already installed"; exit; ;;
     1) echo "error: package not installed"; exit; ;;
     2) echo "error: missing dependency $2"; exit ;;
-    3) exit; ;;
-    4) echo "error: no argument given"; exit ;;
+    3) echo "error: no argument given"; exit ;;
+    99) exit ;;
   esac
 }
 
-test $1 || die 4
+test $1 || die 3
 case "$1" in
   "version" | "v")
     echo "despot ${DESPOT_VERSION}"
-    die 3 
+    die 99
     ;;
   "help" | "h")
     cat << EOF
@@ -28,7 +28,7 @@ install [pkg]   | install a package
 uninstall [pkg] | uninstall a package
 version         | show current version
 EOF
-    die 3
+    die 99
     ;;
 esac
 
