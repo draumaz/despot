@@ -14,7 +14,7 @@ package_uninstall() {
 }
 
 sources_verify() {
-  true
+  :
 }
 
 package_install() {

@@ -10,7 +10,7 @@ PKG_AUTHOR="jaseg"
 PKG_VERSION="9999"
 
 package_uninstall() {
-  true
+  :
 }
 
 sources_verify() {
