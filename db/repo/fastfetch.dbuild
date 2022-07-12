@@ -8,15 +8,7 @@ RPM_DEPENDENCIES="cmake pkgconf"
 
 PKG_TITLE="fastfetch"
 PKG_AUTHOR="LinusDierheimer"
-PKG_VERSION=1.5.6 #$(\
-#  curl \
-#    --silent \
-#    --location \
-#    --output /dev/null \
-#    --write-out "%{url_effective}\n" \
-#    https://github.com/LinusDierheimer/fastfetch/releases/latest \
-#    | rev | cut -d / -f1 | rev
-#)
+PKG_VERSION="1.5.6"
 
 package_uninstall() {
   test -e /usr/local/bin/fastfetch || die 1
