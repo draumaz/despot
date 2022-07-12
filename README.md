@@ -1,8 +1,12 @@
 # despot
 **d**raumaz's **e**lastic **s**ightless **p**ackage-**o**fficiation **t**ool.
 
-- i switched to debian in april 2022, and despite enjoying it a lot, i noticed a lot of tiny packages i need were missing from the repositories.
-- i started building packages manually, until i started automating the process, where despot was born.
+this is a POSIX shell-compliant package manager focused on Debian (and soon Fedora) systems.
+
+i have two goals with despot:
+
+- collect strange, fascinating packages
+- provide a convenient, fast, and __not annoying__ tool to maintain them
 
 ## install
 - ```git clone https://github.com/draumaz/despot```
