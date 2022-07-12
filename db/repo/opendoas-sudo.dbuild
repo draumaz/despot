@@ -10,7 +10,7 @@ PKG_AUTHOR="draumaz"
 PKG_VERSION="0.01"
 
 package_uninstall() {
-  rm -fv "/usr/bin/sudo"
+  basic_uninstall "/usr/bin/sudo" "/usr/bin/sudo"
 }
 
 sources_verify() {
