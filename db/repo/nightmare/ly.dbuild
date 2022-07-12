@@ -11,7 +11,7 @@ PKG_TITLE="ly"
 PKG_AUTHOR="fairyglade"
 PKG_VERSION="9999"
 
-sources_verify() {
+package_sources() {
   git clone --recursive https://github.com/$PKG_AUTHOR/$PKG_TITLE $PKG_TITLE-$PKG_VERSION
 }
 

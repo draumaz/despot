@@ -56,6 +56,6 @@ EOF
     ;;
 esac
 
-unset PKG_TITLE PKG_AUTHOR PKG_VERSION package_remove sources_verify package_install
+unset PKG_TITLE PKG_AUTHOR PKG_VERSION package_remove package_sources package_install
 cd ../../..
 rm -rf db/work/"$PKG_NAME"

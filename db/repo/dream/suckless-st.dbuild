@@ -9,7 +9,7 @@ PKG_TITLE="st"
 PKG_AUTHOR="suckless"
 PKG_VERSION="0.8.5"
 
-sources_verify() {
+package_sources() {
   test -e $PKG_TITLE-$PKG_VERSION.tar.gz || \
   curl -fLO http://dl.$PKG_AUTHOR.org/$PKG_TITLE/$PKG_TITLE-$PKG_VERSION.tar.gz
   test -e $PKG_TITLE-$PKG_VERSION || tar -xpvf $PKG_TITLE-$PKG_VERSION.tar.gz

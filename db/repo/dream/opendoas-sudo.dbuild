@@ -9,7 +9,7 @@ PKG_TITLE="opendoas-sudo"
 PKG_AUTHOR="draumaz"
 PKG_VERSION="0.01"
 
-sources_verify() {
+package_sources() {
   :
 }
 
