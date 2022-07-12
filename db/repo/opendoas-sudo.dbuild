@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# Copyright 2022 draumaz
+# Distributed under the terms of the MIT license
+
+. ./db/lib/common.sh
+
+PKG_TITLE="opendoas-sudo"
+PKG_AUTHOR="draumaz"
+PKG_VERSION="0.01"
+
+package_uninstall() {
+  rm -fv "/usr/bin/sudo"
+}
+
+sources_verify() {}
+
+package_install() {
+  ln -sfv "/usr/bin/doas" "/usr/bin/sudo"
+}

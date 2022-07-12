@@ -9,13 +9,13 @@
 - ```cd despot; chmod +x despot```
 
 ### compiling packages
-- ```./despot --install [PKG]```
+- ```./despot install [PKG]```
 
 ### removing packages
-- ```./despot --remove [PKG]```
+- ```./despot uninstall [PKG]```
 
 ### learn more
-- ```./despot --help```
+- ```./despot help```
 
 ## contributors
 - <a href="https://github.com/DeltaDove">DeltaDove</a> - project name
