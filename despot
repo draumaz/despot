@@ -1,6 +1,6 @@
 #!/bin/sh
 
-DESPOT_VERSION="0.02"
+DESPOT_VERSION="radioactive::2022-07-11"
 
 die() {
   case "$1" in
@@ -44,7 +44,7 @@ unset \
   PKG_AUTHOR \
   PKG_VERSION \
   package_remove \
-  dependency_verify \
+  sources_verify \
   package_install \
 
 cd ../../..
