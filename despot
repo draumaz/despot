@@ -31,13 +31,6 @@ EOF
   die 99 ;;
 esac
 
-unset \
-  PKG_TITLE \
-  PKG_AUTHOR \
-  PKG_VERSION \
-  package_remove \
-  sources_verify \
-  package_install \
-
+unset PKG_TITLE PKG_AUTHOR PKG_VERSION package_remove sources_verify package_install
 cd ../../..
 rm -rf db/work/"$PKG_NAME"
