@@ -4,7 +4,6 @@ DESPOT_VERSION="trunk:2022-07-11"
 
 die() {
   case "$1" in
-    0) echo "error: package already installed"; exit ;;
     1) echo "error: package not installed"; exit ;;
     2) echo "error: missing dependency $2"; exit ;;
     3) echo "error: no argument given"; exit ;;

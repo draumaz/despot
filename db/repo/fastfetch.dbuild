@@ -47,7 +47,6 @@ sources_verify() {
 }
 
 package_install() {
-  test ! -e /usr/local/bin/$PKG_TITLE || die 0
   mkdir -pv db/work/$PKG_TITLE && cd db/work/$PKG_TITLE
   sources_verify
   cd build &&
