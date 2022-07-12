@@ -1,0 +1,32 @@
+#!/bin/sh
+
+# Copyright 2022 draumaz
+# Distributed under the terms of the MIT license
+
+DEB_DEPENDENCIES="libfftw3-dev libncursesw5-dev cmake gcc g++ libpulse-dev"
+
+PKG_TITLE="cli-visualizer"
+PKG_AUTHOR="dpayne"
+PKG_VERSION="9999"
+
+package_uninstall() {
+  test -e /usr/local/bin/$PKG_TITLE || die 1
+  rm -rfv /usr/local/bin/vis
+}
+
+sources_verify() {
+  git clone https://github.com/$PKG_AUTHOR/$PKG_TITLE
+}
+
+package_install() {
+  mkdir -pv db/work/$PKG_TITLE && cd db/work/$PKG_TITLE
+  sources_verify
+  cd $PKG_TITLE
+  mkdir -pv build
+  cd build
+  cmake .. &&
+  make &&
+  make install
+  cd ..
+  rm -rf $PKG_TITLE
+}
