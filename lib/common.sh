@@ -15,7 +15,7 @@ basic_uninstall() {
 basic_environment_setup() {
   mkdir -pv db/work/$PKG_TITLE && cd db/work/$PKG_TITLE
   sources_verify
-  cd $PKG_TITLE
+  cd $PKG_TITLE-$PKG_VERSION
 }
 
 basic_environment_build_nest() {
@@ -37,4 +37,10 @@ basic_install() {
 basic_install_cmake() {
   cmake . &&
   basic_install
+}
+
+basic_install_ninja() {
+  meson .. &&
+  ninja &&
+  ninja install
 }

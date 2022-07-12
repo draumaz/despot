@@ -3,6 +3,8 @@
 # Copyright 2022 draumaz
 # Distributed under the terms of the MIT license
 
+. ./lib/common.sh
+
 DEB_DEPENDENCIES="gcc g++ meson dh-autoreconf libxcb-keysyms1-dev libpango1.0-dev libxcb-util0-dev xcb libxcb1-dev libxcb-icccm4-dev libyajl-dev libev-dev libxcb-xkb-dev libxcb-cursor-dev libxkbcommon-dev libxcb-xinerama0-dev libxkbcommon-x11-dev libstartup-notification0-dev libxcb-randr0-dev libxcb-xrm0 libxcb-xrm-dev libxcb-shape0 libxcb-shape0-dev"
 
 PKG_TITLE="i3"
@@ -10,9 +12,7 @@ PKG_AUTHOR="Airblader"
 PKG_VERSION="4.20.1"
 
 package_uninstall() {
-  test -e /usr/local/bin/$PKG_TITLE || die 1
-  rm -rfv \
-    /usr/local/include/i3 \
+  basic_uninstall "/usr/local/bin/$PKG_TITLE" "/usr/local/include/i3 \
     /usr/local/share/doc/i3 \
     /usr/local/bin/i3 \
     /usr/local/bin/i3-dmenu-desktop \
@@ -20,23 +20,20 @@ package_uninstall() {
     /usr/local/bin/i3-save-tree \
     /usr/local/bin/i3-sensible-editor \
     /usr/local/bin/i3-sensible-pager \
-    /usr/local/bin/i3-sensible-terminal
+    /usr/local/bin/i3-sensible-terminal"
 }
 
 sources_verify() {
   test -e $PKG_VERSION.tar.gz || \
     curl -fLO https://github.com/$PKG_AUTHOR/$PKG_TITLE/archive/refs/tags/$PKG_VERSION.tar.gz;
-  test -e $PKG_TITLE-$PKG_VERSION || tar -xpvf $PKG_VERSION.tar.gz
-  cd $PKG_TITLE-$PKG_VERSION && mkdir -pv build
+  test -e $PKG_TITLE-$PKG_VERSION || tar -xpvf $PKG_VERSION.tar.gz -C .
+  cd $PKG_TITLE
 }
 
 package_install() {
-  mkdir -pv db/work/$PKG_TITLE && cd db/work/$PKG_TITLE
-  sources_verify
-  cd build &&
-    meson .. &&
-    ninja &&
-    ninja install &&
+  basic_environment_setup &&
+  basic_environment_build_nest &&
+  basic_install_ninja &&
   cd ../..
   rm -rf $PKG_TITLE-$PKG_VERSION $PKG_VERSION.tar.gz
 }

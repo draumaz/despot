@@ -16,7 +16,7 @@ package_uninstall() {
 }
 
 sources_verify() {
-  git clone https://github.com/$PKG_AUTHOR/$PKG_TITLE
+  git clone https://github.com/$PKG_AUTHOR/$PKG_TITLE $PKG_TITLE-$PKG_VERSION
 }
 
 package_install() {

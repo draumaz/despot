@@ -30,15 +30,12 @@ package_uninstall() {
 }
 
 sources_verify() {
-  mkdir -pv db/work/"$PKG_TITLE"
-  cd db/work/"$PKG_TITLE"
   test -e $PKG_VERSION.tar.gz || \
     curl -fLO https://github.com/$PKG_AUTHOR/$PKG_TITLE/archive/refs/tags/$PKG_VERSION.tar.gz;
   test -e $PKG_TITLE-$PKG_VERSION || tar -xpvf $PKG_VERSION.tar.gz
-  cd $PKG_TITLE-$PKG_VERSION
 }
 
 package_install() {
-  sources_verify
+  basic_environment_setup
   basic_install_cmake
 }
