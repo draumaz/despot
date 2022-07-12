@@ -3,13 +3,14 @@
 # Copyright 2022 draumaz
 # Distributed under the terms of the MIT license
 
+. ./lib/common.sh
+
 PKG_TITLE="pfetch"
 PKG_AUTHOR="dylanaraps"
 PKG_VERSION="9999"
 
 package_uninstall() {
-  test -e /usr/bin/$PKG_TITLE || die 1
-  rm -rfv /usr/bin/$PKG_TITLE
+  basic_uninstall "/usr/bin/$PKG_TITLE" "/usr/bin/$PKG_TITLE"
 }
 
 sources_verify() {
@@ -18,9 +19,6 @@ sources_verify() {
 }
 
 package_install() {
-  mkdir -pv db/work/$PKG_TITLE && cd db/work/$PKG_TITLE
   sources_verify
-  make install
-  cd ../..
-  rm -rf $PKG_TITLE
+  basic_install_mini
 }
