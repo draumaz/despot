@@ -1,6 +1,6 @@
 #!/bin/sh
 
-DESPOT_VERSION="trunk:2022-07-11"
+DESPOT_VERSION="0.02"
 
 die() {
   case "$1" in
