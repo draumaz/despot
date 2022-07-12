@@ -4,8 +4,8 @@ DESPOT_VERSION="radioactive::2022-07-11"
 
 die() {
   case "$1" in
-    0) echo "error: package already installed"; exit; ;;
-    1) echo "error: package not installed"; exit; ;;
+    0) echo "error: package already installed"; exit ;;
+    1) echo "error: package not installed"; exit ;;
     2) echo "error: missing dependency $2"; exit ;;
     3) echo "error: no argument given"; exit ;;
     99) exit ;;
@@ -14,12 +14,8 @@ die() {
 
 test $1 || die 3
 case "$1" in
-  "version" | "v")
-    echo "despot ${DESPOT_VERSION}"
-    die 99
-    ;;
-  "help" | "h")
-    cat << EOF
+  "version" | "v") echo "despot ${DESPOT_VERSION}"; die 99 ;;
+  "help" | "h") cat << EOF
 ./despot [cmd]
 
 commands:
@@ -28,8 +24,7 @@ install [pkg]   | install a package
 uninstall [pkg] | uninstall a package
 version         | show current version
 EOF
-    die 99
-    ;;
+    die 99 ;;
 esac
 
 PKG_LOCK="$1"
