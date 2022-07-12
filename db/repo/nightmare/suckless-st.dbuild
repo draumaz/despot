@@ -9,15 +9,6 @@ PKG_TITLE="st"
 PKG_AUTHOR="suckless"
 PKG_VERSION="9999"
 
-package_uninstall() {
-  basic_uninstall "/usr/local/bin/st" 
-  rm -rfv /usr/local/bin/st /usr/share/man/man4/st.4.bz2
-}
-
-sources_verify() {
-  git clone --recursive https://git.$PKG_AUTHOR.org/$PKG_TITLE $PKG_TITLE-$PKG_VERSION
-}
-
 package_install() {
   basic_environment_setup
   
@@ -34,4 +25,13 @@ package_install() {
   esac
   
   basic_install
+}
+
+package_uninstall() {
+  basic_uninstall "/usr/local/bin/st" 
+  rm -rfv /usr/local/bin/st /usr/share/man/man4/st.4.bz2
+}
+
+sources_verify() {
+  git clone --recursive https://git.$PKG_AUTHOR.org/$PKG_TITLE $PKG_TITLE-$PKG_VERSION
 }

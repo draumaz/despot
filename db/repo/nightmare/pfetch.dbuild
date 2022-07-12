@@ -9,10 +9,6 @@ PKG_TITLE="pfetch"
 PKG_AUTHOR="dylanaraps"
 PKG_VERSION="9999"
 
-package_uninstall() {
-  basic_uninstall "/usr/bin/$PKG_TITLE" "/usr/bin/$PKG_TITLE"
-}
-
 sources_verify() {
   git clone https://github.com/$PKG_AUTHOR/$PKG_TITLE $PKG_TITLE-$PKG_VERSION
 }
@@ -20,4 +16,8 @@ sources_verify() {
 package_install() {
   basic_environment_setup
   basic_install_mini
+}
+
+package_uninstall() {
+  basic_uninstall "/usr/bin/$PKG_TITLE" "/usr/bin/$PKG_TITLE"
 }
