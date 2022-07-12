@@ -12,7 +12,8 @@ PKG_AUTHOR="Airblader"
 PKG_VERSION="4.20.1"
 
 package_uninstall() {
-  basic_uninstall "/usr/local/bin/$PKG_TITLE" "/usr/local/include/i3 \
+  basic_uninstall "/usr/local/bin/$PKG_TITLE" 
+  rm -rfv /usr/local/include/i3 \
     /usr/local/share/doc/i3 \
     /usr/local/bin/i3 \
     /usr/local/bin/i3-dmenu-desktop \
@@ -20,7 +21,7 @@ package_uninstall() {
     /usr/local/bin/i3-save-tree \
     /usr/local/bin/i3-sensible-editor \
     /usr/local/bin/i3-sensible-pager \
-    /usr/local/bin/i3-sensible-terminal"
+    /usr/local/bin/i3-sensible-terminal
 }
 
 sources_verify() {

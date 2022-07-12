@@ -5,7 +5,6 @@
 
 basic_uninstall() {
   test -e "$1" || die 1
-  rm -rfv "$2"
 }
 
 basic_environment_setup() {

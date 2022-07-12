@@ -10,7 +10,7 @@ PKG_AUTHOR="jaseg"
 PKG_VERSION="9999"
 
 package_uninstall() {
-  true #basic_uninstall "/usr/bin/$PKG_TITLE" "/etc/ly \
+  :
 }
 
 sources_verify() {
