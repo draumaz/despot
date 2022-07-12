@@ -3,10 +3,6 @@
 # Copyright 2022 draumaz
 # Distributed under the terms of the MIT license
 
-# A simple uninstaller. Two arguments; an existence checker
-# and the list of files to remove.
-# e.g. $ basic_uninstall "/bin/bash" "/lib/ncurses /usr/bin/cmake /home/gump/g++"
-
 basic_uninstall() {
   test -e "$1" || die 1
   rm -rfv "$2"
