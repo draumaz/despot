@@ -3,7 +3,7 @@
 # Copyright 2022 draumaz
 # Distributed under the terms of the MIT license
 
-. ./lib/common.sh
+. ./db/lib/common.sh
 
 DEB_DEPENDENCIES="gcc make libpam0g-dev libxcb-xkb-dev build-essential"
 
@@ -15,7 +15,7 @@ package_uninstall() {
   basic_uninstall "/usr/bin/$PKG_TITLE" "/etc/ly \
     /etc/pam.d/ly \
     /usr/bin/ly \
-    /usr/lib/systemd/system/ly.service"
+    /us./db/lib/systemd/system/ly.service"
 }
 
 sources_verify() {

@@ -3,7 +3,7 @@
 # Copyright 2022 draumaz
 # Distributed under the terms of the MIT license
 
-. ./lib/common.sh
+. ./db/lib/common.sh
 
 PKG_TITLE="pfetch"
 PKG_AUTHOR="dylanaraps"

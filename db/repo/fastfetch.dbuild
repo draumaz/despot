@@ -3,7 +3,7 @@
 # Copyright 2022 draumaz
 # Distributed under the terms of the MIT license
 
-. ./lib/common.sh
+. ./db/lib/common.sh
 
 DEB_DEPENDENCIES="cmake pkg-config"
 RPM_DEPENDENCIES="cmake pkgconf"
