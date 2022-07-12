@@ -3,7 +3,8 @@
 # Copyright 2022 draumaz
 # Distributed under the terms of the MIT license
 
-DEBIAN_DEPENDENCIES="cmake pkg-config"
+DEB_DEPENDENCIES="cmake pkg-config"
+RPM_DEPENDENCIES="cmake pkgconf"
 
 PKG_TITLE="fastfetch"
 PKG_AUTHOR="LinusDierheimer"
