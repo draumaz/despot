@@ -5,6 +5,8 @@
 
 DESPOT_VERSION="trunk:2022-07-12"
 
+export BASE_DIR="$PWD"
+
 die() {
   case "$1" in
     1) echo "\e[91merror\e[0m: package not installed"; exit ;;
@@ -34,11 +36,13 @@ case "$PKG_LOCK" in
     echo "-> compiling: \e[92m$PKG_TITLE\e[0m"
     package_install
     echo "-> installed: \e[92m$PKG_TITLE\e[0m"
+    PKG_LOCK=0
     ;;
   "uninstall") 
     echo "-> uninstalling: \e[91m$PKG_TITLE\e[0m"
     package_uninstall
     echo "-> uninstalled:  \e[91m$PKG_TITLE\e[0m"
+    PKG_LOCK=1
     ;;
   "version" | "v")
     echo "despot ${DESPOT_VERSION}"; die 99 ;;
@@ -56,6 +60,12 @@ EOF
     ;;
 esac
 
+cd "$BASE_DIR"
+
+case $PKG_LOCK in 
+  0) grep -q "$PKG_TITLE $PKG_VERSION" ./db/lib/installed.txt || \
+     echo "$PKG_TITLE $PKG_VERSION" >> ./db/lib/installed.txt ;; 
+  1) sed -i "s|$PKG_TITLE $PKG_VERSION||g" ./db/lib/installed.txt ;;
+esac
 unset PKG_TITLE PKG_AUTHOR PKG_VERSION package_remove package_sources package_install
-cd ../../..
-rm -rf db/work/"$PKG_NAME"
+rm -rf db/work
