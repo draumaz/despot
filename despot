@@ -4,21 +4,10 @@ DESPOT_VERSION="0.02"
 
 die() {
   case "$1" in
-    0)
-      echo "package already installed"
-      exit
-      ;;
-    1)
-      echo "package not installed"
-      exit
-      ;;
-    2)
-      echo "missing dependency $2"
-      exit
-      ;;
-    3)
-      exit
-      ;;
+    0) echo "package already installed"; exit; ;;
+    1) echo "package not installed"; exit; ;;
+    2) echo "missing dependency $2"; exit ;;
+    3) exit; ;;
   esac
 }
 
@@ -43,9 +32,12 @@ esac
 
 PKG_LOCK="$1"
 PKG_NAME="$2"
-mkdir -pv db/work/"$PKG_NAME"
-cd db/work/"$PKG_NAME"
-. ../../repo/$PKG_NAME.dbuild
+. db/repo/$PKG_NAME.dbuild
+
+case "$PKG_LOCK" in
+  install) package_install ;;
+  uninstall) package_uninstall ;;
+esac
 
 unset \
   PKG_TITLE \
@@ -54,7 +46,6 @@ unset \
   package_remove \
   dependency_verify \
   package_install \
-  package_postinstall
 
 cd ../../..
 rm -rf db/work/"$PKG_NAME"
