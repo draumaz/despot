@@ -34,7 +34,7 @@ package_uninstall() {
     /usr/local/share/licenses/fastfetch/LICENSE
 }
 
-dependency_verify() {
+sources_verify() {
   cmake > /dev/null 2>&1 || die 2 "cmake"
   pkg-config > /dev/null 2>&1; true || die 2 "pkgconf"
   test -e $PKG_VERSION.tar.gz || \
@@ -46,7 +46,7 @@ dependency_verify() {
 package_install() {
   test ! -e /usr/local/bin/fastfetch || die 0
   mkdir -pv db/work/$PKG_TITLE && cd db/work/$PKG_TITLE
-  dependency_verify
+  sources_verify
   cd build &&
     cmake .. &&
     make &&
