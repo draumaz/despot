@@ -7,7 +7,13 @@
 
 PKG_TITLE="st"
 PKG_AUTHOR="suckless"
-PKG_VERSION="9999"
+PKG_VERSION="0.8.5"
+
+sources_verify() {
+  test -e $PKG_TITLE-$PKG_VERSION.tar.gz || \
+  curl -fLO http://dl.$PKG_AUTHOR.org/$PKG_TITLE/$PKG_TITLE-$PKG_VERSION.tar.gz
+  test -e $PKG_TITLE-$PKG_VERSION || tar -xpvf $PKG_TITLE-$PKG_VERSION.tar.gz
+}
 
 package_install() {
   basic_environment_setup
@@ -30,8 +36,4 @@ package_install() {
 package_uninstall() {
   basic_uninstall "/usr/local/bin/st" 
   rm -rfv /usr/local/bin/st /usr/share/man/man4/st.4.bz2
-}
-
-sources_verify() {
-  git clone --recursive https://git.$PKG_AUTHOR.org/$PKG_TITLE $PKG_TITLE-$PKG_VERSION
 }
