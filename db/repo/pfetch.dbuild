@@ -14,11 +14,10 @@ package_uninstall() {
 }
 
 sources_verify() {
-  curl -fLO https://raw.githubusercontent.com/$PKG_AUTHOR/$PKG_TITLE/master/$PKG_TITLE
-  curl -fLO https://raw.githubusercontent.com/$PKG_AUTHOR/$PKG_TITLE/master/Makefile
+  git clone https://github.com/$PKG_AUTHOR/$PKG_TITLE $PKG_TITLE-$PKG_VERSION
 }
 
 package_install() {
-  sources_verify
+  basic_environment_setup
   basic_install_mini
 }
