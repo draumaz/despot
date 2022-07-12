@@ -8,8 +8,8 @@ PKG_AUTHOR="dylanaraps"
 PKG_VERSION=9999
 
 package_uninstall() {
-  test -e /usr/bin/pfetch || die 1
-  rm -rfv /usr/bin/pfetch
+  test -e /usr/bin/$PKG_TITLE || die 1
+  rm -rfv /usr/bin/$PKG_TITLE
 }
 
 sources_verify() {
@@ -18,7 +18,7 @@ sources_verify() {
 }
 
 package_install() {
-  test ! -e /usr/bin/pfetch || die 0
+  test ! -e /usr/bin/$PKG_TITLE || die 0
   mkdir -pv db/work/$PKG_TITLE && cd db/work/$PKG_TITLE
   sources_verify
   make install
