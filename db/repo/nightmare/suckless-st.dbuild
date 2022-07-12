@@ -23,8 +23,12 @@ package_install() {
   
   echo -n "$PKG_TITLE: do you need to use a patchfile? [y/n]: "; read fl
   case $fl in y) 
-    echo -n "$PKG_TITLE: source file to be patched: "; read tgt
-    echo -n "$PKG_TITLE: patchfile absolute path: "; read pth
+    while true; do
+      echo -n "$PKG_TITLE: source file to be patched: "; read tgt
+      echo -n "$PKG_TITLE: patchfile absolute path: "; read pth
+      echo "$tgt <- $pth"; echo -n "OK? [y/n]: "; read flk
+      case $flk in y) break ;; *) unset $tgt $pth $fl $flk ;; esac
+    done
     patch "$tgt" < "$pth"
     ;;
   esac
