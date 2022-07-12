@@ -13,7 +13,9 @@ package_uninstall() {
   rm -fv "/usr/bin/sudo"
 }
 
-sources_verify() {}
+sources_verify() {
+  true
+}
 
 package_install() {
   ln -sfv "/usr/bin/doas" "/usr/bin/sudo"
