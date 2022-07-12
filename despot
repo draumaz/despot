@@ -1,6 +1,6 @@
 #!/bin/sh
 
-DESPOT_VERSION="radioactive::2022-07-11"
+DESPOT_VERSION="trunk:2022-07-11"
 
 die() {
   case "$1" in
