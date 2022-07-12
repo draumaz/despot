@@ -22,8 +22,7 @@ test $1 && PKG_LOCK="$1" || PKG_LOCK="help"
 case "$PKG_LOCK" in "install" | "uninstall")
   live_repo=$(find db/repo -type f -name '*.dbuild' | grep -i $PKG_NAME | rev | cut -d / -f2 | rev)
   test ! -e $live_repo || die 4 $PKG_NAME
-  echo "-> found \e[92m$PKG_NAME\e[0m in \e[93m$live_repo\e[0m"
-  echo "-> processing dbuild: \e[92m$PKG_NAME\e[0m\n"
+  echo "-> found \e[92m$PKG_NAME\e[0m dbuild in \e[93m$live_repo\e[0m"
   . ./db/repo/${live_repo}/${PKG_NAME}.dbuild
 esac
 

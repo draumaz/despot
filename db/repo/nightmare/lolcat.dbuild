@@ -19,5 +19,6 @@ package_install() {
 }
 
 package_uninstall() {
-  :
+  basic_uninstall "/usr/local/bin/lolcat"
+  rm -rfv /usr/local/bin/lolcat /usr/local/bin/censor
 }

@@ -1,0 +1,8 @@
+i3 4.20.1
+pfetch 9999
+fastfetch 1.5.6
+ly 9999
+st 0.8.5
+opendoas-sudo 0.01
+cli-visualizer 9999
+
