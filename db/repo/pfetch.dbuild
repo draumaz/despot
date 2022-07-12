@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# Copyright 2022 draumaz
+# Distributed under the terms of the MIT license
+
+PKG_TITLE="pfetch"
+PKG_AUTHOR="dylanaraps"
+PKG_VERSION=9999
+
+package_uninstall() {
+  test -e /usr/bin/pfetch || die 1
+  rm -rfv /usr/bin/pfetch
+}
+
+sources_verify() {
+  curl -fLO https://raw.githubusercontent.com/$PKG_AUTHOR/$PKG_TITLE/master/$PKG_TITLE
+  curl -fLO https://raw.githubusercontent.com/$PKG_AUTHOR/$PKG_TITLE/master/Makefile
+}
+
+package_install() {
+  test ! -e /usr/bin/pfetch || die 0
+  mkdir -pv db/work/$PKG_TITLE && cd db/work/$PKG_TITLE
+  sources_verify
+  make install
+  cd ../..
+  rm -rf $PKG_TITLE
+}
