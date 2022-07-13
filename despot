@@ -3,6 +3,8 @@
 # Copyright 2022 draumaz
 # Distributed under the terms of the MIT license
 
+case "$(id -u)" in 1000) echo "run despot as superuser"; exit ;; esac
+
 DESPOT_VERSION="trunk:2022-07-13"
 
 RED="$(tput setaf 1)"
@@ -11,7 +13,9 @@ YELLOW="$(tput setaf 3)"
 PURPLE="$(tput setaf 5)"
 WHITE="$(tput sgr0)"
 
-export BASE_DIR="$PWD"
+export BASE_DIR="/var/cache/despot"
+test -e ${BASE_DIR}/.git || \
+  git clone https://github.com/draumaz/despot-repo ${BASE_DIR}
 
 die() {
   case "$1" in
@@ -26,9 +30,6 @@ die() {
 
 # determine what functions to use, else redirect to help screen
 test $1 && PKG_LOCK="$1" || PKG_LOCK="help"
-
-# ensure install record file exists
-touch ./db/lib/installed.txt 2> /dev/null
 
 # meta text
 case "$PKG_LOCK" in
@@ -52,21 +53,14 @@ esac
 # determine repo, retrieve build functions
 case "$PKG_LOCK" in "install" | "i" | "uninstall" | "u")
   LIVE_REPO="$(find db/repo -type f -name '*.dbuild' | grep -i $2 | rev | cut -d / -f2 | rev)"
-  test -e ./db/repo/"$LIVE_REPO"/"$2".dbuild || die 4 "$2"
+  test -e "$BASE_DIR"/"$LIVE_REPO"/"$2".dbuild || die 4 "$2"
   echo "${GREEN}->${WHITE} reading ${PURPLE}$2${WHITE} dbuild from ${YELLOW}${LIVE_REPO}${WHITE}"
-  . ./db/repo/${LIVE_REPO}/${2}.dbuild
-  PKG_INSTALLED_VERSION="$(grep -i $PKG_TITLE ./db/lib/installed.txt | sed 's/[^ ]* //')"
+  . "$BASE_DIR"/${LIVE_REPO}/${2}.dbuild
 esac
 
 # install process
 case "$PKG_LOCK" in
   "install" | "i") 
-    case "$PKG_VERSION" in $PKG_INSTALLED_VERSION)
-      echo
-      echo "${YELLOW}!!${WHITE} warning: version $PKG_VERSION of $PKG_TITLE is already installed."
-      echo -n "${YELLOW}!!${WHITE} reinstall? [${GREEN}y${WHITE}/${RED}n${WHITE}]: "; read x
-      case $x in n) die 99 ;; esac
-    ;; esac	  
     echo "\n\e[92m->\e[0m checking dependencies"
     echo "$DEB_DEPENDENCIES" | xargs apt-get install -y || \
     echo "$RPM_DEPENDENCIES" | xargs dnf install -y; \
@@ -74,8 +68,7 @@ case "$PKG_LOCK" in
     echo "\e[92m->\e[0m compiling: $PKG_TITLE"
     package_install && PKG_LOCK=0 &&
     echo "\e[92m->\e[0m installed: $PKG_TITLE" || die 88 ;;
-  "list" | "l") cat ./db/lib/installed.txt | sort ;;
-  "tug" | "t") git pull ;;
+  "tug" | "t") git pull; cd "$BASE_DIR" && git pull ;;
   "uninstall" | "u") 
     echo "-> uninstalling: \e[91m$PKG_TITLE\e[0m"
     package_uninstall &&
@@ -87,14 +80,6 @@ esac
 
 cd "$BASE_DIR"
 
-# record package title and version to installed.txt
-case $PKG_LOCK in
-  0) grep -q "$PKG_TITLE $PKG_VERSION" ./db/lib/installed.txt || \
-     echo "$PKG_TITLE $PKG_VERSION" >> ./db/lib/installed.txt ;; 
-  1) sed -i "/$PKG_TITLE $PKG_VERSION/d" ./db/lib/installed.txt ;;
-esac
-
 # environment cleanup
-sed -i '/^$/d' ./db/lib/installed.txt
 unset PKG_TITLE PKG_AUTHOR PKG_VERSION package_remove package_sources package_install
-rm -rf db/work
+rm -rf "$BASE_DIR"/work

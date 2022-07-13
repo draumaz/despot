@@ -13,14 +13,14 @@ basic_sources_setup() {
 }
 
 basic_environment_setup() {
-  mkdir -pv db/work/$PKG_TITLE && cd db/work/$PKG_TITLE
+  mkdir -pv "$BASE_DIR"/work/$PKG_TITLE && cd "$BASE_DIR"/work/$PKG_TITLE
   package_sources
   cd $PKG_TITLE-$PKG_VERSION
 }
 
 basic_environment_build_nest() {
-  mkdir -pv build
-  cd build
+  mkdir -pv "$BASE_DIR"/"$PKG_TITLE-$PKG_VERSION"/build
+  cd "$BASE_DIR"/"$PKG_TITLE-$PKG_VERSION"/build
 }
 
 basic_install_mini() {
