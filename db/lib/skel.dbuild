@@ -25,7 +25,6 @@ package_sources() {
 package_install() {
   # this is just an example toolchain.
   # check out common.sh to see build function docs
-
   basic_environment_setup
   basic_environment_build_nest
   basic_install_cmake
