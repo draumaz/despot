@@ -52,7 +52,7 @@ esac
 
 # determine repo, retrieve build functions
 case "$PKG_LOCK" in "install" | "i" | "uninstall" | "u")
-  LIVE_REPO="$(find db/repo -type f -name '*.dbuild' | grep -i $2 | rev | cut -d / -f2 | rev)"
+  LIVE_REPO="$(find $BASE_DIR -type f -name '*.dbuild' | grep -i $2 | rev | cut -d / -f2 | rev)"
   test -e "$BASE_DIR"/"$LIVE_REPO"/"$2".dbuild || die 4 "$2"
   echo "${GREEN}->${WHITE} reading ${PURPLE}$2${WHITE} dbuild from ${YELLOW}${LIVE_REPO}${WHITE}"
   . "$BASE_DIR"/${LIVE_REPO}/${2}.dbuild
