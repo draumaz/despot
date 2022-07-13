@@ -7,6 +7,11 @@ basic_uninstall() {
   test -e "$1" || die 1
 }
 
+basic_sources_setup() {
+  test -e $PKG_VERSION.tar.gz || curl -fLO "$PKG_TARBALL_URL"
+  test -e "$PKG_TITLE-$PKG_VERSION" || tar -xpvf "$PKG_TARBALL"
+}
+
 basic_environment_setup() {
   mkdir -pv db/work/$PKG_TITLE && cd db/work/$PKG_TITLE
   package_sources

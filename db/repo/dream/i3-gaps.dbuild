@@ -10,12 +10,11 @@ DEB_DEPENDENCIES="gcc g++ meson dh-autoreconf libxcb-keysyms1-dev libpango1.0-de
 PKG_TITLE="i3"
 PKG_AUTHOR="Airblader"
 PKG_VERSION="4.20.1"
+PKG_TARBALL="$PKG_VERSION.tar.gz"
+PKG_TARBALL_URL="https://github.com/$PKG_AUTHOR/$PKG_TITLE/archive/refs/tags/$PKG_TARBALL"
 
 package_sources() {
-  test -e $PKG_VERSION.tar.gz || \
-  curl -fLO https://github.com/$PKG_AUTHOR/$PKG_TITLE/archive/refs/tags/$PKG_VERSION.tar.gz;
-  test -e $PKG_TITLE-$PKG_VERSION || tar -xpvf $PKG_VERSION.tar.gz -C .
-  cd $PKG_TITLE
+  basic_sources_setup
 }
 
 package_install() {

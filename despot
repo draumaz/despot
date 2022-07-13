@@ -3,16 +3,23 @@
 # Copyright 2022 draumaz
 # Distributed under the terms of the MIT license
 
-DESPOT_VERSION="0.02.2"
+DESPOT_VERSION="0.02.3"
+
+RED="$(tput setaf 1)"
+GREEN="$(tput setaf 2)"
+YELLOW="$(tput setaf 3)"
+PURPLE="$(tput setaf 5)"
+WHITE="$(tput sgr0)"
 
 export BASE_DIR="$PWD"
 
 die() {
   case "$1" in
-    1) echo "\e[91m!!\e[0m: package not installed"; exit ;;
-    2) echo "\e[91m!!\e[0m: missing dependency $2"; exit ;;
-    3) echo "\e[91m!!\e[0m: no argument given"; exit ;;
-    4) echo "\e[91m!!\e[0m: no dbuild available for $2"; exit ;;
+    1) echo "${RED}!!!!${WHITE}: package not installed"; exit ;;
+    2) echo "${RED}!!!!${WHITE}: $2: missing dependency"; exit ;;
+    3) echo "${RED}!!!!${WHITE}: argument missing"; exit ;;
+    4) echo "${RED}!!!!${WHITE}: $2: no dbuild available"; exit ;;
+    88) echo "${RED}!!!!${WHITE}: $PKG_TITLE: build failed"; exit ;;
     99) exit ;;
   esac
 }
@@ -21,56 +28,59 @@ die() {
 test $1 && PKG_LOCK="$1" || PKG_LOCK="help"
 
 # ensure install record file exists
-touch ./db/lib/installed.txt
+touch ./db/lib/installed.txt 2> /dev/null
 
 # meta text
 case "$PKG_LOCK" in
   help | h)
     cat << EOF
-./despot [cmd]
+./despot [arg] [...]
 
-commands:
+arguments:
 help            | you're here now
 install [pkg]   | install a package
+list            | show installed packages
+tug             | update repo database
 uninstall [pkg] | uninstall a package
 version         | show current version
 EOF
-    die 99
-    ;;
+    die 99 ;;
   version | v)
     echo "despot ${DESPOT_VERSION}"; die 99 ;;
 esac
 
 # determine repo, retrieve build functions
-case "$PKG_LOCK" in "install" | "uninstall")
-  live_repo=$(find db/repo -type f -name '*.dbuild' | grep -i $2 | rev | cut -d / -f2 | rev)
-  test ! -e $live_repo || die 4 $2
-  echo "-> reading \e[92m$2\e[0m dbuild from \e[93m$live_repo\e[0m\n"
-  . ./db/repo/${live_repo}/${2}.dbuild
+case "$PKG_LOCK" in "install" | "i" | "uninstall" | "u")
+  LIVE_REPO="$(find db/repo -type f -name '*.dbuild' | grep -i $2 | rev | cut -d / -f2 | rev)"
+  test -e ./db/repo/"$LIVE_REPO"/"$2".dbuild || die 4 "$2"
+  echo "${GREEN}->${WHITE} reading ${PURPLE}$2${WHITE} dbuild from ${YELLOW}${LIVE_REPO}${WHITE}"
+  . ./db/repo/${LIVE_REPO}/${2}.dbuild
   PKG_INSTALLED_VERSION="$(grep -i $PKG_TITLE ./db/lib/installed.txt | sed 's/[^ ]* //')"
 esac
 
 # install process
 case "$PKG_LOCK" in
-  "install") 
+  "install" | "i") 
     case "$PKG_VERSION" in $PKG_INSTALLED_VERSION)
-      echo "!! \e[93mwarning\e[0m: version $PKG_VERSION of $PKG_TITLE is already installed."
-      echo -n "!! reinstall? [y/n]: "; read x
+      echo
+      echo "${YELLOW}!!${WHITE} warning: version $PKG_VERSION of $PKG_TITLE is already installed."
+      echo -n "${YELLOW}!!${WHITE} reinstall? [${GREEN}y${WHITE}/${RED}n${WHITE}]: "; read x
       case $x in n) die 99 ;; esac
     ;; esac	  
-    echo "\e[92m[dependency management: START]\e[0m"
+    echo "\n\e[92m->\e[0m checking dependencies"
     echo "$DEB_DEPENDENCIES" | xargs apt-get install -y || \
     echo "$RPM_DEPENDENCIES" | xargs dnf install -y; \
-    echo "\e[92m[dependency management: DONE]\e[0m\n"
-    echo "-> compiling: \e[92m$PKG_TITLE\e[0m"
-    package_install
-    echo "-> installed: \e[92m$PKG_TITLE\e[0m"
-    PKG_LOCK=0
-    ;;
-  "uninstall") 
+    echo "\e[92m->\e[0m done\n"
+    echo "\e[92m->\e[0m compiling: $PKG_TITLE"
+    package_install && PKG_LOCK=0 &&
+    echo "\e[92m->\e[0m installed: $PKG_TITLE" || die 88 ;;
+  "list" | "l") cat ./db/lib/installed.txt | sort ;;
+  "tug" | "t") git pull ;;
+  "uninstall" | "u") 
     echo "-> uninstalling: \e[91m$PKG_TITLE\e[0m"
-    package_uninstall
-    echo "-> uninstalled:  \e[91m$PKG_TITLE\e[0m"
+    package_uninstall &&
+    echo "-> uninstalled:  \e[91m$PKG_TITLE\e[0m" || \
+    echo "-> \e[91mbuild failed\e[0m: $PKG_TITLE"
     PKG_LOCK=1
     ;;
 esac

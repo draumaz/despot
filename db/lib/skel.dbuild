@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# Copyright 2022 draumaz
+# Distributed under the terms of the MIT license
+
+. ./db/lib/common.sh
+
+DEB_DEPENDENCIES=""
+RPM_DEPENDENCIES=""
+
+PKG_TITLE=""
+PKG_AUTHOR=""
+PKG_VERSION=""
+PKG_TARBALL=""
+PKG_TARBALL_URL=""
+
+package_sources() {
+  basic_sources_setup
+}
+
+package_install() {
+  basic_environment_setup
+  # view common.sh for further function calls
+}
+
+package_uninstall() {
+  basic_uninstall "/path/to/binary"
+  rm -rfv /binaries/that /you/dont /want/anymore
+}
