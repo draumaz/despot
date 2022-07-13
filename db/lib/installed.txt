@@ -1,8 +1,0 @@
-i34.20.1
-pfetch9999
-fastfetch1.5.6
-ly9999
-st0.8.5
-opendoas-sudo0.01
-cli-visualizer9999
-

@@ -61,10 +61,10 @@ esac
 
 cd "$BASE_DIR"
 
-#case $PKG_LOCK in 
-#  0) grep -q "$PKG_TITLE $PKG_VERSION" ./db/lib/installed.txt || \
-#     echo "$PKG_TITLE $PKG_VERSION" >> ./db/lib/installed.txt ;; 
-#  1) sed -i "s|$PKG_TITLE $PKG_VERSION||g" ./db/lib/installed.txt ;;
-#esac
+case $PKG_LOCK in 
+  0) grep -q "$PKG_TITLE $PKG_VERSION" ./db/lib/installed.txt || \
+     echo "$PKG_TITLE $PKG_VERSION" >> ./db/lib/installed.txt ;; 
+  1) sed -i "s|$PKG_TITLE $PKG_VERSION||g" ./db/lib/installed.txt ;;
+esac
 unset PKG_TITLE PKG_AUTHOR PKG_VERSION package_remove package_sources package_install
 rm -rf db/work
