@@ -11,8 +11,8 @@ RPM_DEPENDENCIES="cmake pkgconf"
 PKG_TITLE="fastfetch"
 PKG_AUTHOR="LinusDierheimer"
 PKG_VERSION="1.5.6"
-PKG_TARBALL_URL="https://github.com/$PKG_AUTHOR/$PKG_TITLE/archive/refs/tags/$PKG_VERSION.tar.gz"
 PKG_TARBALL="$PKG_VERSION.tar.gz"
+PKG_TARBALL_URL="https://github.com/$PKG_AUTHOR/$PKG_TITLE/archive/refs/tags/$PKG_TARBALL"
 
 package_sources() {
   basic_sources_setup

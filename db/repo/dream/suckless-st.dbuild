@@ -8,9 +8,8 @@
 PKG_TITLE="st"
 PKG_AUTHOR="suckless"
 PKG_VERSION="0.8.5"
-PKG_TARBALL_URL="http://dl.$PKG_AUTHOR.org/$PKG_TITLE/$PKG_TITLE-$PKG_VERSION.tar.gz"
 PKG_TARBALL="$PKG_TITLE-$PKG_VERSION.tar.gz"
-
+PKG_TARBALL_URL="http://dl.$PKG_AUTHOR.org/$PKG_TITLE/$PKG_TITLE-$PKG_TARBALL"
 
 package_sources() {
   basic_sources_setup
