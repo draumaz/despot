@@ -9,8 +9,7 @@ i have two goals with despot:
 - provide a convenient, fast, and __not annoying__ tool to maintain them
 
 ## install
-- ```git clone https://github.com/draumaz/despot```
-- ```cd despot; chmod +x despot```
+- ```curl https://raw.githubusercontent.com/draumaz/despot/trunk/db/lib/bootstrap.sh | sh```
 
 ### compiling packages
 - ```./despot install [PKG]```
