@@ -17,17 +17,40 @@ die() {
   esac
 }
 
-PKG_NAME="$2"
+# determine what functions to use, else redirect to help screen
 test $1 && PKG_LOCK="$1" || PKG_LOCK="help"
-case "$PKG_LOCK" in "install" | "uninstall")
-  live_repo=$(find db/repo -type f -name '*.dbuild' | grep -i $PKG_NAME | rev | cut -d / -f2 | rev)
-  test ! -e $live_repo || die 4 $PKG_NAME
-  echo "-> reading \e[92m$PKG_NAME\e[0m dbuild from \e[93m$live_repo\e[0m\n"
-  . ./db/repo/${live_repo}/${PKG_NAME}.dbuild
+
+# ensure install record file exists
+touch ./db/lib/installed.txt
+
+# meta text
+case "$PKG_LOCK" in
+  help | h)
+    cat << EOF
+./despot [cmd]
+
+commands:
+help            | you're here now
+install [pkg]   | install a package
+uninstall [pkg] | uninstall a package
+version         | show current version
+EOF
+    die 99
+    ;;
+  version | v)
+    echo "despot ${DESPOT_VERSION}"; die 99 ;;
 esac
 
-PKG_INSTALLED_VERSION="$(grep -i $PKG_TITLE ./db/lib/installed.txt | sed 's/[^ ]* //')"
+# determine repo, retrieve build functions
+case "$PKG_LOCK" in "install" | "uninstall")
+  live_repo=$(find db/repo -type f -name '*.dbuild' | grep -i $2 | rev | cut -d / -f2 | rev)
+  test ! -e $live_repo || die 4 $2
+  echo "-> reading \e[92m$2\e[0m dbuild from \e[93m$live_repo\e[0m\n"
+  . ./db/repo/${live_repo}/${2}.dbuild
+  PKG_INSTALLED_VERSION="$(grep -i $PKG_TITLE ./db/lib/installed.txt | sed 's/[^ ]* //')"
+esac
 
+# install process
 case "$PKG_LOCK" in
   "install") 
     case "$PKG_VERSION" in $PKG_INSTALLED_VERSION)
@@ -50,30 +73,18 @@ case "$PKG_LOCK" in
     echo "-> uninstalled:  \e[91m$PKG_TITLE\e[0m"
     PKG_LOCK=1
     ;;
-  "version" | "v")
-    echo "despot ${DESPOT_VERSION}"; die 99 ;;
-  "help" | "h")
-    cat << EOF
-./despot [cmd]
-
-commands:
-help            | you're here now
-install [pkg]   | install a package
-uninstall [pkg] | uninstall a package
-version         | show current version
-EOF
-    die 99
-    ;;
 esac
 
 cd "$BASE_DIR"
 
-case $PKG_LOCK in 
+# record package title and version to installed.txt
+case $PKG_LOCK in
   0) grep -q "$PKG_TITLE $PKG_VERSION" ./db/lib/installed.txt || \
      echo "$PKG_TITLE $PKG_VERSION" >> ./db/lib/installed.txt ;; 
   1) sed -i "/$PKG_TITLE $PKG_VERSION/d" ./db/lib/installed.txt ;;
 esac
 
+# environment cleanup
 sed -i '/^$/d' ./db/lib/installed.txt
 unset PKG_TITLE PKG_AUTHOR PKG_VERSION package_remove package_sources package_install
 rm -rf db/work
