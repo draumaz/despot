@@ -19,5 +19,6 @@ package_install() {
 }
 
 package_uninstall() {
-  basic_uninstall "/usr/bin/$PKG_TITLE" "/usr/bin/$PKG_TITLE"
+  basic_uninstall "/usr/bin/$PKG_TITLE"
+  rm -fv "/usr/bin/$PKG_TITLE"
 }
