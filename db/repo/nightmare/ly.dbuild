@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# Copyright 2022 draumaz
+# Distributed under the terms of the MIT license
+
+. ./db/lib/common.sh
+
+DEB_DEPENDENCIES="gcc make libpam0g-dev libxcb-xkb-dev build-essential"
+
+PKG_TITLE="ly"
+PKG_AUTHOR="fairyglade"
+PKG_VERSION="9999"
+
+package_sources() {
+  git clone --recursive https://github.com/$PKG_AUTHOR/$PKG_TITLE $PKG_TITLE-$PKG_VERSION
+}
+
+package_install() {
+  basic_environment_setup
+  basic_install
+}
+
+package_uninstall() {
+  basic_uninstall "/usr/bin/$PKG_TITLE" 
+  rm -rfv /etc/ly \
+    /etc/pam.d/ly \
+    /usr/bin/ly \
+    /us./db/lib/systemd/system/ly.service
+}

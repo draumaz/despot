@@ -1,0 +1,33 @@
+#!/bin/sh
+
+# Copyright 2022 draumaz
+# Distributed under the terms of the MIT license
+
+. ./db/lib/common.sh
+
+DEB_DEPENDENCIES="cmake pkg-config"
+RPM_DEPENDENCIES="cmake pkgconf"
+
+PKG_TITLE="fastfetch"
+PKG_AUTHOR="LinusDierheimer"
+PKG_VERSION="1.5.6"
+PKG_TARBALL="$PKG_VERSION.tar.gz"
+PKG_TARBALL_URL="https://github.com/$PKG_AUTHOR/$PKG_TITLE/archive/refs/tags/$PKG_TARBALL"
+
+package_sources() {
+  basic_sources_setup
+}
+
+package_install() {
+  basic_environment_setup
+  basic_install_cmake
+}
+
+package_uninstall() {
+  basic_uninstall "/usr/local/bin/fastfetch"
+  rm -rfv /usr/local/bin/fastfetch \
+    /usr/local/bin/flashfetch \
+    /usr/local/share/bash-completion/completions/fastfetch \
+    /usr/local/share/fastfetch/presets \
+    /usr/local/share/licenses/fastfetch/LICENSE
+}
