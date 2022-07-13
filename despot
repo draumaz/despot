@@ -3,7 +3,7 @@
 # Copyright 2022 draumaz
 # Distributed under the terms of the MIT license
 
-DESPOT_VERSION="0.02.2"
+DESPOT_VERSION="trunk:2022-07-12"
 
 export BASE_DIR="$PWD"
 
