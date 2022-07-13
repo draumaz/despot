@@ -34,11 +34,13 @@ touch ./db/lib/installed.txt 2> /dev/null
 case "$PKG_LOCK" in
   help | h)
     cat << EOF
-./despot [cmd]
+./despot [arg] [...]
 
-commands:
+arguments:
 help            | you're here now
 install [pkg]   | install a package
+list            | show installed packages
+tug             | update repo database
 uninstall [pkg] | uninstall a package
 version         | show current version
 EOF
