@@ -1,0 +1,44 @@
+#!/bin/sh
+
+# Copyright 2022 draumaz
+# Distributed under the terms of the MIT license
+
+# include despot common functions
+. ./db/lib/common.sh
+
+# declare dependencies
+DEB_DEPENDENCIES="gcc vim elinks"
+
+# declare package metadata
+PKG_TITLE="example"
+PKG_AUTHOR="dengleston"
+PKG_VERSION="1.40.3" # set to "9999" for nightmare packages
+
+# retrieve and extract what you need
+package_sources() {
+  test -e $PKG_VERSION.tar.gz || \
+  curl -fLO https://github.com/$PKG_AUTHOR/$PKG_TITLE/archive/refs/tags/$PKG_VERSION.tar.gz;
+  test -e $PKG_TITLE-$PKG_VERSION || tar -xpvf $PKG_VERSION.tar.gz
+}
+
+# call install functions as needed
+package_install() {
+  # this is just an example toolchain.
+  # check out common.sh to see build function docs
+
+  basic_environment_setup
+  basic_environment_build_nest
+  basic_install_cmake
+}
+
+# this one's mostly manual, sorry
+package_uninstall() {
+  # if $1 isn't installed, the process will safely die
+  basic_uninstall "/usr/bin/$PKG_TITLE"
+
+  # do whatever you need to remove the files
+  rm -rfv \
+    "/usr/bin/$PKG_TITLE" \
+    "/usr/lib/$PKG_TITLE" \
+    "/usr/bin/$PKG_TITLE-shumbo"
+}
