@@ -1,0 +1,34 @@
+#!/bin/sh
+
+# Copyright 2022 draumaz
+# Distributed under the terms of the MIT license
+
+. ./db/lib/common.sh
+
+DEB_DEPENDENCIES="gcc g++ git coreutils make"
+RPM_DEPENDENCIES="$DEB_DEPENDENCIES"
+
+PKG_TITLE="btop"
+PKG_AUTHOR="aristocratos"
+PKG_VERSION="1.2.8"
+PKG_TARBALL="v$PKG_VERSION.tar.gz"
+PKG_TARBALL_URL="https://github.com/aristocratos/$PKG_TITLE/archive/refs/tags/$PKG_TARBALL"
+
+package_sources() {
+  basic_sources_setup
+}
+
+package_install() {
+  basic_environment_setup
+  basic_install
+}
+
+package_uninstall() {
+  basic_uninstall "/usr/local/bin/btop" 
+  rm -rfv \
+    /usr/local/bin/btop \
+    /usr/local/share/btop \
+    /usr/local/share/applications/btop.desktop \
+    /usr/local/share/icons/hicolor/48x48/apps/btop.png \
+    /usr/local/share/icons/scalable/apps/btop.svg
+}
