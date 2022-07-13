@@ -11,6 +11,21 @@ PKG_TITLE="i3"
 PKG_AUTHOR="Airblader"
 PKG_VERSION="4.20.1"
 
+package_sources() {
+  test -e $PKG_VERSION.tar.gz || \
+  curl -fLO https://github.com/$PKG_AUTHOR/$PKG_TITLE/archive/refs/tags/$PKG_VERSION.tar.gz;
+  test -e $PKG_TITLE-$PKG_VERSION || tar -xpvf $PKG_VERSION.tar.gz -C .
+  cd $PKG_TITLE
+}
+
+package_install() {
+  basic_environment_setup &&
+  basic_environment_build_nest &&
+  basic_install_ninja &&
+  cd ../..
+  rm -rf $PKG_TITLE-$PKG_VERSION $PKG_VERSION.tar.gz
+}
+
 package_uninstall() {
   basic_uninstall "/usr/local/bin/$PKG_TITLE" 
   rm -rfv /usr/local/include/i3 \
@@ -22,19 +37,4 @@ package_uninstall() {
     /usr/local/bin/i3-sensible-editor \
     /usr/local/bin/i3-sensible-pager \
     /usr/local/bin/i3-sensible-terminal
-}
-
-sources_verify() {
-  test -e $PKG_VERSION.tar.gz || \
-    curl -fLO https://github.com/$PKG_AUTHOR/$PKG_TITLE/archive/refs/tags/$PKG_VERSION.tar.gz;
-  test -e $PKG_TITLE-$PKG_VERSION || tar -xpvf $PKG_VERSION.tar.gz -C .
-  cd $PKG_TITLE
-}
-
-package_install() {
-  basic_environment_setup &&
-  basic_environment_build_nest &&
-  basic_install_ninja &&
-  cd ../..
-  rm -rf $PKG_TITLE-$PKG_VERSION $PKG_VERSION.tar.gz
 }

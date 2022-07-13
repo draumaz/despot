@@ -11,15 +11,15 @@ PKG_TITLE="cli-visualizer"
 PKG_AUTHOR="dpayne"
 PKG_VERSION="9999"
 
-package_uninstall() {
-  basic_uninstall "/usr/local/bin/$PKG_TITLE" "/usr/local/bin/vis"
-}
-
-sources_verify() {
+package_sources() {
   git clone https://github.com/$PKG_AUTHOR/$PKG_TITLE $PKG_TITLE-$PKG_VERSION
 }
 
 package_install() {
   basic_environment_setup
   basic_install_cmake
+}
+
+package_uninstall() {
+  basic_uninstall "/usr/local/bin/$PKG_TITLE" "/usr/local/bin/vis"
 }

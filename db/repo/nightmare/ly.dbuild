@@ -11,19 +11,19 @@ PKG_TITLE="ly"
 PKG_AUTHOR="fairyglade"
 PKG_VERSION="9999"
 
-package_uninstall() {
-  basic_uninstall "/usr/bin/$PKG_TITLE" 
-  rm -rfv /etc/ly \
-    /etc/pam.d/ly \
-    /usr/bin/ly \
-    /us./db/lib/systemd/system/ly.service
-}
-
-sources_verify() {
+package_sources() {
   git clone --recursive https://github.com/$PKG_AUTHOR/$PKG_TITLE $PKG_TITLE-$PKG_VERSION
 }
 
 package_install() {
   basic_environment_setup
   basic_install
+}
+
+package_uninstall() {
+  basic_uninstall "/usr/bin/$PKG_TITLE" 
+  rm -rfv /etc/ly \
+    /etc/pam.d/ly \
+    /usr/bin/ly \
+    /us./db/lib/systemd/system/ly.service
 }

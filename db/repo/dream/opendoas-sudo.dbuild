@@ -9,14 +9,14 @@ PKG_TITLE="opendoas-sudo"
 PKG_AUTHOR="draumaz"
 PKG_VERSION="0.01"
 
-package_uninstall() {
-  basic_uninstall "/usr/bin/sudo" "/usr/bin/sudo"
-}
-
-sources_verify() {
+package_sources() {
   :
 }
 
 package_install() {
   ln -sfv "/usr/bin/doas" "/usr/bin/sudo"
+}
+
+package_uninstall() {
+  basic_uninstall "/usr/bin/sudo" "/usr/bin/sudo"
 }

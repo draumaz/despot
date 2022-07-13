@@ -9,7 +9,7 @@ basic_uninstall() {
 
 basic_environment_setup() {
   mkdir -pv db/work/$PKG_TITLE && cd db/work/$PKG_TITLE
-  sources_verify
+  package_sources
   cd $PKG_TITLE-$PKG_VERSION
 }
 

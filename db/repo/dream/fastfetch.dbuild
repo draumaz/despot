@@ -12,31 +12,22 @@ PKG_TITLE="fastfetch"
 PKG_AUTHOR="LinusDierheimer"
 PKG_VERSION="1.5.6"
 
-package_uninstall() {
-  basic_uninstall "/usr/local/bin/fastfetch"
-  rm -rfv /usr/local/bin/fastfetch \
-    /usr/local/bin/flashfetch \
-    /usr/local/share/bash-completion/completions/fastfetch \
-    /usr/local/share/fastfetch/presets \
-    /usr/local/share/fastfetch/presets/all \
-    /usr/local/share/fastfetch/presets/btw \
-    /usr/local/share/fastfetch/presets/devinfo \
-    /usr/local/share/fastfetch/presets/devinfo-verbose \
-    /usr/local/share/fastfetch/presets/hardware \
-    /usr/local/share/fastfetch/presets/neofetch \
-    /usr/local/share/fastfetch/presets/paleofetch \
-    /usr/local/share/fastfetch/presets/software \
-    /usr/local/share/fastfetch/presets/verbose \
-    /usr/local/share/licenses/fastfetch/LICENSE
-}
-
-sources_verify() {
+package_sources() {
   test -e $PKG_VERSION.tar.gz || \
-    curl -fLO https://github.com/$PKG_AUTHOR/$PKG_TITLE/archive/refs/tags/$PKG_VERSION.tar.gz;
+  curl -fLO https://github.com/$PKG_AUTHOR/$PKG_TITLE/archive/refs/tags/$PKG_VERSION.tar.gz;
   test -e $PKG_TITLE-$PKG_VERSION || tar -xpvf $PKG_VERSION.tar.gz
 }
 
 package_install() {
   basic_environment_setup
   basic_install_cmake
+}
+
+package_uninstall() {
+  basic_uninstall "/usr/local/bin/fastfetch"
+  rm -rfv /usr/local/bin/fastfetch \
+    /usr/local/bin/flashfetch \
+    /usr/local/share/bash-completion/completions/fastfetch \
+    /usr/local/share/fastfetch/presets \
+    /usr/local/share/licenses/fastfetch/LICENSE
 }

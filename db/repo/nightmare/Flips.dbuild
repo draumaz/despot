@@ -11,11 +11,7 @@ PKG_TITLE="Flips"
 PKG_AUTHOR="Alcaro"
 PKG_VERSION="9999"
 
-package_uninstall() {
-  basic_uninstall "/usr/local/bin/flips" "/usr/local/bin/flips"
-}
-
-sources_verify() {
+package_sources() {
   git clone https://github.com/$PKG_AUTHOR/$PKG_TITLE $PKG_TITLE-$PKG_VERSION
 }
 
@@ -23,4 +19,9 @@ package_install() {
   basic_environment_setup
   bash make.sh &&
   cp -fv flips /usr/local/bin/flips
+}
+
+
+package_uninstall() {
+  basic_uninstall "/usr/local/bin/flips" "/usr/local/bin/flips"
 }

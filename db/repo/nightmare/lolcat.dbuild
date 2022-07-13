@@ -9,15 +9,16 @@ PKG_TITLE="lolcat"
 PKG_AUTHOR="jaseg"
 PKG_VERSION="9999"
 
-package_uninstall() {
-  :
-}
-
-sources_verify() {
+package_sources() {
   git clone https://github.com/$PKG_AUTHOR/$PKG_TITLE $PKG_TITLE-$PKG_VERSION
 }
 
 package_install() {
   basic_environment_setup
   basic_install
+}
+
+package_uninstall() {
+  basic_uninstall "/usr/local/bin/lolcat"
+  rm -rfv /usr/local/bin/lolcat /usr/local/bin/censor
 }
