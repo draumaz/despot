@@ -9,10 +9,10 @@ export BASE_DIR="$PWD"
 
 die() {
   case "$1" in
-    1) echo "\e[91m!!\e[0m: package not installed"; exit ;;
-    2) echo "\e[91m!!\e[0m: missing dependency $2"; exit ;;
-    3) echo "\e[91m!!\e[0m: no argument given"; exit ;;
-    4) echo "\e[91m!!\e[0m: no dbuild available for $2"; exit ;;
+    1) echo "\e[91m!!!!\e[0m: package not installed"; exit ;;
+    2) echo "\e[91m!!!!\e[0m: missing dependency $2"; exit ;;
+    3) echo "\e[91m!!!!\e[0m: no argument given"; exit ;;
+    4) echo "\e[91m!!!!\e[0m: no dbuild available for $2"; exit ;;
     99) exit ;;
   esac
 }
@@ -35,42 +35,44 @@ install [pkg]   | install a package
 uninstall [pkg] | uninstall a package
 version         | show current version
 EOF
-    die 99
-    ;;
+    die 99 ;;
   version | v)
     echo "despot ${DESPOT_VERSION}"; die 99 ;;
 esac
 
 # determine repo, retrieve build functions
-case "$PKG_LOCK" in "install" | "uninstall")
+case "$PKG_LOCK" in "install" | "i" | "uninstall" | "u" )
   live_repo=$(find db/repo -type f -name '*.dbuild' | grep -i $2 | rev | cut -d / -f2 | rev)
   test ! -e $live_repo || die 4 $2
-  echo "-> reading \e[92m$2\e[0m dbuild from \e[93m$live_repo\e[0m\n"
+  echo "\e[92m->\e[0m reading \e[95m$2\e[0m dbuild from \e[93m$live_repo\e[0m\n"
   . ./db/repo/${live_repo}/${2}.dbuild
   PKG_INSTALLED_VERSION="$(grep -i $PKG_TITLE ./db/lib/installed.txt | sed 's/[^ ]* //')"
 esac
 
 # install process
 case "$PKG_LOCK" in
-  "install") 
+  "install" | "i") 
     case "$PKG_VERSION" in $PKG_INSTALLED_VERSION)
-      echo "!! \e[93mwarning\e[0m: version $PKG_VERSION of $PKG_TITLE is already installed."
-      echo -n "!! reinstall? [y/n]: "; read x
+      echo "\e[93m!!\e[0m warning\e[0m: version $PKG_VERSION of $PKG_TITLE is already installed."
+      echo -n "\e[93m!!\e[0m reinstall? [y/n]: "; read x
       case $x in n) die 99 ;; esac
     ;; esac	  
-    echo "\e[92m[dependency management: START]\e[0m"
+    echo "\n\e[92m->\e[0m checking dependencies"
     echo "$DEB_DEPENDENCIES" | xargs apt-get install -y || \
     echo "$RPM_DEPENDENCIES" | xargs dnf install -y; \
-    echo "\e[92m[dependency management: DONE]\e[0m\n"
-    echo "-> compiling: \e[92m$PKG_TITLE\e[0m"
-    package_install
-    echo "-> installed: \e[92m$PKG_TITLE\e[0m"
+    echo "\e[92m->\e[0m done\n"
+    echo "\e[92m->\e[0m compiling: $PKG_TITLE"
+    package_install &&
+    echo "\e[92m->\e[0m installed: $PKG_TITLE" || \
+    echo "\e[91m->\e[0m build failed: $PKG_TITLE" ; exit
     PKG_LOCK=0
     ;;
-  "uninstall") 
+  "list" | "l") cat ./db/lib/installed.txt | sort ;;
+  "uninstall" | "u") 
     echo "-> uninstalling: \e[91m$PKG_TITLE\e[0m"
-    package_uninstall
-    echo "-> uninstalled:  \e[91m$PKG_TITLE\e[0m"
+    package_uninstall &&
+    echo "-> uninstalled:  \e[91m$PKG_TITLE\e[0m" || \
+    echo "-> \e[91mbuild failed\e[0m: $PKG_TITLE"
     PKG_LOCK=1
     ;;
 esac
