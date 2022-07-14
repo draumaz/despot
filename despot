@@ -111,8 +111,14 @@ esac
 case "$PKG_LOCK" in
   install | i) 
     echo "\n\e[92m->\e[0m checking dependencies"
-    echo "$DEB_DEPENDENCIES" | xargs apt-get install -y || \
-    echo "$RPM_DEPENDENCIES" | xargs dnf install -y; \
+    case "$(cat /etc/os-release)" in
+      *debian*)
+        echo "$DEB_DEPENDENCIES" | xargs apt-get install -y
+	;;
+      *fedora*)
+	echo "$RPM_DEPENDENCIES" | xargs dnf install -y
+	;;
+    esac
     echo "\e[92m->\e[0m done\n"
     echo "\e[92m->\e[0m compiling: $PKG_TITLE"
     package_install && PKG_LOCK=0 &&
