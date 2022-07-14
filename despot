@@ -14,8 +14,8 @@ basic_uninstall() {
 }
 
 basic_sources_setup() {
-  test -e "$PKG_TARBALL" || curl -fLO "$PKG_TARBALL_URL"
-  tar -xpvf "$PKG_TARBALL"
+  test -e "$PKG_TARBALL" || curl --silent -fLO "$PKG_TARBALL_URL"
+  tar -xpf "$PKG_TARBALL"
 }
 
 git_sources_setup() {
@@ -23,14 +23,15 @@ git_sources_setup() {
 }
 
 basic_environment_setup() {
-  mkdir -pv "$BASE_DIR"/work/"$PKG_TITLE"
+  mkdir -p "$BASE_DIR"/work/"$PKG_TITLE"
   cd "$BASE_DIR"/work/"$PKG_TITLE"
   package_sources
-  cd $PKG_TITLE-$PKG_VERSION
+  cd $PKG_EXTDIR
+  #cd $PKG_TITLE-$PKG_VERSION
 }
 
 basic_environment_build_nest() {
-  mkdir -pv build
+  mkdir -p build
   cd build
 }
 
@@ -124,9 +125,9 @@ case "$PKG_LOCK" in
       *fedora*) echo "$RPM_DEPENDENCIES" | xargs dnf install -y ;;
     esac
     echo "${GREEN}->${WHITE} done\n"
-    echo "${GREEN}->${WHITE} compiling: $PKG_TITLE"
+    echo "${GREEN}->${WHITE} installing: $PKG_TITLE"
     package_install && PKG_LOCK=0 &&
-    echo "${GREEN}->${WHITE} installed: $PKG_TITLE" || die 88 ;;
+    echo "${GREEN}->${WHITE} installed : $PKG_TITLE" || die 88 ;;
   uninstall | u) 
     echo "${RED}->${WHITE} uninstalling: ${RED}$PKG_TITLE${WHITE}"
     package_uninstall &&
