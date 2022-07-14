@@ -5,7 +5,7 @@
 
 case "$(id -u)" in 1000) echo "run despot as superuser"; exit ;; esac
 
-DESPOT_VERSION="trunk:2022-07-14"
+DESPOT_VERSION="0.02.4"
 
 export BASE_DIR="/var/cache/despot"
 
