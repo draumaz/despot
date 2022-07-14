@@ -3,7 +3,54 @@
 # Copyright 2022 draumaz
 # Distributed under the terms of the MIT license
 
-DESPOT_VERSION="0.02.3"
+case "$(id -u)" in 1000) echo "run despot as superuser"; exit ;; esac
+
+DESPOT_VERSION="0.02.4"
+
+export BASE_DIR="/var/cache/despot"
+
+basic_uninstall() {
+  test -e "$1" || die 1
+}
+
+basic_sources_setup() {
+  test -e "$PKG_TARBALL" || curl -fLO "$PKG_TARBALL_URL"
+  tar -xpvf "$PKG_TARBALL"
+}
+
+basic_environment_setup() {
+  mkdir -pv "$BASE_DIR"/work/"$PKG_TITLE"
+  cd "$BASE_DIR"/work/"$PKG_TITLE"
+  package_sources
+  cd $PKG_TITLE-$PKG_VERSION
+}
+
+basic_environment_build_nest() {
+  mkdir -pv build
+  cd build
+}
+
+basic_install_mini() {
+  make install
+}
+
+basic_install() {
+  make &&
+  basic_install_mini &&
+  cd ..
+  rm -rf "$PKG_TITLE"
+}
+
+basic_install_cmake() {
+  cmake . &&
+  basic_install
+}
+
+basic_install_ninja() {
+  meson .. &&
+  ninja &&
+  ninja install
+}
 
 RED="$(tput setaf 1)"
 GREEN="$(tput setaf 2)"
@@ -11,7 +58,8 @@ YELLOW="$(tput setaf 3)"
 PURPLE="$(tput setaf 5)"
 WHITE="$(tput sgr0)"
 
-export BASE_DIR="$PWD"
+test -e ${BASE_DIR}/repo/.git || \
+  git clone https://github.com/draumaz/despot-repo "${BASE_DIR}/repo"
 
 die() {
   case "$1" in
@@ -27,9 +75,6 @@ die() {
 # determine what functions to use, else redirect to help screen
 test $1 && PKG_LOCK="$1" || PKG_LOCK="help"
 
-# ensure install record file exists
-touch ./db/lib/installed.txt 2> /dev/null
-
 # meta text
 case "$PKG_LOCK" in
   help | h)
@@ -39,7 +84,6 @@ case "$PKG_LOCK" in
 arguments:
 help            | you're here now
 install [pkg]   | install a package
-list            | show installed packages
 tug             | update repo database
 uninstall [pkg] | uninstall a package
 version         | show current version
@@ -51,22 +95,15 @@ esac
 
 # determine repo, retrieve build functions
 case "$PKG_LOCK" in "install" | "i" | "uninstall" | "u")
-  LIVE_REPO="$(find db/repo -type f -name '*.dbuild' | grep -i $2 | rev | cut -d / -f2 | rev)"
-  test -e ./db/repo/"$LIVE_REPO"/"$2".dbuild || die 4 "$2"
+  LIVE_REPO="$(find $BASE_DIR/repo -type f -name '*.dbuild' | grep -i $2 | rev | cut -d / -f2 | rev)"
+  test -e "$BASE_DIR"/repo/"$LIVE_REPO"/"$2".dbuild || die 4 "$2"
   echo "${GREEN}->${WHITE} reading ${PURPLE}$2${WHITE} dbuild from ${YELLOW}${LIVE_REPO}${WHITE}"
-  . ./db/repo/${LIVE_REPO}/${2}.dbuild
-  PKG_INSTALLED_VERSION="$(grep -i $PKG_TITLE ./db/lib/installed.txt | sed 's/[^ ]* //')"
+  . "$BASE_DIR"/repo/${LIVE_REPO}/${2}.dbuild
 esac
 
 # install process
 case "$PKG_LOCK" in
   "install" | "i") 
-    case "$PKG_VERSION" in $PKG_INSTALLED_VERSION)
-      echo
-      echo "${YELLOW}!!${WHITE} warning: version $PKG_VERSION of $PKG_TITLE is already installed."
-      echo -n "${YELLOW}!!${WHITE} reinstall? [${GREEN}y${WHITE}/${RED}n${WHITE}]: "; read x
-      case $x in n) die 99 ;; esac
-    ;; esac	  
     echo "\n\e[92m->\e[0m checking dependencies"
     echo "$DEB_DEPENDENCIES" | xargs apt-get install -y || \
     echo "$RPM_DEPENDENCIES" | xargs dnf install -y; \
@@ -74,8 +111,7 @@ case "$PKG_LOCK" in
     echo "\e[92m->\e[0m compiling: $PKG_TITLE"
     package_install && PKG_LOCK=0 &&
     echo "\e[92m->\e[0m installed: $PKG_TITLE" || die 88 ;;
-  "list" | "l") cat ./db/lib/installed.txt | sort ;;
-  "tug" | "t") git pull ;;
+  "tug" | "t") cd "$BASE_DIR"/repo && git pull ;;
   "uninstall" | "u") 
     echo "-> uninstalling: \e[91m$PKG_TITLE\e[0m"
     package_uninstall &&
@@ -87,14 +123,6 @@ esac
 
 cd "$BASE_DIR"
 
-# record package title and version to installed.txt
-case $PKG_LOCK in
-  0) grep -q "$PKG_TITLE $PKG_VERSION" ./db/lib/installed.txt || \
-     echo "$PKG_TITLE $PKG_VERSION" >> ./db/lib/installed.txt ;; 
-  1) sed -i "/$PKG_TITLE $PKG_VERSION/d" ./db/lib/installed.txt ;;
-esac
-
 # environment cleanup
-sed -i '/^$/d' ./db/lib/installed.txt
 unset PKG_TITLE PKG_AUTHOR PKG_VERSION package_remove package_sources package_install
-rm -rf db/work
+rm -rf "$BASE_DIR"/work
