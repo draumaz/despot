@@ -25,7 +25,7 @@ basic_environment_setup() {
   cd $PKG_TITLE-$PKG_VERSION
 }
 
-basic_environment_setup_nest() {
+basic_environment_build_nest() {
   mkdir -pv build
   cd build
 }
