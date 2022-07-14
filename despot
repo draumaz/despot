@@ -94,11 +94,8 @@ EOF
   selfupdate | s)
     case "${DESPOT_VERSION}" in 
       "$(curl -Ls -o /dev/null -w %{url_effective} https://github.com/draumaz/despot/releases/latest | rev | cut -d / -f1 | rev)")
-        echo "${GREEN}->${WHITE} up to date"
-      ;; 
-      *) 
-        curl https://raw.githubusercontent.com/draumaz/despot/master/bootstrap.sh | sh
-      ;;
+        echo "${GREEN}->${WHITE} up to date" ;; 
+      *) curl https://raw.githubusercontent.com/draumaz/despot/master/bootstrap.sh | sh ;;
     esac
   ;;
   version | v)
