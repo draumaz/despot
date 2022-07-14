@@ -18,6 +18,10 @@ basic_sources_setup() {
   tar -xpvf "$PKG_TARBALL"
 }
 
+git_sources_setup() {
+  git clone "$PKG_REPO" "${PKG_TITLE}-${PKG_VERSION}"
+}
+
 basic_environment_setup() {
   mkdir -pv "$BASE_DIR"/work/"$PKG_TITLE"
   cd "$BASE_DIR"/work/"$PKG_TITLE"
