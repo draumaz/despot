@@ -116,12 +116,8 @@ case "$PKG_LOCK" in
   install | i) 
     echo "\n${GREEN}->${WHITE} checking dependencies"
     case "$(cat /etc/os-release)" in
-      *debian*)
-        echo "$DEB_DEPENDENCIES" | xargs apt-get install -y
-	;;
-      *fedora*)
-	echo "$RPM_DEPENDENCIES" | xargs dnf install -y
-	;;
+      *debian*) echo "$DEB_DEPENDENCIES" | xargs apt-get install -y ;;
+      *fedora*) echo "$RPM_DEPENDENCIES" | xargs dnf install -y ;;
     esac
     echo "${GREEN}->${WHITE} done\n"
     echo "${GREEN}->${WHITE} compiling: $PKG_TITLE"
