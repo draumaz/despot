@@ -9,13 +9,17 @@ i have two goals with despot:
 - provide a convenient, fast, and __not annoying__ tool to maintain them
 
 ## install
-- ```curl https://raw.githubusercontent.com/draumaz/despot/trunk/db/lib/bootstrap.sh | sh```
+- ```curl https://raw.githubusercontent.com/draumaz/despot/trunk/despot > /usr/local/bin/despot```
+- ```chmod +x /usr/local/bin/despot```
 
 ### compiling packages
 - ```./despot install [PKG]```
 
 ### removing packages
 - ```./despot uninstall [PKG]```
+
+### the repo
+- <a href="https://github.com/draumaz/despot-repo">where all the dbuilds are found.</a>
 
 ### learn more
 - ```./despot help```
