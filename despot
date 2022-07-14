@@ -5,7 +5,7 @@
 
 case "$(id -u)" in 1000) echo "run despot as superuser"; exit ;; esac
 
-DESPOT_VERSION="0.02.4"
+DESPOT_VERSION="trunk:2022-07-13"
 
 export BASE_DIR="/var/cache/despot"
 
@@ -88,13 +88,19 @@ tug             | update repo database
 uninstall [pkg] | uninstall a package
 version         | show current version
 EOF
-    die 99 ;;
+    die 99 
+  ;;
+  tug | t) cd "$BASE_DIR"/repo && git pull ;;
+  selfupdate | s)
+    case "${DESPOT_VERSION}" in "$(curl -Ls -o /dev/null -w %{url_effective} https://github.com/draumaz/despot/releases/latest | rev | cut -d / -f1 | rev)");; *) curl https://raw.githubusercontent.com/draumaz/despot/master/bootstrap.sh | sh ;; esac
+  ;;
   version | v)
-    echo "despot ${DESPOT_VERSION}"; die 99 ;;
+    echo "despot ${DESPOT_VERSION}"; die 99
+  ;;
 esac
 
 # determine repo, retrieve build functions
-case "$PKG_LOCK" in "install" | "i" | "uninstall" | "u")
+case "$PKG_LOCK" in install | uninstall | i | u)
   LIVE_REPO="$(find $BASE_DIR/repo -type f -name '*.dbuild' | grep -i $2 | rev | cut -d / -f2 | rev)"
   test -e "$BASE_DIR"/repo/"$LIVE_REPO"/"$2".dbuild || die 4 "$2"
   echo "${GREEN}->${WHITE} reading ${PURPLE}$2${WHITE} dbuild from ${YELLOW}${LIVE_REPO}${WHITE}"
@@ -103,7 +109,7 @@ esac
 
 # install process
 case "$PKG_LOCK" in
-  "install" | "i") 
+  install | i) 
     echo "\n\e[92m->\e[0m checking dependencies"
     echo "$DEB_DEPENDENCIES" | xargs apt-get install -y || \
     echo "$RPM_DEPENDENCIES" | xargs dnf install -y; \
@@ -111,8 +117,7 @@ case "$PKG_LOCK" in
     echo "\e[92m->\e[0m compiling: $PKG_TITLE"
     package_install && PKG_LOCK=0 &&
     echo "\e[92m->\e[0m installed: $PKG_TITLE" || die 88 ;;
-  "tug" | "t") cd "$BASE_DIR"/repo && git pull ;;
-  "uninstall" | "u") 
+  uninstall | u) 
     echo "-> uninstalling: \e[91m$PKG_TITLE\e[0m"
     package_uninstall &&
     echo "-> uninstalled:  \e[91m$PKG_TITLE\e[0m" || \
