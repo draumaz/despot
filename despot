@@ -112,7 +112,7 @@ case "$PKG_LOCK" in
     echo "\e[92m->\e[0m compiling: $PKG_TITLE"
     package_install && PKG_LOCK=0 &&
     echo "\e[92m->\e[0m installed: $PKG_TITLE" || die 88 ;;
-  "tug" | "t") cd "$BASE_DIR" && git pull ;;
+  "tug" | "t") cd "$BASE_DIR"/repo && git pull ;;
   "uninstall" | "u") 
     echo "-> uninstalling: \e[91m$PKG_TITLE\e[0m"
     package_uninstall &&
