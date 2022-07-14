@@ -7,15 +7,59 @@ case "$(id -u)" in 1000) echo "run despot as superuser"; exit ;; esac
 
 DESPOT_VERSION="trunk:2022-07-13"
 
+export BASE_DIR="/var/cache/despot"
+
+basic_uninstall() {
+  test -e "$1" || die 1
+}
+
+basic_sources_setup() {
+  test -e "$PKG_TARBALL" || curl -fLO "$PKG_TARBALL_URL"
+  tar -xpvf "$PKG_TARBALL"
+}
+
+basic_environment_setup() {
+  mkdir -pv "$BASE_DIR"/work/"$PKG_TITLE"
+  cd "$BASE_DIR"/work/"$PKG_TITLE"
+  package_sources
+  cd $PKG_TITLE-$PKG_VERSION
+}
+
+basic_environment_setup_nest() {
+  mkdir -pv build
+  cd build
+}
+
+basic_install_mini() {
+  make install
+}
+
+basic_install() {
+  make &&
+  basic_install_mini &&
+  cd ..
+  rm -rf "$PKG_TITLE"
+}
+
+basic_install_cmake() {
+  cmake . &&
+  basic_install
+}
+
+basic_install_ninja() {
+  meson .. &&
+  ninja &&
+  ninja install
+}
+
 RED="$(tput setaf 1)"
 GREEN="$(tput setaf 2)"
 YELLOW="$(tput setaf 3)"
 PURPLE="$(tput setaf 5)"
 WHITE="$(tput sgr0)"
 
-export BASE_DIR="/var/cache/despot"
-test -e ${BASE_DIR}/.git || \
-  git clone https://github.com/draumaz/despot-repo ${BASE_DIR}
+test -e ${BASE_DIR}/repo/.git || \
+  git clone https://github.com/draumaz/despot-repo "${BASE_DIR}/repo"
 
 die() {
   case "$1" in
@@ -52,10 +96,10 @@ esac
 
 # determine repo, retrieve build functions
 case "$PKG_LOCK" in "install" | "i" | "uninstall" | "u")
-  LIVE_REPO="$(find $BASE_DIR -type f -name '*.dbuild' | grep -i $2 | rev | cut -d / -f2 | rev)"
-  test -e "$BASE_DIR"/"$LIVE_REPO"/"$2".dbuild || die 4 "$2"
+  LIVE_REPO="$(find $BASE_DIR/repo -type f -name '*.dbuild' | grep -i $2 | rev | cut -d / -f2 | rev)"
+  test -e "$BASE_DIR"/repo/"$LIVE_REPO"/"$2".dbuild || die 4 "$2"
   echo "${GREEN}->${WHITE} reading ${PURPLE}$2${WHITE} dbuild from ${YELLOW}${LIVE_REPO}${WHITE}"
-  . "$BASE_DIR"/${LIVE_REPO}/${2}.dbuild
+  . "$BASE_DIR"/repo/${LIVE_REPO}/${2}.dbuild
 esac
 
 # install process
