@@ -5,7 +5,7 @@
 
 case "$(id -u)" in 1000) echo "run despot as superuser"; exit ;; esac
 
-export DESPOT_VERSION="0.02.5"
+export DESPOT_VERSION="2022-07-14"
 export BASE_DIR="/var/cache/despot"
 
 RED="$(tput setaf 1)"
@@ -96,16 +96,8 @@ EOF
     die 99 
   ;;
   tug | t) cd "$BASE_DIR"/repo && git pull ;;
-  selfupdate | s)
-    case "${DESPOT_VERSION}" in 
-      "$(curl -Ls -o /dev/null -w %{url_effective} https://github.com/draumaz/despot/releases/latest | rev | cut -d / -f1 | rev)")
-        echo "${GREEN}->${WHITE} up to date" ;; 
-      *) curl https://raw.githubusercontent.com/draumaz/despot/master/bootstrap.sh | sh ;;
-    esac
-  ;;
-  version | v)
-    echo "despot ${DESPOT_VERSION}"; die 99
-  ;;
+  selfupdate | s) curl https://raw.githubusercontent.com/draumaz/despot/master/bootstrap.sh | sh ;;
+  version | v) echo "despot ${DESPOT_VERSION}"; die 99 ;;
 esac
 
 # determine repo, retrieve build functions
