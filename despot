@@ -5,10 +5,30 @@
 
 case "$(id -u)" in 1000) echo "run despot as superuser"; exit ;; esac
 
-DESPOT_VERSION="0.02.5"
-
+export DESPOT_VERSION="0.02.5"
 export BASE_DIR="/var/cache/despot"
 
+RED="$(tput setaf 1)"
+GREEN="$(tput setaf 2)"
+YELLOW="$(tput setaf 3)"
+PURPLE="$(tput setaf 5)"
+WHITE="$(tput sgr0)"
+
+test -e ${BASE_DIR}/repo/.git || \
+  git clone https://github.com/draumaz/despot-repo "${BASE_DIR}/repo"
+
+die() {
+  case "$1" in
+    1) echo "${RED}!!!!${WHITE}: package not installed"; exit ;;
+    2) echo "${RED}!!!!${WHITE}: $2: missing dependency"; exit ;;
+    3) echo "${RED}!!!!${WHITE}: argument missing"; exit ;;
+    4) echo "${RED}!!!!${WHITE}: $2: no dbuild available"; exit ;;
+    88) echo "${RED}!!!!${WHITE}: $PKG_TITLE: build failed"; exit ;;
+    99) exit ;;
+  esac
+}
+
+# dbuild functions
 basic_uninstall() {
   test -e "$1" || die 1
 }
@@ -57,30 +77,10 @@ basic_install_ninja() {
   ninja install
 }
 
-RED="$(tput setaf 1)"
-GREEN="$(tput setaf 2)"
-YELLOW="$(tput setaf 3)"
-PURPLE="$(tput setaf 5)"
-WHITE="$(tput sgr0)"
-
-test -e ${BASE_DIR}/repo/.git || \
-  git clone https://github.com/draumaz/despot-repo "${BASE_DIR}/repo"
-
-die() {
-  case "$1" in
-    1) echo "${RED}!!!!${WHITE}: package not installed"; exit ;;
-    2) echo "${RED}!!!!${WHITE}: $2: missing dependency"; exit ;;
-    3) echo "${RED}!!!!${WHITE}: argument missing"; exit ;;
-    4) echo "${RED}!!!!${WHITE}: $2: no dbuild available"; exit ;;
-    88) echo "${RED}!!!!${WHITE}: $PKG_TITLE: build failed"; exit ;;
-    99) exit ;;
-  esac
-}
-
 # determine what functions to use, else redirect to help screen
 test $1 && PKG_LOCK="$1" || PKG_LOCK="help"
 
-# meta text
+# meta text & updaters
 case "$PKG_LOCK" in
   help | h)
     cat << EOF
@@ -116,7 +116,7 @@ case "$PKG_LOCK" in install | uninstall | i | u)
   . "$BASE_DIR"/repo/${LIVE_REPO}/${2}.dbuild
 esac
 
-# install process
+# install processes
 case "$PKG_LOCK" in
   install | i) 
     echo "\n${GREEN}->${WHITE} checking dependencies"
@@ -136,8 +136,6 @@ case "$PKG_LOCK" in
     PKG_LOCK=1
     ;;
 esac
-
-cd "$BASE_DIR"
 
 # environment cleanup
 unset PKG_TITLE PKG_AUTHOR PKG_VERSION package_remove package_sources package_install
