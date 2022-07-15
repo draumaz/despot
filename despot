@@ -123,7 +123,7 @@ case "$PKG_LOCK" in
     package_install && PKG_LOCK=0 &&
     echo "${GREEN}->${WHITE} installed : $PKG_TITLE" || die 88 ;;
   uninstall | u) 
-    echo "${RED}->${WHITE} uninstalling: ${RED}$PKG_TITLE${WHITE}"
+    echo "\n${RED}->${WHITE} uninstalling: ${RED}$PKG_TITLE${WHITE}"
     package_uninstall &&
     echo "${RED}->${WHITE} uninstalled:  ${RED}$PKG_TITLE${WHITE}" || \
     echo "${RED}->${WHITE} uninstall failed: ${RED}$PKG_TITLE${WHITE}"
