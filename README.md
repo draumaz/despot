@@ -26,4 +26,4 @@ i have two goals with despot:
 - contribution should be extremely simple - check out the <a href="https://github.com/draumaz/despot-repo/blob/master/skel.dbuild">skel.dbuild</a> if you're interested!
 
 ## contributors
-- <a href="https://github.com/DeltaDove">DeltaDove</a> - project name
+- <a href="https://github.com/DeltaDove">DeltaDove</a> - project name, Fedora support
