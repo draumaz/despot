@@ -1,7 +1,7 @@
 # despot
 **d**raumaz's **e**lastic **s**ightless **p**ackage-**o**fficiation **t**ool.
 
-this is a POSIX shell-compliant package manager focused on Debian (and soon Fedora) systems.
+this is a POSIX shell-compliant package manager focused on Debian and Fedora (thanks, <a href="https://github.com/DeltaDove">DeltaDove</a>!) systems.
 
 i have two goals with despot:
 
