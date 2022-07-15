@@ -17,11 +17,13 @@ i have two goals with despot:
 ### removing packages
 - ```./despot uninstall [PKG]```
 
-### the repo
-- <a href="https://github.com/draumaz/despot-repo">where all the dbuilds are found.</a>
-
 ### learn more
 - ```./despot help```
+
+### the repo
+- <a href="https://github.com/draumaz/despot-repo">where all the dbuilds are found.</a>
+- a dbuild is a shell script that uses despot build functions and variables.
+- contribution should be extremely simple - check out the <a href="https://github.com/draumaz/despot-repo/blob/master/skel.dbuild">skel.dbuild</a> if you're interested!
 
 ## contributors
 - <a href="https://github.com/DeltaDove">DeltaDove</a> - project name
