@@ -89,6 +89,7 @@ case "$PKG_LOCK" in
 arguments:
 help            | you're here now
 install [pkg]   | install a package
+observe         | list available dbuilds
 tug             | update repo database
 uninstall [pkg] | uninstall a package
 version         | show current version
