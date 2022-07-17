@@ -5,7 +5,7 @@
 
 case "$(id -u)" in 1000) echo "run despot as superuser"; exit ;; esac
 
-export DESPOT_VERSION="2022-07-14"
+export DESPOT_VERSION="2022-07-17"
 export BASE_DIR="/var/cache/despot"
 
 RED="$(tput setaf 1)"
@@ -15,7 +15,7 @@ PURPLE="$(tput setaf 5)"
 WHITE="$(tput sgr0)"
 
 test -e ${BASE_DIR}/repo/.git || \
-  git clone https://github.com/draumaz/despot-repo "${BASE_DIR}/repo"
+  mkdir -p ${BASE_DIR} && git clone https://github.com/draumaz/despot-repo "${BASE_DIR}/repo"
 
 die() {
   case "$1" in
@@ -47,7 +47,6 @@ basic_environment_setup() {
   cd "$BASE_DIR"/work/"$PKG_TITLE"
   package_sources
   cd $PKG_EXTDIR
-  #cd $PKG_TITLE-$PKG_VERSION
 }
 
 basic_environment_build_nest() {
