@@ -71,7 +71,8 @@ die() {
     2) echo "${RED}!!!!${WHITE}: $2: missing dependency"; exit ;;
     3) echo "${RED}!!!!${WHITE}: argument missing"; exit ;;
     4) echo "${RED}!!!!${WHITE}: $2: no dbuild available"; exit ;;
-    88) echo "${RED}!!!!${WHITE}: $PKG_TITLE: build failed"; exit ;;
+    87) echo "${RED}!!!!${WHITE}: $PKG_TITLE: uninstall failed"; exit ;;
+    88) echo "${RED}!!!!${WHITE}: $PKG_TITLE: install failed"; exit ;;
     99) exit ;;
   esac
 }
@@ -139,14 +140,11 @@ bld() {
   case "$PKG_LOCK" in
     install | i)
       test ! -e '$DEB_DEPENDENCIES' || test ! -e '$RPM_DEPENDENCIES' || deps
-      echo "${GREEN}->${WHITE} installing: $PKG_TITLE"
-      package_install && PKG_LOCK=0 &&
+      echo "${GREEN}->${WHITE} installing: $PKG_TITLE"; package_install
       echo "${GREEN}->${WHITE} installed : $PKG_TITLE" || die 88 ;;
     uninstall | u) 
-      echo "\n${RED}->${WHITE} uninstalling: ${RED}$PKG_TITLE${WHITE}"
-      package_uninstall &&
-      echo "${RED}->${WHITE} uninstalled:  ${RED}$PKG_TITLE${WHITE}" || \
-      echo "${RED}->${WHITE} uninstall failed: ${RED}$PKG_TITLE${WHITE}" ;;
+      echo "\n${RED}->${WHITE} uninstalling: ${RED}$PKG_TITLE${WHITE}"; package_uninstall
+      echo "${RED}->${WHITE} uninstalled:  ${RED}$PKG_TITLE${WHITE}" || die 87 ;;
   esac
 }
 
