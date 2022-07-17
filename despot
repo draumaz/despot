@@ -30,6 +30,15 @@ die() {
   esac
 }
 
+deps() {
+  echo "\n${GREEN}->${WHITE} checking dependencies"
+  case "$(cat /etc/os-release)" in
+    *debian*) apt-get install -y `echo $DEB_DEPENDENCIES` ;;
+    *fedora*) dnf install -y `echo $RPM_DEPENDENCIES` ;;
+  esac
+  echo "${GREEN}->${WHITE} done\n"
+}
+
 # dbuild functions
 basic_uninstall() {
   test -e "$1" || die 1
@@ -113,13 +122,8 @@ esac
 
 # install processes
 case "$PKG_LOCK" in
-  install | i) 
-    echo "\n${GREEN}->${WHITE} checking dependencies"
-    case "$(cat /etc/os-release)" in
-      *debian*) apt-get install -y `echo $DEB_DEPENDENCIES` ;;
-      *fedora*) dnf install -y `echo $DEB_DEPENDENCIES` ;;
-    esac
-    echo "${GREEN}->${WHITE} done\n"
+  install | i)
+    test ! -e '$DEB_DEPENDENCIES' || test ! -e '$RPM_DEPENDENCIES' || deps
     echo "${GREEN}->${WHITE} installing: $PKG_TITLE"
     package_install && PKG_LOCK=0 &&
     echo "${GREEN}->${WHITE} installed : $PKG_TITLE" || die 88 ;;
