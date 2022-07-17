@@ -15,29 +15,7 @@ PURPLE=`tput setaf 5`
 WHITE=`tput sgr0`
 
 mkdir -p ${BASE_DIR}
-
-test -e ${BASE_DIR}/repo/.git || \
-  git clone https://github.com/draumaz/despot-repo "${BASE_DIR}/repo"
-
-die() {
-  case "$1" in
-    1) echo "${RED}!!!!${WHITE}: package not installed"; exit ;;
-    2) echo "${RED}!!!!${WHITE}: $2: missing dependency"; exit ;;
-    3) echo "${RED}!!!!${WHITE}: argument missing"; exit ;;
-    4) echo "${RED}!!!!${WHITE}: $2: no dbuild available"; exit ;;
-    88) echo "${RED}!!!!${WHITE}: $PKG_TITLE: build failed"; exit ;;
-    99) exit ;;
-  esac
-}
-
-deps() {
-  echo "\n${GREEN}->${WHITE} checking dependencies"
-  case `cat /etc/os-release` in
-    *debian*) apt-get install -y `echo $DEB_DEPENDENCIES` ;;
-    *fedora*) dnf install -y `echo $RPM_DEPENDENCIES` ;;
-  esac
-  echo "${GREEN}->${WHITE} done\n"
-}
+test -e ${BASE_DIR}/repo/.git || git clone --quiet https://github.com/draumaz/despot-repo "${BASE_DIR}/repo"
 
 # dbuild functions
 basic_uninstall() {
@@ -87,16 +65,38 @@ basic_install_ninja() {
   ninja install
 }
 
-# determine what functions to use, else redirect to help screen
-test $1 && PKG_LOCK="$1" || PKG_LOCK="help"
+die() {
+  case "$1" in
+    1) echo "${RED}!!!!${WHITE}: package not installed"; exit ;;
+    2) echo "${RED}!!!!${WHITE}: $2: missing dependency"; exit ;;
+    3) echo "${RED}!!!!${WHITE}: argument missing"; exit ;;
+    4) echo "${RED}!!!!${WHITE}: $2: no dbuild available"; exit ;;
+    88) echo "${RED}!!!!${WHITE}: $PKG_TITLE: build failed"; exit ;;
+    99) exit ;;
+  esac
+}
 
-# meta text & updaters
-case "$PKG_LOCK" in
-  help | h)
-    cat << EOF
+deps() {
+  echo "\n${GREEN}->${WHITE} checking dependencies"
+  case `cat /etc/os-release` in
+    *debian*) apt-get install -y `echo $DEB_DEPENDENCIES` ;;
+    *fedora*) dnf install -y `echo $RPM_DEPENDENCIES` ;;
+  esac
+  echo "${GREEN}->${WHITE} done\n"
+}
+
+preproc() {
+  # determine what functions to use, else redirect to help screen
+  test $1 && PKG_LOCK="$1" || PKG_LOCK="help"
+  
+  # meta text & updaters
+  case "$PKG_LOCK" in
+    help | h)
+      cat << EOF
 ./despot [arg] [...]
-
+  
 arguments:
+credits         | where it's due
 help            | you're here now
 install [pkg]   | install a package
 observe         | list available dbuilds
@@ -104,41 +104,52 @@ tug             | update repo database
 uninstall [pkg] | uninstall a package
 version         | show current version
 EOF
-    die 99 
-  ;;
-  observe | o) find ${BASE_DIR}/repo/*/ -type f -name '*.dbuild' | cut -d '/' -f7 | cut -d '.' -f1 ;;
-  tug | t) cd "$BASE_DIR"/repo && git pull ;;
-  selfupdate | s) 
-    echo "${GREEN}->${WHITE} spinning up the updater"
-    curl --silent https://raw.githubusercontent.com/draumaz/despot/master/bootstrap.sh | sh 
-  ;;
-  version | v) echo "despot ${DESPOT_VERSION}"; die 99 ;;
-esac
-
-# determine repo, retrieve build functions
-case "$PKG_LOCK" in install | uninstall | i | u)
-  LIVE_REPO=`find $BASE_DIR/repo -type f -name '*.dbuild' | grep -i $2 | rev | cut -d / -f2 | rev`
-  test -e "$BASE_DIR"/repo/"$LIVE_REPO"/"$2".dbuild || die 4 "$2"
-  echo "${GREEN}->${WHITE} reading ${PURPLE}$2${WHITE} dbuild from ${YELLOW}${LIVE_REPO}${WHITE}"
-  . "$BASE_DIR"/repo/${LIVE_REPO}/${2}.dbuild
-esac
-
-# install processes
-case "$PKG_LOCK" in
-  install | i)
-    test ! -e '$DEB_DEPENDENCIES' || test ! -e '$RPM_DEPENDENCIES' || deps
-    echo "${GREEN}->${WHITE} installing: $PKG_TITLE"
-    package_install && PKG_LOCK=0 &&
-    echo "${GREEN}->${WHITE} installed : $PKG_TITLE" || die 88 ;;
-  uninstall | u) 
-    echo "\n${RED}->${WHITE} uninstalling: ${RED}$PKG_TITLE${WHITE}"
-    package_uninstall &&
-    echo "${RED}->${WHITE} uninstalled:  ${RED}$PKG_TITLE${WHITE}" || \
-    echo "${RED}->${WHITE} uninstall failed: ${RED}$PKG_TITLE${WHITE}"
-    PKG_LOCK=1
+      die 99 
     ;;
-esac
+    credits | c) cat << EOF
+${GREEN}->${WHITE} despot $DESPOT_VERSION
+${GREEN}->${WHITE} developed by draumaz
+${GREEN}->${WHITE} named by DeltaDove
+${GREEN}->${WHITE} MIT licensed software
+EOF
+      die 99
+    ;;
+    observe | o) find ${BASE_DIR}/repo/*/ -type f -name '*.dbuild' | cut -d '/' -f7 | cut -d '.' -f1 ;;
+    tug | t) cd "$BASE_DIR"/repo && git pull ;;
+    selfupdate | s) 
+      echo "${GREEN}->${WHITE} spinning up the updater"
+      curl --silent https://raw.githubusercontent.com/draumaz/despot/master/bootstrap.sh | sh 
+    ;;
+    version | v) echo "${GREEN}->${WHITE} despot ${DESPOT_VERSION}"; die 99 ;;
+  esac
+}
 
-# environment cleanup
+rpck() {
+  # determine repo, retrieve build functions
+  case "$1" in install | uninstall | i | u)
+    LIVE_REPO=`find $BASE_DIR/repo -type f -name '*.dbuild' | grep -i $2 | rev | cut -d / -f2 | rev`
+    test -e "$BASE_DIR"/repo/"$LIVE_REPO"/"$2".dbuild || die 4 "$2"
+    echo "${GREEN}->${WHITE} reading ${PURPLE}$2${WHITE} dbuild from ${YELLOW}${LIVE_REPO}${WHITE}"
+    . "$BASE_DIR"/repo/${LIVE_REPO}/${2}.dbuild
+  esac
+}
+
+bld() {
+  # install processes
+  case "$PKG_LOCK" in
+    install | i)
+      test ! -e '$DEB_DEPENDENCIES' || test ! -e '$RPM_DEPENDENCIES' || deps
+      echo "${GREEN}->${WHITE} installing: $PKG_TITLE"
+      package_install && PKG_LOCK=0 &&
+      echo "${GREEN}->${WHITE} installed : $PKG_TITLE" || die 88 ;;
+    uninstall | u) 
+      echo "\n${RED}->${WHITE} uninstalling: ${RED}$PKG_TITLE${WHITE}"
+      package_uninstall &&
+      echo "${RED}->${WHITE} uninstalled:  ${RED}$PKG_TITLE${WHITE}" || \
+      echo "${RED}->${WHITE} uninstall failed: ${RED}$PKG_TITLE${WHITE}" ;;
+  esac
+}
+
+preproc "$1" && rpck "$1" "$2" && bld
+rm -rf "$BASE_DIR"/work/"$PKG_TITLE"
 unset PKG_TITLE PKG_AUTHOR PKG_VERSION package_remove package_sources package_install
-rm -rf "$BASE_DIR"/work
