@@ -97,7 +97,7 @@ version         | show current version
 EOF
     die 99 
   ;;
-  observe | o) find ${BASE_DIR}/repo/*/ -type f -name '*.dbuild' | rev | cut -d / -f1 | sed 's/dliubd.//g' | rev ;;
+  observe | o) find ${BASE_DIR}/repo/*/ -type f -name '*.dbuild' | cut -d '/' -f7 | cut -d '.' -f1 ;;
   tug | t) cd "$BASE_DIR"/repo && git pull ;;
   selfupdate | s) curl https://raw.githubusercontent.com/draumaz/despot/master/bootstrap.sh | sh ;;
   version | v) echo "despot ${DESPOT_VERSION}"; die 99 ;;
