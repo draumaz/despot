@@ -14,8 +14,10 @@ YELLOW="$(tput setaf 3)"
 PURPLE="$(tput setaf 5)"
 WHITE="$(tput sgr0)"
 
+mkdir -p ${BASE_DIR}
+
 test -e ${BASE_DIR}/repo/.git || \
-  mkdir -p ${BASE_DIR} && git clone https://github.com/draumaz/despot-repo "${BASE_DIR}/repo"
+  git clone https://github.com/draumaz/despot-repo "${BASE_DIR}/repo"
 
 die() {
   case "$1" in
