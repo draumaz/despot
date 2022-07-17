@@ -3,16 +3,16 @@
 # Copyright 2022 draumaz
 # Distributed under the terms of the MIT license
 
-case "$(id -u)" in 1000) echo "run despot as superuser"; exit ;; esac
+case `id -u` in 1000) echo "run despot as superuser"; exit ;; esac
 
 export DESPOT_VERSION="2022-07-17"
 export BASE_DIR="/var/cache/despot"
 
-RED="$(tput setaf 1)"
-GREEN="$(tput setaf 2)"
-YELLOW="$(tput setaf 3)"
-PURPLE="$(tput setaf 5)"
-WHITE="$(tput sgr0)"
+RED=`tput setaf 1`
+GREEN=`tput setaf 2`
+YELLOW=`tput setaf 3`
+PURPLE=`tput setaf 5`
+WHITE=`tput sgr0`
 
 mkdir -p ${BASE_DIR}
 
@@ -108,13 +108,16 @@ EOF
   ;;
   observe | o) find ${BASE_DIR}/repo/*/ -type f -name '*.dbuild' | cut -d '/' -f7 | cut -d '.' -f1 ;;
   tug | t) cd "$BASE_DIR"/repo && git pull ;;
-  selfupdate | s) echo "${GREEN}->${WHITE} spinning up the updater" && curl --silent https://raw.githubusercontent.com/draumaz/despot/master/bootstrap.sh | sh ;;
+  selfupdate | s) 
+    echo "${GREEN}->${WHITE} spinning up the updater"
+    curl --silent https://raw.githubusercontent.com/draumaz/despot/master/bootstrap.sh | sh 
+  ;;
   version | v) echo "despot ${DESPOT_VERSION}"; die 99 ;;
 esac
 
 # determine repo, retrieve build functions
 case "$PKG_LOCK" in install | uninstall | i | u)
-  LIVE_REPO="$(find $BASE_DIR/repo -type f -name '*.dbuild' | grep -i $2 | rev | cut -d / -f2 | rev)"
+  LIVE_REPO=`find $BASE_DIR/repo -type f -name '*.dbuild' | grep -i $2 | rev | cut -d / -f2 | rev`
   test -e "$BASE_DIR"/repo/"$LIVE_REPO"/"$2".dbuild || die 4 "$2"
   echo "${GREEN}->${WHITE} reading ${PURPLE}$2${WHITE} dbuild from ${YELLOW}${LIVE_REPO}${WHITE}"
   . "$BASE_DIR"/repo/${LIVE_REPO}/${2}.dbuild
