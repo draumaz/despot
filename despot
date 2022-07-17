@@ -32,7 +32,7 @@ die() {
 
 deps() {
   echo "\n${GREEN}->${WHITE} checking dependencies"
-  case "$(cat /etc/os-release)" in
+  case `cat /etc/os-release` in
     *debian*) apt-get install -y `echo $DEB_DEPENDENCIES` ;;
     *fedora*) dnf install -y `echo $RPM_DEPENDENCIES` ;;
   esac
