@@ -99,7 +99,7 @@ EOF
   ;;
   observe | o) find ${BASE_DIR}/repo/*/ -type f -name '*.dbuild' | cut -d '/' -f7 | cut -d '.' -f1 ;;
   tug | t) cd "$BASE_DIR"/repo && git pull ;;
-  selfupdate | s) curl https://raw.githubusercontent.com/draumaz/despot/master/bootstrap.sh | sh ;;
+  selfupdate | s) echo "${GREEN}->${WHITE} spinning up the updater" && curl --silent https://raw.githubusercontent.com/draumaz/despot/master/bootstrap.sh | sh ;;
   version | v) echo "despot ${DESPOT_VERSION}"; die 99 ;;
 esac
 
