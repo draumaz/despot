@@ -12,13 +12,13 @@ i have two goals with despot:
 - ```curl https://raw.githubusercontent.com/draumaz/despot/master/bootstrap.sh | sudo sh```
 
 ### compiling packages
-- ```./despot install [PKG]```
+- ```sudo despot install [PKG]```
 
 ### removing packages
-- ```./despot uninstall [PKG]```
+- ```sudo despot uninstall [PKG]```
 
 ### learn more
-- ```./despot help```
+- ```sudo despot help```
 
 ### the repo
 - <a href="https://github.com/draumaz/despot-repo">where all the dbuilds are found.</a>
