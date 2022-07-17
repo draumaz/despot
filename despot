@@ -97,13 +97,13 @@ preproc() {
 ./despot [arg] [...]
   
 arguments:
-credits         | where it's due
-help            | you're here now
-install [pkg]   | install a package
-observe         | list available dbuilds
-tug             | update repo database
-uninstall [pkg] | uninstall a package
-version         | show current version
+credits               | where it's due
+help                  | you're here now
+install [pkg pkg]     | install packages
+observe               | list available dbuilds
+tug                   | update repo database
+uninstall [pkg] [pkg] | uninstall packages
+version               | show current version
 EOF
       die 99 
     ;;
@@ -148,6 +148,11 @@ bld() {
   esac
 }
 
-preproc "$1" && rpck "$1" "$2" && bld
-rm -rf "$BASE_DIR"/work/"$PKG_TITLE"
-unset PKG_TITLE PKG_AUTHOR PKG_VERSION package_remove package_sources package_install
+preproc "$1"
+
+for i in $@; do
+  if test -z $e; then e="_" && continue; fi # block {,un}install argument from being read as a package
+  rpck "$1" "$i" && bld; echo
+  rm -rf "$BASE_DIR"/work/"$PKG_TITLE"
+  unset PKG_TITLE PKG_AUTHOR PKG_VERSION package_remove package_sources package_install
+done
