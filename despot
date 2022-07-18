@@ -152,7 +152,7 @@ preproc "$1"
 
 for i in $@; do
   if test -z $e; then e="_" && continue; fi # block {,un}install argument from being read as a package
-  rpck "$1" "$i" && bld; echo
+  rpck "$1" "$i" && bld
   rm -rf "$BASE_DIR"/work/"$PKG_TITLE"
   unset PKG_TITLE PKG_AUTHOR PKG_VERSION package_remove package_sources package_install
 done
