@@ -94,16 +94,16 @@ preproc() {
   case "$PKG_LOCK" in
     help | h)
       cat << EOF
-./despot [arg] [...]
+despot [arg] [...]
   
 arguments:
-credits               | where it's due
-help                  | you're here now
-install [pkg pkg]     | install packages
-observe               | list available dbuilds
-tug                   | update repo database
-uninstall [pkg] [pkg] | uninstall packages
-version               | show current version
+${GREEN}->${WHITE} credits          | where it's due
+${GREEN}->${WHITE} help             | you're here now
+${GREEN}->${WHITE} install [pkgs]   | install packages
+${GREEN}->${WHITE} observe          | list available dbuilds
+${GREEN}->${WHITE} tug              | update repo database
+${GREEN}->${WHITE} uninstall [pkgs] | uninstall packages
+${GREEN}->${WHITE} version          | show current version
 EOF
       die 99 
     ;;
@@ -115,7 +115,9 @@ ${GREEN}->${WHITE} MIT licensed software
 EOF
       die 99
     ;;
-    observe | o) find ${BASE_DIR}/repo/*/ -type f -name '*.dbuild' | cut -d '/' -f7 | cut -d '.' -f1 ;;
+    observe | o) for i in `find ${BASE_DIR}/repo/*/* -type f -name '*.dbuild' | cut -d '/' -f7 | cut -d '.' -f1`; do 
+      echo "${GREEN}->${WHITE} $i"; done 
+    ;;
     tug | t) cd "$BASE_DIR"/repo && git pull ;;
     selfupdate | s) 
       echo "${GREEN}->${WHITE} spinning up the updater"
