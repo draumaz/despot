@@ -141,7 +141,7 @@ bld() {
   # install processes
   case "$PKG_LOCK" in
     install | i)
-      test ! -e '$DEB_DEPENDENCIES' || test ! -e '$RPM_DEPENDENCIES' || deps
+      deps #test ! -e '$DEB_DEPENDENCIES' || test ! -e '$RPM_DEPENDENCIES' || deps
       echo "${GREEN}->${WHITE} installing: $PKG_TITLE"; package_install
       echo "${GREEN}->${WHITE} installed : $PKG_TITLE" || die 88 ;;
     uninstall | u) 
