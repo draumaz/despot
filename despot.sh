@@ -79,9 +79,13 @@ die() {
 
 deps() {
   echo "\n${GREEN}->${WHITE} checking dependencies"
-  case `cat /etc/os-release` in
-    *debian*) apt-get install -y `echo $DEB_DEPENDENCIES` ;;
-    *fedora*) dnf install -y `echo $RPM_DEPENDENCIES` ;;
+  case `uname -s` in
+    Linux)
+      case `cat /etc/os-release` in
+        *debian*) apt-get install -y `echo $DEB_DEPENDENCIES` ;;
+        *fedora*) dnf install -y `echo $RPM_DEPENDENCIES` ;;
+      esac
+    Darwin) test ! -e /usr/local/bin/brew || brew install `echo $MAC_DEPENDENCIES` ;; # doesn't work yet lol
   esac
   echo "${GREEN}->${WHITE} done\n"
 }
