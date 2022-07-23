@@ -84,7 +84,7 @@ deps() {
       case `cat /etc/os-release` in
         *debian*) apt-get install -y `echo $DEB_DEPENDENCIES` ;;
         *fedora*) dnf install -y `echo $RPM_DEPENDENCIES` ;;
-      esac
+      esac ;;
     Darwin) test ! -e /usr/local/bin/brew || brew install `echo $MAC_DEPENDENCIES` ;; # doesn't work yet lol
   esac
   echo "${GREEN}->${WHITE} done\n"
