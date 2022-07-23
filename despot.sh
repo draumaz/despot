@@ -18,7 +18,7 @@ mkdir -p ${BASE_DIR}
 test -e ${BASE_DIR}/repo/.git || git clone --quiet https://github.com/draumaz/despot-repo "${BASE_DIR}/repo"
 
 # dbuild functions
-basic_uninstall() {
+pre_uninstall_checker() {
   test -e "$1" || die 1
 }
 
