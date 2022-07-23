@@ -5,7 +5,7 @@
 
 case `id -u` in 1000) echo "run despot as superuser"; exit ;; esac
 
-export DESPOT_VERSION="2022-07-18"
+export DESPOT_VERSION="2022-07-22"
 export BASE_DIR="/var/cache/despot"
 
 RED=`tput setaf 1`
